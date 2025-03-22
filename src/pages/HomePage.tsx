@@ -1,6 +1,12 @@
+import Category from '@/components/Category'
+import Slide from '@/components/Slide'
+
 const HomePage = () => {
   return (
-    <div>HomePage</div>
+    <div>
+      <Slide />
+      <Category />
+    </div>
   )
 }
 
