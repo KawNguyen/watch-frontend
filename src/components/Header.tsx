@@ -6,7 +6,7 @@ const Header = () => {
   return (
     <header className="container mx-auto bg-white h-20 w-full">
       <div className="h-full flex justify-between items-center">
-        <div className="flex space-x-3">
+        <div className="flex space-x-4 w-[32%]">
           {Routes.map((route) => (
             <Link
                 key={route.path} 
@@ -22,7 +22,7 @@ const Header = () => {
             LOGO
         </div>
 
-        <div className="flex space-x-3">
+        <div className="flex space-x-4 w-[32%] justify-end">
           <div>
             <Search />
           </div>
@@ -31,7 +31,7 @@ const Header = () => {
           </div>
           <div>
             <User/>
-          </div>
+          </div>    
         </div>
       </div>
     </header>
