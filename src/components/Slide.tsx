@@ -34,7 +34,7 @@ const poster = [
 const Slide = () => {
     const [activeIndex, setActiveIndex] = useState(0);
     return (
-        <div className="w-full md:mt-20 mt-16">
+        <div className="w-full">
             <Swiper
                 spaceBetween={30}
                 centeredSlides={true}
