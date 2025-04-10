@@ -7,6 +7,19 @@ export default {
   ],
   theme: {
   	extend: {
+		transitionDuration:{
+			1100: '1100ms',
+			1200: '1200ms',
+			1400: '1400ms',
+			1600: '1600ms',
+			1800: '1800ms',
+		},
+		transitionDelay:{
+			1100: '1100ms',
+			1200: '1200ms',
+			1400: '1400ms',
+			1600: '1600ms',
+		},
   		borderRadius: {
   			lg: 'var(--radius)',
   			md: 'calc(var(--radius) - 2px)',

@@ -1,4 +1,3 @@
-import React from 'react'
 import { useState } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
@@ -7,7 +6,7 @@ import "swiper/css/navigation";
 import "swiper/css/effect-fade";
 import { Autoplay, Pagination, EffectFade } from "swiper/modules";
 import { Link } from "react-router-dom";
-
+import { Button } from "./ui/button";
 
 const poster = [
     {
@@ -31,7 +30,8 @@ const poster = [
         text: "Timeless Prestige Seamlessly Yours.",
     },
 ];
-const Slide = () => {
+
+const HomeHero = () => {
     const [activeIndex, setActiveIndex] = useState(0);
     return (
         <div className="w-full">
@@ -64,7 +64,7 @@ const Slide = () => {
                             className={`absolute top-0 bg-gradient-to-r from-black w-[50%] h-full`}
                         >
                             <div
-                                className={`absolute w-full h-full top-0 content-center md:pl-40 pl-10 text-white transform transition-all duration-[1200ms] ease-out  ${activeIndex === index
+                                className={`absolute w-full h-full top-0 content-center md:pl-40 pl-10 text-white transform transition-all duration-1200 ease-out  ${activeIndex === index
                                     ? "translate-y-0 opacity-100"
                                     : "translate-y-60 opacity-0"
                                     }`}
@@ -76,14 +76,15 @@ const Slide = () => {
                                     <Link
                                         to="/"
                                         className={`transform transition-all duration-1000 ease-out ${activeIndex === index
-                                            ? "opacity-100 delay-[1100ms]"
+                                            ? "opacity-100 delay-1100"
                                             : "opacity-0"
                                             }`}
                                     >
-                                        <div className="relative top-10 border text-white md:rounded-lg p-1 md:p-4 rounded md:text-2xl  text-[10px] w-fit  duration-300 group hover:text-white hover:transform hover:-translate-y-2">
-                                            See More
-                                        </div>
-
+                                        <Button
+                                            className="text-black bg-white duration-300 hover:bg-black hover:text-white text-[12px] md:text-[16px] px-4 py-2 "
+                                        >
+                                            Shop Now
+                                        </Button>
                                     </Link>
                                 </div>
                             </div>
@@ -95,4 +96,4 @@ const Slide = () => {
     );
 }
 
-export default Slide
+export default HomeHero
