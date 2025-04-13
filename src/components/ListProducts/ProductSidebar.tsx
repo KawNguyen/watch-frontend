@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 
 interface Category {
+  id: number;
   name: string;
   img: string;
 }
@@ -72,7 +73,7 @@ export const ProductSidebar: React.FC<ProductSidebarProps> = ({
         {/* Color Filter */}
         <div className="mt-8">
           <h2 className="text-lg font-bold mb-4">Color</h2>
-          <div className="flex space-x-2">
+          <div className="flex space-x-2">  
             <div className="w-6 h-6 rounded-full bg-gray-700 cursor-pointer hover:ring-2 hover:ring-gray-700"></div>
             <div className="w-6 h-6 rounded-full bg-orange-700 cursor-pointer hover:ring-2 hover:ring-orange-700"></div>
             <div className="w-6 h-6 rounded-full bg-gray-300 cursor-pointer hover:ring-2 hover:ring-gray-300"></div>

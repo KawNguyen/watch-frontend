@@ -1,15 +1,11 @@
 import React from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation } from "swiper/modules";
+import { Category } from "@/services/Services";
 
 // Import Swiper styles
 import "swiper/css";
 import "swiper/css/navigation";
-
-interface Category {
-  name: string;
-  img: string;
-}
 
 interface ThanhCategoryProps {
   categories: Category[];
@@ -35,12 +31,12 @@ export const ThanhCategory: React.FC<ThanhCategoryProps> = ({ categories }) => {
         }}
         className="mySwiper"
       >
-        {categories.map((category, index) => (
-          <SwiperSlide key={index}>
+        {categories.map((category) => (
+          <SwiperSlide key={category.id}>
             <div className="flex flex-col items-center text-center space-y-2 hover:scale-105 transition-transform duration-300">
               <div className="w-24 h-24 rounded-full overflow-hidden border-2 border-white shadow-md hover:shadow-lg bg-white">
                 <img
-                  src={category.img}
+                  src={category.image}
                   alt={category.name}
                   className="w-full h-full object-cover"
                 />
