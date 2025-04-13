@@ -14,7 +14,7 @@ const AdminLayout = () => {
       <AppSidebar />
       <main className="w-full">
         <SidebarTrigger />
-        <div className="ml-2">
+        <div className="m-2">
           <Outlet />
         </div>
       </main>

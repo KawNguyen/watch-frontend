@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { authAPI } from "@/api/auth";
+import { useToast } from "./use-toast";
 
 interface LoginCredentials {
   email: string;
@@ -15,6 +16,7 @@ interface RegisterCredentials {
 }
 
 export const useAuth = () => {
+  const { toast } = useToast();
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -30,6 +32,11 @@ export const useAuth = () => {
       );
       localStorage.setItem("token", response.token);
       localStorage.setItem("user", JSON.stringify(response.user));
+      toast({
+        title: "Success",
+        description: "Registration successful! Welcome aboard.",
+        className: "bg-green-500 text-white border-none",
+      });
       navigate("/");
     } catch (err: any) {
       let errorMessage = "An error occurred during registration";
@@ -39,6 +46,12 @@ export const useAuth = () => {
         errorMessage = "Unable to reach the server";
       }
       setError(errorMessage);
+      toast({
+        variant: "destructive",
+        title: "Error",
+        description: errorMessage,
+        className: "bg-red-500 text-white border-none",
+      });
     } finally {
       setIsLoading(false);
     }
@@ -54,6 +67,11 @@ export const useAuth = () => {
       );
       localStorage.setItem("token", response.token);
       localStorage.setItem("user", JSON.stringify(response.user));
+      toast({
+        title: "Success",
+        description: "Welcome back!",
+        className: "bg-green-500 text-white border-none",
+      });
       navigate("/");
     } catch (err: any) {
       let errorMessage = "An error occurred during login";
@@ -63,6 +81,12 @@ export const useAuth = () => {
         errorMessage = "Unable to reach the server";
       }
       setError(errorMessage);
+      toast({
+        variant: "destructive",
+        title: "Error",
+        description: errorMessage,
+        className: "bg-red-500 text-white border-none",
+      });
     } finally {
       setIsLoading(false);
     }

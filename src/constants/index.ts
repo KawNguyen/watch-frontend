@@ -1,4 +1,4 @@
-import { Tag } from "lucide-react";
+import { Pickaxe, Ribbon, Tag, Watch } from "lucide-react";
 
 export const Routes = [
   { name: "Home", path: "/" },
@@ -13,7 +13,31 @@ export const AdminRoutes = [
     icon: Tag,
     children: [
       { title: "Manage Brands", url: "/admin/brand/list" },
-      { title: "Create Brand", url: "/admin/brand/create" },
+      { title: "Add Brand", url: "/admin/brand/add" },
+    ],
+  },
+  {
+    title: "Material",
+    icon: Pickaxe,
+    children: [
+      { title: "Manage Material", url: "/admin/material/list" },
+      { title: "Add Material", url: "/admin/material/add" },
+    ],
+  },
+  {
+    title: "Band Material",
+    icon: Ribbon,
+    children: [
+      { title: "Manage Band Material", url: "/admin/band-material/list" },
+      { title: "Add Band Material", url: "/admin/band-material/add" },
+    ],
+  },
+  {
+    title: "Watch",
+    icon: Watch,
+    children: [
+      { title: "Manage Watches", url: "/admin/watch/list" },
+      { title: "Add Watch", url: "/admin/watch/add" },
     ],
   },
 ];
