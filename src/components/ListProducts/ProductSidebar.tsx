@@ -1,19 +1,17 @@
 import React, { useState } from "react";
-
-interface Category {
-  id: number;
-  name: string;
-  img: string;
-}
+import { Category } from "@/services/Services";
+import { Slider } from "@/components/ui/slider";
 
 interface ProductSidebarProps {
   categories: Category[];
+  loading?: boolean;
   isSidebarOpen: boolean;
   setIsSidebarOpen: (isOpen: boolean) => void;
 }
 
 export const ProductSidebar: React.FC<ProductSidebarProps> = ({
   categories,
+  loading = false,
   isSidebarOpen,
   setIsSidebarOpen,
 }) => {
@@ -21,10 +19,9 @@ export const ProductSidebar: React.FC<ProductSidebarProps> = ({
   const [priceValue, setPriceValue] = useState(90);
 
   // Hàm xử lý khi kéo thanh trượt
-  const handlePriceChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setPriceValue(parseInt(e.target.value));
+  const handlePriceChange = (newValue: number[]) => {
+    setPriceValue(newValue[0]);
   };
-
   return (
     <>
       {/* Sidebar */}
@@ -35,7 +32,7 @@ export const ProductSidebar: React.FC<ProductSidebarProps> = ({
       >
         {/* Header với nút đóng trên mobile */}
         <div className="flex justify-between items-center mb-6 md:hidden">
-          <h2 className="text-xl font-bold">Filters</h2>
+          <h2 className="font-cormorant text-xl font-bold">Filters</h2>
           <button
             onClick={() => setIsSidebarOpen(false)}
             className="p-2 text-gray-500 hover:text-gray-700"
@@ -44,11 +41,11 @@ export const ProductSidebar: React.FC<ProductSidebarProps> = ({
           </button>
         </div>
 
-        <h2 className="text-lg font-bold mb-4">Categories</h2>
+        <h2 className="text-lg font-bold mb-4"> </h2>
         <ul className="space-y-2">
-          {categories.map((category, index) => (
+          {categories.map((category) => (
             <li
-              key={index}
+              key={category.id}
               className="cursor-pointer text-gray-700 hover:text-blue-500 transition-colors"
             >
               {category.name}
@@ -59,21 +56,20 @@ export const ProductSidebar: React.FC<ProductSidebarProps> = ({
         {/* Price Filter - Cập nhật để hiển thị giá trị thời gian thực */}
         <div className="mt-8">
           <h2 className="text-lg font-bold mb-4">Price</h2>
-          <input
-            type="range"
-            min="0"
-            max="100"
-            value={priceValue}
-            onChange={handlePriceChange}
+          <Slider
+            min={0}
+            max={100}
+            defaultValue={[priceValue]}
+            onValueChange={handlePriceChange}
             className="w-full accent-blue-500"
           />
-          <p className="text-sm mt-2">Price: $0 - ${priceValue}</p>
+          <p className="  text-sm mt-2">Price: $0 - ${priceValue}</p>
         </div>
 
         {/* Color Filter */}
         <div className="mt-8">
           <h2 className="text-lg font-bold mb-4">Color</h2>
-          <div className="flex space-x-2">  
+          <div className="flex space-x-2">
             <div className="w-6 h-6 rounded-full bg-gray-700 cursor-pointer hover:ring-2 hover:ring-gray-700"></div>
             <div className="w-6 h-6 rounded-full bg-orange-700 cursor-pointer hover:ring-2 hover:ring-orange-700"></div>
             <div className="w-6 h-6 rounded-full bg-gray-300 cursor-pointer hover:ring-2 hover:ring-gray-300"></div>
