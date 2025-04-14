@@ -3,8 +3,8 @@ import { useState } from 'react';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Button } from '@/components/ui/button';
-import { toast } from "sonner";
-import { Toaster } from "@/components/ui/sonner";
+import { toast } from "@/hooks/use-toast";
+import { Toaster } from "@/components/ui/toaster";
 import emailjs from 'emailjs-com';
 
 export default function MonochromeLuxuryContactForm() {
@@ -57,8 +57,8 @@ export default function MonochromeLuxuryContactForm() {
         if (validateForm()) {
             try {
                 const result = await emailjs.send(
-                    'service_kai5al5',         // Thay bằng service ID
-                    'template_feepo1a',        // Thay bằng template ID
+                    'service_kai5al5',
+                    'template_feepo1a',
                     {
                         from_name: formData.name,
                         from_email: formData.email,
@@ -66,23 +66,31 @@ export default function MonochromeLuxuryContactForm() {
                         phone: formData.phone,
                         message: formData.message
                     },
-                    'hCS0IHarjxuWOm4BO'          // Thay bằng Public Key (User ID)
+                    'hCS0IHarjxuWOm4BO'
                 );
 
-                toast.success("Your inquiry has been received. A specialist will be in touch shortly.");
+                toast({
+                    title: "Success!",
+                    description: "Your inquiry has been received. A specialist will be in touch shortly.",
+                });
+
                 setFormData({ name: '', email: '', phone: '', subject: '', message: '' });
                 setSubmitted(true);
                 setTimeout(() => setSubmitted(false), 5000);
             } catch (error) {
                 console.error(error);
-                toast.error("Something went wrong. Please try again.");
+                toast({
+                    variant: "destructive",
+                    title: "Error",
+                    description: "Something went wrong. Please try again.",
+                });
             }
         }
     };
 
     return (
         <div className="border py-8 sm:px-8">
-            <Toaster position='top-right' />
+            <Toaster />
             <div className="container mx-auto">
                 <div className="text-center mb-8">
                     <h1 className="text-5xl font-light text-black mb-4 tracking-widest font-serif">LuxWatch Inc</h1>
@@ -90,7 +98,7 @@ export default function MonochromeLuxuryContactForm() {
                 </div>
                 <div className="flex flex-col lg:flex-row gap-8 px-8">
                     <div className="lg:w-1/3 h-full">
-                        <div className="bg-gray-300 p-10 rounded-md border border-black relative">
+                        <div className="bg-gray-200 p-10 rounded-md border border-black relative">
                             <h2 className="text-2xl font-light text-black mb-10 uppercase tracking-widest">ABOUT US</h2>
                             <div className="mb-10">
                                 <h3 className="text-lg font-normal text-black mb-4 uppercase tracking-wider flex items-center">
@@ -138,7 +146,7 @@ export default function MonochromeLuxuryContactForm() {
                     </div>
 
                     <div className="lg:w-2/3 h-full">
-                        <div className="bg-gray-300 p-10 border rounded-md border-black relative">
+                        <div className="bg-gray-200 p-10 border rounded-md border-black relative">
                             <h2 className="text-2xl font-light text-black mb-4 uppercase tracking-widest">CONTACT</h2>
                             <form onSubmit={handleSubmit}>
                                 <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
