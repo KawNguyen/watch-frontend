@@ -38,7 +38,7 @@ const App = () => {
           </ProtectedRoute>
         }
       >
-        <Route path="/admin/brand/list" element={<ManageBrand />} />
+        <Route index path="/admin/brand/list" element={<ManageBrand />} />
         <Route path="/admin/brand/add" element={<AddBrand />} />
         <Route path="/admin/watch/list" element={<ManageWatch />} />
         <Route path="/admin/watch/add" element={<AddWatch />} />
