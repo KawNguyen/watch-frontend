@@ -17,6 +17,8 @@ import AddMaterial from "./pages/Admin/material/AddMaterial";
 import ManageBandMaterial from "./pages/Admin/band-material/ManageBandMaterial";
 import AddBandMaterial from "./pages/Admin/band-material/AddBandMaterial";
 import ListProduct from "./pages/ListProduct";
+import ManageMovement from "./pages/Admin/movement/ManageMovement";
+import AddMovement from "./pages/Admin/movement/AddMovement";
 
 const App = () => {
   const { getUser } = useAuth();
@@ -49,6 +51,8 @@ const App = () => {
         <Route path="/admin/material/add" element={<AddMaterial />} />
         <Route path="/admin/band-material/list" element={<ManageBandMaterial />} />
         <Route path="/admin/band-material/add" element={<AddBandMaterial />} />
+        <Route path="/admin/movement/list" element={<ManageMovement />} />
+        <Route path="/admin/movement/add" element={<AddMovement />} />
       </Route>
       <Route path="/*" element={<NotFoundPage />} />
     </Routes>

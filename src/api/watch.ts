@@ -3,7 +3,7 @@ import axiosInstance from "@/config/axiosInstance";
 export const watch = {
   getAll: async () => {
     const response = await axiosInstance.get(`/watches`);
-    return response.data;
+    return response.data.items;
   },
 
   getById: async (id: string) => {
