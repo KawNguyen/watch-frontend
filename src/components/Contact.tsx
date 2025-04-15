@@ -133,14 +133,7 @@ export default function MonochromeLuxuryContactForm() {
                                 </h3>
                                 <p className="text-black pl-12 tracking-wide">Telephone: +84 123 456 789</p>
                                 <p className="text-black pl-12 tracking-wide">Email: contact@inc.com</p>
-                            </div>
-                            <div className="flex space-x-6 justify-center">
-                                <a href="https://facebook.com" className="w-10 h-10 text-black flex items-center justify-center">
-                                    <Facebook className="w-5 h-5" />
-                                </a>
-                                <a href="https://youtube.com" className="w-10 h-10 text-black flex items-center justify-center">
-                                    <Youtube className="w-5 h-5" />
-                                </a>
+
                             </div>
                         </div>
                     </div>
