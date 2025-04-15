@@ -55,7 +55,7 @@ const Header = () => {
               <DropdownMenuContent>
                 <DropdownMenuLabel>{user.name}</DropdownMenuLabel>
                 <DropdownMenuSeparator />
-                <DropdownMenuItem onClick={() => navigate("/auth/profile")}>
+                <DropdownMenuItem onClick={() => navigate("/profile")}>
                   <div className="flex space-x-2">
                     <div>
                       <UserCog />
@@ -63,7 +63,6 @@ const Header = () => {
                     <div>
                       Profile
                     </div>
-
                   </div>
                 </DropdownMenuItem>
                 {/* <DropdownMenuItem>Orders</DropdownMenuItem> */}
