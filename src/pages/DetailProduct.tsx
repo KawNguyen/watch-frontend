@@ -5,7 +5,7 @@ import { ProductCardSkeleton } from "@/components/ListProducts/ProductCardSkelet
 import { useKeenSlider } from "keen-slider/react";
 import Zoom from "react-medium-image-zoom";
 import "react-medium-image-zoom/dist/styles.css";
-import HoverZoom from "@/components/ui/HoverZoom";
+import HoverZoom from "@/components/HoverZoom";
 
 import "keen-slider/keen-slider.min.css";
 

@@ -2,10 +2,9 @@ import React from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation } from "swiper/modules";
 import { Category } from "@/services/Services";
-
-// Import Swiper styles
 import "swiper/css";
 import "swiper/css/navigation";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 
 interface ThanhCategoryProps {
   categories: Category[];
@@ -48,11 +47,11 @@ export const ThanhCategory: React.FC<ThanhCategoryProps> = ({ categories }) => {
       </Swiper>
 
       {/* Navigation buttons */}
-      <div className="swiper-button-prev-custom absolute top-1/2 left-2 transform -translate-y-1/2 z-10 cursor-pointer p-2 bg-gray-800 bg-opacity-90 rounded-full shadow-lg hover:bg-gray-700 hover:scale-110 transition-all duration-300">
-        <i className="fas fa-chevron-left text-white text-lg"></i>
+      <div className="swiper-button-prev-custom absolute top-1/2 left-2 transform -translate-y-1/2 z-10 cursor-pointer p-2  rounded-full transition-all duration-300">
+        <ChevronLeft />
       </div>
-      <div className="swiper-button-next-custom absolute top-1/2 right-2 transform -translate-y-1/2 z-10 cursor-pointer p-2 bg-gray-800 bg-opacity-90 rounded-full shadow-lg hover:bg-gray-700 hover:scale-110 transition-all duration-300">
-        <i className="fas fa-chevron-right text-white text-lg"></i>
+      <div className="swiper-button-next-custom absolute top-1/2 right-2 transform -translate-y-1/2 z-10 cursor-pointer p-2 rounded-full transition-all duration-300">
+        <ChevronRight />
       </div>
     </div>
   );

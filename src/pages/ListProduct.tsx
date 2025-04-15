@@ -1,100 +1,47 @@
-import React, { useEffect, useState } from "react";
-import { HeroSection } from "../components/ui/HeroSection";
-import { ProductSidebar } from "../components/ListProducts/ProductSidebar";
-import { ProductGrid } from "../components/ListProducts/ProductGrid";
-import {
-  Product,
-  Category,
-  getAllProducts,
-  getAllCategories,
-} from "@/services/Services";
-import { ProductCardSkeleton } from "../components/ListProducts/ProductCardSkeleton";
+import ProductSidebar from "@/components/ListProducts/ProductSidebar";
+import PropsSidebar from "@/components/ListProducts/PropsSidebar";
+import { Image } from "@/components/ui/image";
+import { useBandMaterial } from "@/hooks/useBandMaterial";
+import { useBrand } from "@/hooks/useBrand";
+import { useMaterial } from "@/hooks/useMaterial";
+import { useMovement } from "@/hooks/useMovement";
+import { get } from "http";
+import { useEffect } from "react";
 
 export default function ListProduct() {
-  // Products state
-  const [products, setProducts] = useState<Product[]>([]);
-  const [loadingProducts, setLoadingProducts] = useState(true);
-  const [productError, setProductError] = useState<string | null>(null);
+  const { brands, isLoading: isBrandLoading, getAllBrands } = useBrand();
+  const { materials, isLoading: isMaterialLoading, getAllMaterials } = useMaterial();
+  const { bandMaterials, isLoading: isBandMaterialLoading, getAllBandMaterials } = useBandMaterial();
+  const { movements, isLoading: isMovementLoading, getAllMovements } = useMovement();
 
-  // Categories state
-  const [categories, setCategories] = useState<Category[]>([]);
-  const [loadingCategories, setLoadingCategories] = useState(true);
-  const [categoryError, setCategoryError] = useState<string | null>(null);
+  // const [currentPage, setCurrentPage] = useState(1);
 
-  // Fetch Products
   useEffect(() => {
-    const fetchProducts = async () => {
-      try {
-        setLoadingProducts(true);
-        const response = await getAllProducts();
-        if (response.success) {
-          setProducts(response.data as Product[]);
-        } else {
-          setProductError(response.error || "Không thể tải sản phẩm");
-        }
-      } catch (error) {
-        setProductError("Đã xảy ra lỗi khi tải danh sách sản phẩm");
-      } finally {
-        setLoadingProducts(false);
-      }
-    };
-
-    fetchProducts();
+    getAllBrands();
+    getAllMaterials();
+    getAllBandMaterials();
+    getAllMovements();
   }, []);
-
-  // Fetch Categories
-  useEffect(() => {
-    const fetchCategories = async () => {
-      try {
-        setLoadingCategories(true);
-        const response = await getAllCategories();
-        if (response.success) {
-          setCategories(response.data as Category[]);
-        } else {
-          setCategoryError(response.error || "Không thể tải danh mục");
-        }
-      } catch (error) {
-        setCategoryError("Đã xảy ra lỗi khi tải danh mục");
-      } finally {
-        setLoadingCategories(false);
-      }
-    };
-
-    fetchCategories();
-  }, []);
-
-  // Pagination & sidebar state
-  const [currentPage, setCurrentPage] = useState(1);
-  const productsPerPage = 12;
-  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
-
-  // Calculations
-  const totalPages = Math.ceil(products.length / productsPerPage);
-  const currentProducts = products.slice(
-    (currentPage - 1) * productsPerPage,
-    currentPage * productsPerPage
-  );
 
   return (
     <div className="w-full">
-      {/* Hero Section */}
-      {loadingCategories ? (
-        <div className="h-32 bg-gray-100 animate-pulse"></div>
-      ) : (
-        <HeroSection categories={categories} />
-      )}
+      <Image
+        src="https://luxatch-store-newdemo.myshopify.com/cdn/shop/files/breadcumb.jpg"
+        alt="Slider"
+        className="w-full object-cover"
+        ratio={16/6}
+      />
+      <div className="flex mx-auto container">
+        <ProductSidebar>
+          <PropsSidebar isLoading={isBrandLoading} items={brands} title="Brand" />
+          <PropsSidebar isLoading={isMaterialLoading} items={materials} title="Material" />
+          <PropsSidebar isLoading={isBandMaterialLoading} items={bandMaterials} title="Band Material" />
+          <PropsSidebar isLoading={isMovementLoading} items={movements} title="Movement" />
+        </ProductSidebar>
 
-      <div className="flex">
-        {/* Sidebar */}
-        <ProductSidebar
-          categories={categories}
-          loading={loadingCategories}
-          isSidebarOpen={isSidebarOpen}
-          setIsSidebarOpen={setIsSidebarOpen}
-        />
+        
 
-        {/* Product Grid */}
-        <div className="flex-1">
+        {/* <div className="flex-1">
           {loadingProducts ? (
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
               {Array(8)
@@ -116,10 +63,8 @@ export default function ListProduct() {
               setIsSidebarOpen={setIsSidebarOpen}
             />
           )}
-        </div>
+        </div> */}
       </div>
-
-      {/* Footer */}
     </div>
   );
 }
