@@ -1,5 +1,5 @@
 import { Routes } from "@/constants";
-import { LogIn, LogOut, Search, ShoppingBag } from "lucide-react";
+import { LogIn, LogOut, Search, ShoppingBag, UserCog } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "@/hooks/useAuth";
 import {
@@ -55,8 +55,18 @@ const Header = () => {
               <DropdownMenuContent>
                 <DropdownMenuLabel>{user.name}</DropdownMenuLabel>
                 <DropdownMenuSeparator />
-                <DropdownMenuItem>Profile</DropdownMenuItem>
-                <DropdownMenuItem>Orders</DropdownMenuItem>
+                <DropdownMenuItem onClick={() => navigate("/auth/profile")}>
+                  <div className="flex space-x-2">
+                    <div>
+                      <UserCog />
+                    </div>
+                    <div>
+                      Profile
+                    </div>
+
+                  </div>
+                </DropdownMenuItem>
+                {/* <DropdownMenuItem>Orders</DropdownMenuItem> */}
                 {user?.role === "ADMIN" && (
                   <DropdownMenuItem onClick={() => navigate("/admin")}>
                     Dashboard

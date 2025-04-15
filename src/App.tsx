@@ -17,6 +17,9 @@ import AddMaterial from "./pages/Admin/material/AddMaterial";
 import ManageBandMaterial from "./pages/Admin/band-material/ManageBandMaterial";
 import AddBandMaterial from "./pages/Admin/band-material/AddBandMaterial";
 import Contact from "./components/Contact";
+import Profile from "./components/Auth/Profile";
+import Orders from "./components/Auth/Orders";
+import Favorites from "./components/Auth/Favorites";
 const App = () => {
   const { getUser } = useAuth();
   const user = getUser();
@@ -28,8 +31,11 @@ const App = () => {
         <Route path="/contact" element={<Contact />} />
       </Route>
       <Route path="/auth" element={<AuthLayout />}>
-        <Route path="/auth/login" element={<LoginPage />} />
-        <Route path="/auth/register" element={<RegisterPage />} />
+        <Route path="login" element={<LoginPage />} />
+        <Route path="register" element={<RegisterPage />} />
+        <Route index path="profile" element={<Profile />} />
+        <Route path="orders" element={<Orders />} />
+        <Route path="favorites" element={<Favorites />} />
       </Route>
       <Route
         path="/admin"
