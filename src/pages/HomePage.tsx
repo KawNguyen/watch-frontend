@@ -1,7 +1,7 @@
-import Advertisement from '@/components/Advertisement'
-import BestSeller from '@/components/BestSeller'
-import Category from '@/components/Category'
-import Slide from '@/components/HomeHero'
+import Advertisement from "@/components/Advertisement";
+import BestSeller from "@/components/BestSeller";
+import Category from "@/components/Category";
+import Slide from "@/components/HomeHero";
 
 const HomePage = () => {
   return (
@@ -11,7 +11,7 @@ const HomePage = () => {
       <BestSeller />
       <Advertisement />
     </div>
-  )
-}
+  );
+};
 
-export default HomePage
+export default HomePage;
