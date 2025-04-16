@@ -57,7 +57,7 @@ const Cart: React.FC = () => {
         (sum, item) => sum + item.price * item.quantity,
         0
     )
-    const shipping = 15.0
+    const shipping = 10.0
     const total = subtotal + shipping
 
     return (

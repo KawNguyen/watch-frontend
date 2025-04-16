@@ -29,7 +29,7 @@ export const FavoriteCard: React.FC<FavoriteCardProps> = ({ item, onRemove }) =>
                 </Button>
             )}
             <div className="flex flex-col sm:flex-row">
-                <div className="relative h-48 sm:h-40 sm:w-40 flex-shrink-0">
+                <div className="relative w-full h-48 sm:h-auto sm:w-40 flex-shrink-0">
                     <img
                         src={item.image}
                         alt={item.title}

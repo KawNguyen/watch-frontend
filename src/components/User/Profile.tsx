@@ -36,7 +36,7 @@ const Profile = () => {
 
     return (
         <div className="container  lg:grid grid-cols-5 gap-x-10">
-            <div className="relative mb-10 h-fit w-fit overflow-hidden rounded-full group">
+            <div className="relative mb-10 h-fit w-fit overflow-hidden rounded-full group mx-auto">
                 <img
                     src='https://static.vecteezy.com/system/resources/previews/009/292/244/non_2x/default-avatar-icon-of-social-media-user-vector.jpg'
                     alt="Avatar"
@@ -48,6 +48,7 @@ const Profile = () => {
                     </div>
                 </div>
             </div>
+
             <div className="col-span-4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
                 <div className="col-span-2">
                     <Label className='text-md'>Full name</Label>

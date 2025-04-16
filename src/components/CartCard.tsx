@@ -19,24 +19,18 @@ const CartCard: React.FC<Props> = ({ item, onQuantityChange }) => {
 
     return (
         <Card className="flex flex-col sm:flex-row overflow-hidden">
-            {/* Ảnh sản phẩm */}
             <div className="relative w-full h-48 sm:h-auto sm:w-40 flex-shrink-0">
                 <img
                     src={item.image}
                     alt={item.title}
-                    className="w-full h-full object-cover"
+                    className="w-full h-full object-cover rounded-l-xl sm:rounded-l-xl sm:rounded-r-none"
                 />
             </div>
-
-            {/* Nội dung bên phải */}
             <div className="p-4 flex flex-col justify-between flex-1">
-                {/* Tiêu đề và mô tả */}
                 <div>
                     <h3 className="font-semibold text-lg text-gray-900">{item.title}</h3>
                     <p className="text-gray-600 text-sm mt-1">{item.description}</p>
                 </div>
-
-                {/* Phần điều chỉnh số lượng + giá + nút xóa */}
                 <div className="flex items-center justify-between mt-4">
                     <div className="flex items-center gap-4">
                         <Button variant="ghost" size="icon" onClick={handleDecrease}>

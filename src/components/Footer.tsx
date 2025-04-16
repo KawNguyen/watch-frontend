@@ -1,22 +1,29 @@
 import { ChevronDown, Facebook, Instagram, Youtube } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useState } from "react";
+import emailjs from 'emailjs-com';
+import { Toaster } from "@/components/ui/toaster";
+import { useToast } from "@/hooks/use-toast";
 
 const routes = [
   {
-    title: "Shop",
+    title: "Our Products",
     children: [
-      { path: "/supplement", title: "Supplement" },
-      { path: "/about", title: "About Us" },
-      { path: "/contact", title: "Contact" },
+      { path: "/allproducts", title: "All products" },
+      { path: "/men", title: "Men" },
+      { path: "/women", title: "Women" },
+
     ],
   },
-  // {
-  //     title: "Payment",
-  //     children: [
-  //         { path: "/guide-payment", title: "Guide" },
-  //     ],
-  // },
+  {
+    title: "Support",
+    children: [
+      { path: "/contact", title: "Contact" },
+      { path: "/about", title: "About Us" },
+      { path: "/", title: "FAQ" },
+
+    ],
+  },
   {
     title: "Policy",
     children: [
@@ -27,7 +34,6 @@ const routes = [
     ],
   },
 ];
-
 const icons = [
   {
     icon_social: <Facebook size={24} />,
@@ -44,10 +50,9 @@ const icons = [
 ];
 
 const cards = [
-  { path_svg: "/images/svg/credit-card.svg", name: "Credit Card" },
-  { path_svg: "/images/svg/jcb-card.svg", name: "JCB" },
-  { path_svg: "/images/svg/paypal-card.svg", name: "Paypal" },
-  { path_svg: "/images/svg/visa-card.svg", name: "Visa" },
+  { path_svg: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQtEsc02ToGGTTAGB6EJcLgsVMNjoGp6iGfMQ&s", name: "Credit Card" },
+  { path_svg: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ3COWM_ZKAhlFk1oegOaER5-eu5oqQz2888A&s", name: "JCB" },
+  { path_svg: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRPjT1k-UiypgI080po56u-2w9BIle0rngmvA&s", name: "Visa" },
 ];
 
 const Footer = () => {
@@ -56,17 +61,49 @@ const Footer = () => {
   const toggleAccordion = (index: number) => {
     setOpenIndex(openIndex === index ? null : index);
   };
+  const { toast } = useToast();
+  const [email, setEmail] = useState('');
 
+  const handleEmailChange = (event: any) => {
+    setEmail(event.target.value);  // Cập nhật giá trị email khi người dùng nhập
+  };
+
+  const handleSubmit = (event: any) => {
+    event.preventDefault();  // Ngừng hành động mặc định của form (không tải lại trang)
+
+    // Gọi hàm gửi email (sử dụng emailjs hoặc cách khác)
+    const templateParams = {
+      user_email: email,
+    };
+
+    emailjs
+      .send('service_kai5al5', 'template_42p8gqt', templateParams, 'hCS0IHarjxuWOm4BO')
+      .then(() => {
+        toast({
+          title: "Sent!",
+          description: "Thanks for registering.",
+        });
+        setEmail("");
+      })
+      .catch((error) => {
+        console.error(error);
+        toast({
+          variant: "destructive",
+          title: "Failed",
+          description: "Check your email and try again.",
+        });
+      });
+  };
   return (
     <div className="bg-white">
       <div className="container mx-auto text-black py-10 md:grid md:grid-cols-4 md:space-y-0 space-y-8 ">
         <div className="md:space-y-4 space-y-2 px-4 flex flex-col justify-between">
-          <div className="font-bold text-xl">FROM THE RAW GROUP</div>
-          <div>PROVIDING THE BEST SUPPLEMENT</div>
+          <div className="font-bold text-xl">FROM LUXWATCH INC</div>
+          <div>THE LUXURIOUS WATCH</div>
           <img
-            src="/images/iconweb2.png"
+            src="https://uploads.turbologo.com/uploads/design/preview_image/68461085/preview_image20241130-1-sil8qo.png"
             alt="icon"
-            className="w-32 aspect-square "
+            className="w-40  aspect-square "
           />
           <div className="flex space-x-4">
             {icons.map((icon, index: number) => (
@@ -92,9 +129,8 @@ const Footer = () => {
               >
                 {route.title}
                 <span
-                  className={`transition-transform duration-300 ${
-                    openIndex === index ? "rotate-180" : "rotate-0"
-                  }`}
+                  className={`transition-transform duration-300 ${openIndex === index ? "rotate-180" : "rotate-0"
+                    }`}
                 >
                   <ChevronDown size={24} />
                 </span>
@@ -115,9 +151,8 @@ const Footer = () => {
               </div>
 
               <div
-                className={`overflow-hidden transition-all duration-500 ease-in-out ${
-                  openIndex === index ? "max-h-[500px]" : "max-h-0"
-                }`}
+                className={`overflow-hidden transition-all duration-500 ease-in-out ${openIndex === index ? "max-h-[500px]" : "max-h-0"
+                  }`}
               >
                 {route.children && route.children.length > 0 && (
                   <div className="flex flex-col space-y-2 mb-4">
@@ -140,17 +175,23 @@ const Footer = () => {
         </div>
 
         <div className="space-y-4 md:px-0 px-4">
-          <div>Subscribe to get news and special offers.</div>
-          <div className="space-x-4">
+          <div className="text-lg md:text-2xl font-bold">Join the LUXWATCH family</div>
+          <form onSubmit={handleSubmit} className="space-x-4">
             <input
-              type="text"
+              type="email"
               placeholder="Enter your email"
-              className="border rounded py-1 px-2 text-black "
+              className="border rounded py-1 px-2 text-black"
+              value={email}
+              onChange={handleEmailChange}
+              required
             />
-            <button className="py-1 px-2 bg-black text-white rounded hover:bg-slate-700">
+            <button
+              type="submit"
+              className="py-1 px-2 bg-black text-white rounded hover:bg-slate-700"
+            >
               Sign Up
             </button>
-          </div>
+          </form>
         </div>
       </div>
 
@@ -165,7 +206,7 @@ const Footer = () => {
           ))}
         </div>
         <div className="text-[12px] md:px-0 px-4 md:pb-0 pb-4">
-          2024 || tranhailoc7@gmail.com || khoanguyencool12@gmail.com ||
+          || 2025 || tranhailoc7@gmail.com X khoanguyencool12@gmail.com ||
         </div>
       </div>
     </div>

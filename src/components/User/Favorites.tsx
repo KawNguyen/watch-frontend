@@ -1,7 +1,6 @@
 // Favorites.tsx
 import React, { useState } from 'react'
 import { ScrollArea } from '@/components/ui/scroll-area'
-import { Separator } from '@/components/ui/separator'
 import { FavoriteCard } from '../FavoriteCard'
 
 type FavoriteItem = {
@@ -33,20 +32,6 @@ const initialFavorites: FavoriteItem[] = [
         image:
             'https://images.unsplash.com/photo-1523170335258-f5ed11844a49?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
     },
-    {
-        id: 4,
-        title: 'Vintage Automatic',
-        description: 'Mechanical automatic movement with vintage design',
-        image:
-            'https://images.unsplash.com/photo-1533139502658-0198f920d8e8?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
-    },
-    {
-        id: 5,
-        title: 'Minimalist Series',
-        description: 'Ultra-thin case with simple dial design',
-        image:
-            'https://images.unsplash.com/photo-1522312346375-d1a52e2b99b3?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
-    },
 ]
 
 const Favorites: React.FC = () => {
@@ -69,7 +54,6 @@ const Favorites: React.FC = () => {
                     ))}
                 </div>
             </ScrollArea>
-            <Separator className="mt-8" />
         </div>
     )
 }
