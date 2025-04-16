@@ -15,7 +15,7 @@ export const watch = {
     name: string;
     description: string;
     price: number;
-    gender: 'MALE' | 'FEMALE' | 'UNISEX';
+    gender: 'MEN' | 'WOMEN' | 'UNISEX';
     brandId: string;
     materialId: string;
     bandMaterialId: string;
@@ -35,7 +35,7 @@ export const watch = {
     name: string;
     description: string;
     price: number;
-    gender: 'MALE' | 'FEMALE' | 'UNISEX';
+    gender: 'MEN' | 'WOMEN' | 'UNISEX';
     brandId: string;
     materialId: string;
     bandMaterialId: string;
