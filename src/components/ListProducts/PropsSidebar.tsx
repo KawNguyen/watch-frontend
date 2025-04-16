@@ -32,7 +32,7 @@ const PropsSidebar = ({ items, title, isLoading = false }: PropsSidebarProps) =>
   return (
     <Collapsible open={isOpen} onOpenChange={setIsOpen}>
       <CollapsibleTrigger className="w-full">
-        <div className="flex items-center justify-between w-full">
+        <div className="flex items-center justify-between w-full border-l-4 border-black pl-6">
           <h2 className="text-lg font-bold">{title}</h2>
           <ChevronDown
             className={`h-4 w-4 transition-transform ${

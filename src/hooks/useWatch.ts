@@ -2,26 +2,6 @@ import { useState } from "react";
 import { watch } from "@/api/watch";
 import { useToast } from "./use-toast";
 
-interface WatchData {
-  name: string;
-  description: string;
-  price: number;
-  gender: 'MALE' | 'FEMALE' | 'UNISEX';
-  brandId: string;
-  materialId: string;
-  bandMaterialId: string;
-  movementId: string;
-  stock: number;
-  diameter: number;
-  waterResistance: number;
-  warranty: number;
-  images: { url: string }[];
-}
-
-interface UpdateWatchData extends WatchData {
-  id: string;
-}
-
 export const useWatch = () => {
   const { toast } = useToast();
   const [isLoading, setIsLoading] = useState(false);

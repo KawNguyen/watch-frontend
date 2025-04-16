@@ -1,72 +1,87 @@
-import React from "react";
+import { Card, CardContent } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { ShoppingBag, Search, Heart } from "lucide-react";
+import { formatPrice } from "@/lib/utils";
+import { AspectRatio } from "@radix-ui/react-aspect-ratio";
+import Image from "../ui/image";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 import { useNavigate } from "react-router-dom";
 
-interface ProductCardProps {
-  product: {
-    id: number;
-    name: string;
-    price: string;
-    oldPrice: string;
-    description: string;
-    images: string[];
-  };
+interface WatchData {
+  id: string;
+  name: string;
+  price: number;
+  images: { url: string }[];
 }
 
-export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
+const ProductCard = ({ product }: { product: WatchData }) => {
   const navigate = useNavigate();
-  const handleClick = () => {
-    navigate(`/products/${product.id}`, { state: { product } });
-  };
   return (
-    <div
-      className="group relative bg-white p-0 rounded-lg overflow-hidden cursor-pointer"
-      onClick={handleClick}
+    <Card
+      className="group relative overflow-hidden cursor-pointer hover:shadow-lg transition-shadow"
     >
-      <div className="absolute top-0 right-0 z-20 overflow-hidden w-[100px] h-[100px]">
-        <div className="absolute top-2 right-[-30px] w-[110px] bg-red-500 text-white text-center text-xs font-bold py-1 rotate-45 shadow-md">
-          Sale
-        </div>
-      </div>
-
       <div className="relative w-full h-80 overflow-hidden">
-        {/* Image mặc định */}
-        <img
-          src={product.images[0]}
-          alt={product.name}
-          className=" w-full h-full object-cover transition-opacity duration-300 group-hover:opacity-0 "
-        />
+        <AspectRatio ratio={1} className="w-full">
+          <Image
+            src={product.images[0]?.url || "/placeholder.jpg"}
+            alt={product.name}
+            className="object-cover w-full h-full transition-transform duration-300 group-hover:scale-110"
+          />
+        </AspectRatio>
 
-        {/* Hover Image */}
-        <img
-          src={product.images[1]}
-          alt={`${product.name} Hover`}
-          className=" absolute inset-0 w-full h-full object-cover opacity-0 transition-opacity duration-300 group-hover:opacity-100"
-        />
+        <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex space-x-2 opacity-0 translate-y-4 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-300">
+          <TooltipProvider>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Button size="icon" variant="secondary" className="hover:bg-black hover:text-white" >
+                  <ShoppingBag className="h-4 w-4"/>
+                </Button>
+              </TooltipTrigger>
+              <TooltipContent>
+                <p>Add to Cart</p>
+              </TooltipContent>
+            </Tooltip>
 
-        {/* Hover Icons */}
-        <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex space-x-3 opacity-0 translate-y-4 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-300">
-          <button className="w-10 h-10 bg-white rounded-full shadow flex items-center justify-center hover:bg-gray-100">
-            <i className="fas fa-shopping-bag text-gray-700"></i>
-          </button>
-          <button className="w-10 h-10 bg-white rounded-full shadow flex items-center justify-center hover:bg-gray-100">
-            <i className="fas fa-search text-gray-700"></i>
-          </button>
-          <button className="w-10 h-10 bg-white rounded-full shadow flex items-center justify-center hover:bg-gray-100">
-            <i className="fas fa-heart text-gray-700"></i>
-          </button>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Button size="icon" variant="secondary" className="hover:bg-black hover:text-white" onClick={()=> navigate(`/product/${product?.id}`)}>
+                  <Search className="h-4 w-4" />
+                </Button>
+              </TooltipTrigger>
+              <TooltipContent>
+                <p>Quick View</p>
+              </TooltipContent>
+            </Tooltip>
+
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Button size="icon" variant="secondary" className="hover:bg-black hover:text-white">
+                  <Heart className="h-4 w-4" />
+                </Button>
+              </TooltipTrigger>
+              <TooltipContent>
+                <p>Add to Wishlist</p>
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
         </div>
       </div>
 
-      {/* Thông tin Product */}
-      <div className="flex flex-col justify-center items-center text-center p-4 h-[120px]">
-        <h3 className="text-base font-semibold line-clamp-2">{product.name}</h3>
-        <div className="flex justify-center items-center w-full mt-2">
-          <p className="text-red-500 font-bold text-sm pr-5">{product.price}</p>
-          <p className="text-gray-500 line-through text-sm pl-5">
-            {product.oldPrice}
-          </p>
-        </div>
-      </div>
-    </div>
+      <CardContent className="flex flex-col items-center text-center p-4 h-[120px]">
+        <h3 className="text-base font-semibold line-clamp-2 mb-2">
+          {product.name}
+        </h3>
+        <p className="text-primary font-bold text-lg text-red-500">
+          {formatPrice(product.price)}
+        </p>
+      </CardContent>
+    </Card>
   );
 };
+
+export default ProductCard;

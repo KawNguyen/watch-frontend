@@ -17,7 +17,6 @@ import { useBandMaterial } from "@/hooks/useBandMaterial";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { ArrowLeft } from "lucide-react";
-// Add to imports
 import { useMovement } from "@/hooks/useMovement";
 
 const AddWatch = () => {
@@ -72,23 +71,7 @@ const AddWatch = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    await createWatch(
-      formData as {
-        name: string;
-        description: string;
-        price: number;
-        gender: "MALE" | "FEMALE" | "UNISEX";
-        brandId: string;
-        materialId: string;
-        bandMaterialId: string;
-        movementId: string;
-        stock: number;
-        diameter: number;
-        waterResistance: number;
-        warranty: number;
-        images: { url: string }[];
-      }
-    );
+    await createWatch(formData as WatchData);
     navigate("/admin/watch/list");
   };
 
@@ -173,8 +156,8 @@ const AddWatch = () => {
                   <SelectValue placeholder="Select gender" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="MALE">Male</SelectItem>
-                  <SelectItem value="FEMALE">Female</SelectItem>
+                  <SelectItem value="MEN">MEN</SelectItem>
+                  <SelectItem value="WOMEN">WOMEN</SelectItem>
                   <SelectItem value="UNISEX">Unisex</SelectItem>
                 </SelectContent>
               </Select>
@@ -329,18 +312,6 @@ const AddWatch = () => {
                 setFormData({ ...formData, description: e.target.value })
               }
               className="min-h-[100px]"
-              required
-            />
-          </div>
-
-          <div className="space-y-2">
-            <Label htmlFor="images">Images</Label>
-            <Input
-              id="images"
-              type="file"
-              accept="image/*"
-              multiple
-              onChange={handleImageChange}
               required
             />
           </div>

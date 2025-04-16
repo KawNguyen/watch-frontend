@@ -17,7 +17,7 @@ const ProductSidebar = ({ children }: ProductSidebarProps) => {
 
   return (
     <ScrollArea className="h-full w-60">
-      <div className="p-6 space-y-6">
+      <div className="py-6 space-y-6">
         {children}
         <div>
           <h2 className="text-lg font-bold mb-4">Price Range</h2>

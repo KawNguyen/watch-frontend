@@ -16,9 +16,10 @@ import AddWatch from "./pages/Admin/watch/AddWatch";
 import AddMaterial from "./pages/Admin/material/AddMaterial";
 import ManageBandMaterial from "./pages/Admin/band-material/ManageBandMaterial";
 import AddBandMaterial from "./pages/Admin/band-material/AddBandMaterial";
-import ListProduct from "./pages/ListProduct";
 import ManageMovement from "./pages/Admin/movement/ManageMovement";
 import AddMovement from "./pages/Admin/movement/AddMovement";
+import ListProductPage from "./pages/ListProductPage";
+import DetailProduct from "./pages/DetailProduct";
 
 const App = () => {
   const { getUser } = useAuth();
@@ -28,13 +29,15 @@ const App = () => {
     <Routes>
       <Route path="/" element={<MainLayout />}>
         <Route index element={<HomePage />} />
-        <Route path="/products" element={<ListProduct />} />
+        <Route path="/products" element={<ListProductPage />} />
+        <Route path="/product/:id" element={<DetailProduct />} />
       </Route>
       
       <Route path="/auth" element={<AuthLayout />}>
         <Route path="/auth/login" element={<LoginPage />} />
         <Route path="/auth/register" element={<RegisterPage />} />
       </Route>
+      
       <Route
         path="/admin"
         element={
