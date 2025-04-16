@@ -17,6 +17,7 @@ import { useBandMaterial } from "@/hooks/useBandMaterial";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { ArrowLeft } from "lucide-react";
+import { useMovement } from "@/hooks/useMovement";
 
 const AddWatch = () => {
   const navigate = useNavigate();
@@ -24,7 +25,7 @@ const AddWatch = () => {
   const { brands, getAllBrands } = useBrand();
   const { materials, getAllMaterials } = useMaterial();
   const { bandMaterials, getAllBandMaterials } = useBandMaterial();
-
+  const { movements, getAllMovements } = useMovement();
   const [formData, setFormData] = useState({
     name: "",
     description: "",
@@ -45,32 +46,39 @@ const AddWatch = () => {
     getAllBrands();
     getAllMaterials();
     getAllBandMaterials();
+    getAllMovements();
   }, []);
+
+  // Add after the band material select component
+  <div className="space-y-2">
+    <Label htmlFor="movement">Movement</Label>
+    <Select
+      value={formData.movementId}
+      onValueChange={(value) => setFormData({ ...formData, movementId: value })}
+    >
+      <SelectTrigger>
+        <SelectValue placeholder="Select movement" />
+      </SelectTrigger>
+      <SelectContent>
+        {movements.map((movement: any) => (
+          <SelectItem key={movement.id} value={movement.id}>
+            {movement.name}
+          </SelectItem>
+        ))}
+      </SelectContent>
+    </Select>
+  </div>;
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    await createWatch(formData as { 
-      name: string;
-      description: string;
-      price: number;
-      gender: "MALE" | "FEMALE" | "UNISEX";
-      brandId: string;
-      materialId: string;
-      bandMaterialId: string;
-      movementId: string;
-      stock: number;
-      diameter: number;
-      waterResistance: number;
-      warranty: number;
-      images: { url: string }[];
-    });
+    await createWatch(formData as WatchData);
     navigate("/admin/watch/list");
   };
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = Array.from(e.target.files || []);
-    const imageUrls = files.map(file => ({
-      url: URL.createObjectURL(file)
+    const imageUrls = files.map((file) => ({
+      url: URL.createObjectURL(file),
     }));
     setFormData({ ...formData, images: imageUrls });
   };
@@ -81,7 +89,7 @@ const AddWatch = () => {
     if (imageUrl.trim()) {
       setFormData({
         ...formData,
-        images: [...formData.images, { url: imageUrl }]
+        images: [...formData.images, { url: imageUrl }],
       });
       setImageUrl("");
     }
@@ -90,7 +98,7 @@ const AddWatch = () => {
   const removeImage = (index: number) => {
     setFormData({
       ...formData,
-      images: formData.images.filter((_, i) => i !== index)
+      images: formData.images.filter((_, i) => i !== index),
     });
   };
 
@@ -116,7 +124,9 @@ const AddWatch = () => {
               <Input
                 id="name"
                 value={formData.name}
-                onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                onChange={(e) =>
+                  setFormData({ ...formData, name: e.target.value })
+                }
                 required
               />
             </div>
@@ -127,7 +137,9 @@ const AddWatch = () => {
                 id="price"
                 type="number"
                 value={formData.price}
-                onChange={(e) => setFormData({ ...formData, price: Number(e.target.value) })}
+                onChange={(e) =>
+                  setFormData({ ...formData, price: Number(e.target.value) })
+                }
                 required
               />
             </div>
@@ -136,14 +148,16 @@ const AddWatch = () => {
               <Label htmlFor="gender">Gender</Label>
               <Select
                 value={formData.gender}
-                onValueChange={(value) => setFormData({ ...formData, gender: value })}
+                onValueChange={(value) =>
+                  setFormData({ ...formData, gender: value })
+                }
               >
                 <SelectTrigger>
                   <SelectValue placeholder="Select gender" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="MALE">Male</SelectItem>
-                  <SelectItem value="FEMALE">Female</SelectItem>
+                  <SelectItem value="MEN">MEN</SelectItem>
+                  <SelectItem value="WOMEN">WOMEN</SelectItem>
                   <SelectItem value="UNISEX">Unisex</SelectItem>
                 </SelectContent>
               </Select>
@@ -153,7 +167,9 @@ const AddWatch = () => {
               <Label htmlFor="brand">Brand</Label>
               <Select
                 value={formData.brandId}
-                onValueChange={(value) => setFormData({ ...formData, brandId: value })}
+                onValueChange={(value) =>
+                  setFormData({ ...formData, brandId: value })
+                }
               >
                 <SelectTrigger>
                   <SelectValue placeholder="Select brand" />
@@ -172,7 +188,9 @@ const AddWatch = () => {
               <Label htmlFor="material">Case Material</Label>
               <Select
                 value={formData.materialId}
-                onValueChange={(value) => setFormData({ ...formData, materialId: value })}
+                onValueChange={(value) =>
+                  setFormData({ ...formData, materialId: value })
+                }
               >
                 <SelectTrigger>
                   <SelectValue placeholder="Select material" />
@@ -191,7 +209,9 @@ const AddWatch = () => {
               <Label htmlFor="bandMaterial">Band Material</Label>
               <Select
                 value={formData.bandMaterialId}
-                onValueChange={(value) => setFormData({ ...formData, bandMaterialId: value })}
+                onValueChange={(value) =>
+                  setFormData({ ...formData, bandMaterialId: value })
+                }
               >
                 <SelectTrigger>
                   <SelectValue placeholder="Select band material" />
@@ -207,12 +227,35 @@ const AddWatch = () => {
             </div>
 
             <div className="space-y-2">
+              <Label htmlFor="movement">Movement</Label>
+              <Select
+                value={formData.movementId}
+                onValueChange={(value) =>
+                  setFormData({ ...formData, movementId: value })
+                }
+              >
+                <SelectTrigger>
+                  <SelectValue placeholder="Select movement" />
+                </SelectTrigger>
+                <SelectContent>
+                  {movements.map((movement: any) => (
+                    <SelectItem key={movement.id} value={movement.id}>
+                      {movement.name}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+
+            <div className="space-y-2">
               <Label htmlFor="stock">Stock</Label>
               <Input
                 id="stock"
                 type="number"
                 value={formData.stock}
-                onChange={(e) => setFormData({ ...formData, stock: Number(e.target.value) })}
+                onChange={(e) =>
+                  setFormData({ ...formData, stock: Number(e.target.value) })
+                }
                 required
               />
             </div>
@@ -223,7 +266,9 @@ const AddWatch = () => {
                 id="diameter"
                 type="number"
                 value={formData.diameter}
-                onChange={(e) => setFormData({ ...formData, diameter: Number(e.target.value) })}
+                onChange={(e) =>
+                  setFormData({ ...formData, diameter: Number(e.target.value) })
+                }
                 required
               />
             </div>
@@ -234,7 +279,12 @@ const AddWatch = () => {
                 id="waterResistance"
                 type="number"
                 value={formData.waterResistance}
-                onChange={(e) => setFormData({ ...formData, waterResistance: Number(e.target.value) })}
+                onChange={(e) =>
+                  setFormData({
+                    ...formData,
+                    waterResistance: Number(e.target.value),
+                  })
+                }
                 required
               />
             </div>
@@ -245,7 +295,9 @@ const AddWatch = () => {
                 id="warranty"
                 type="number"
                 value={formData.warranty}
-                onChange={(e) => setFormData({ ...formData, warranty: Number(e.target.value) })}
+                onChange={(e) =>
+                  setFormData({ ...formData, warranty: Number(e.target.value) })
+                }
                 required
               />
             </div>
@@ -256,27 +308,17 @@ const AddWatch = () => {
             <Textarea
               id="description"
               value={formData.description}
-              onChange={(e) => setFormData({ ...formData, description: e.target.value })}
+              onChange={(e) =>
+                setFormData({ ...formData, description: e.target.value })
+              }
               className="min-h-[100px]"
-              required
-            />
-          </div>
-
-          <div className="space-y-2">
-            <Label htmlFor="images">Images</Label>
-            <Input
-              id="images"
-              type="file"
-              accept="image/*"
-              multiple
-              onChange={handleImageChange}
               required
             />
           </div>
 
           <div className="space-y-4">
             <Label>Images</Label>
-            
+
             <div className="space-y-2">
               <Label>Upload Images</Label>
               <Input

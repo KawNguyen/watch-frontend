@@ -3,7 +3,7 @@ import axiosInstance from "@/config/axiosInstance";
 export const watch = {
   getAll: async () => {
     const response = await axiosInstance.get(`/watches`);
-    return response.data;
+    return response.data.items;
   },
 
   getById: async (id: string) => {
@@ -15,7 +15,7 @@ export const watch = {
     name: string;
     description: string;
     price: number;
-    gender: 'MALE' | 'FEMALE' | 'UNISEX';
+    gender: 'MEN' | 'WOMEN' | 'UNISEX';
     brandId: string;
     materialId: string;
     bandMaterialId: string;
@@ -35,7 +35,7 @@ export const watch = {
     name: string;
     description: string;
     price: number;
-    gender: 'MALE' | 'FEMALE' | 'UNISEX';
+    gender: 'MEN' | 'WOMEN' | 'UNISEX';
     brandId: string;
     materialId: string;
     bandMaterialId: string;

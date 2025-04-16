@@ -73,9 +73,9 @@ const ManageWatch = () => {
     await deleteWatch(id);
   };
 
-  const filteredWatches = watches.filter((watch: any) =>
-    watch.name.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  // const filteredWatches = watches?.filter((watch: any) =>
+  //   watch.name.toLowerCase().includes(searchTerm.toLowerCase())
+  // );
 
   if (error) return <div className="text-red-500">{error}</div>;
 
@@ -115,7 +115,7 @@ const ManageWatch = () => {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {filteredWatches.map((watch: any) => (
+              {watches?.map((watch: any) => (
                 <TableRow key={watch.id}>
                   <TableCell>
                     <img
