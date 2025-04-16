@@ -35,7 +35,7 @@ const UserPage = () => {
                 <div className="py-10 space-y-4">
                     <div className="grid grid-cols-12 gap-4">
                         <div className="col-span-full md:col-span-3">
-                            <div className="flex flex-row  justify-between md:flex-col gap-y-4  border rounded p-4 text-gray-400">
+                            <div className="flex flex-row  justify-around md:flex-col gap-y-4  border rounded p-4 text-gray-400">
                                 {routes.map((route, index) => (
                                     <NavLink
                                         key={index}
