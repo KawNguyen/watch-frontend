@@ -20,6 +20,7 @@ import ManageMovement from "./pages/Admin/movement/ManageMovement";
 import AddMovement from "./pages/Admin/movement/AddMovement";
 import ListProductPage from "./pages/ListProductPage";
 import DetailProduct from "./pages/DetailProduct";
+import ContactPage from "./pages/ContactPage";
 
 const App = () => {
   const { getUser } = useAuth();
@@ -30,6 +31,7 @@ const App = () => {
       <Route path="/" element={<MainLayout />}>
         <Route index element={<HomePage />} />
         <Route path="/products" element={<ListProductPage />} />
+        <Route path="/contact" element={<ContactPage />} />
         <Route path="/product/:id" element={<DetailProduct />} />
       </Route>
       
