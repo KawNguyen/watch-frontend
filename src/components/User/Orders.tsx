@@ -80,9 +80,10 @@ const Orders = () => {
                 {order.products.map((product) => (
                   <div
                     key={product.id}
-                    className="flex flex-col md:flex-row items-center gap-4 border rounded-lg p-3 md:p-5 bg-white shadow-sm"
+                    className="flex flex-col md:flex-row items-center justify-between gap-6 border rounded-lg p-4 md:p-5 bg-white shadow-sm"
                   >
-                    <div className="h-36 w-36 sm:h-32 sm:w-32 md:h-40 md:w-40 flex-shrink-0 overflow-hidden rounded-md shadow-sm">
+                    {/* Ảnh sản phẩm - căn giữa */}
+                    <div className="h-full w-full md:h-28 md:w-28 flex-shrink-0 overflow-hidden rounded-md shadow-sm">
                       <img
                         src={product.image}
                         alt={product.name}
@@ -90,31 +91,26 @@ const Orders = () => {
                       />
                     </div>
 
-                    {/* Chi tiết sản phẩm */}
-                    <div className="flex-1 flex flex-col sm:flex-row sm:items-center justify-between gap-3 py-2 w-full">
-                      {/* Tên sản phẩm */}
-                      <div className="w-full sm:w-1/2 text-center sm:text-left">
-                        <h4 className="text-base sm:text-lg font-semibold text-gray-800 line-clamp-2">
-                          {product.name}
-                        </h4>
+                    {/* Tên sản phẩm - căn giữa */}
+                    <div className="flex-1 text-center">
+                      <h4 className="text-base sm:text-lg font-semibold text-gray-800">
+                        {product.name}
+                      </h4>
+                    </div>
+
+                    {/* Thông tin giá và số lượng - căn giữa */}
+                    <div className="flex gap-8 items-center">
+                      {/* Quantity */}
+                      <div className="text-center">
+                        <div className="text-sm text-gray-500">Quantity</div>
+                        <div className="font-medium">{product.quantity}</div>
                       </div>
 
-                      <div className="flex flex-row justify-center sm:justify-end items-center gap-4 w-full sm:w-1/2">
-                        {/* Quantity */}
-                        <div className="text-center sm:text-right">
-                          <div className="text-xs sm:text-sm text-gray-500">
-                            Quantity
-                          </div>
-                          <div className="font-medium">{product.quantity}</div>
-                        </div>
-                        {/* Price */}
-                        <div className="text-center sm:text-right">
-                          <div className="text-xs sm:text-sm text-gray-500">
-                            Price
-                          </div>
-                          <div className="font-medium">
-                            ${product.price.toFixed(2)}
-                          </div>
+                      {/* Price */}
+                      <div className="text-center">
+                        <div className="text-sm text-gray-500">Price</div>
+                        <div className="font-medium">
+                          ${product.price.toFixed(2)}
                         </div>
                       </div>
                     </div>
