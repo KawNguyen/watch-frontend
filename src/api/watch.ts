@@ -53,5 +53,10 @@ export const watch = {
   delete: async (id: string) => {
     const response = await axiosInstance.delete(`/watches/delete/${id}`);
     return response.data;
+  },
+
+  search: async (query: string) => {
+    const response = await axiosInstance.get(`/watches/search?name=${query}`);
+    return response.data;
   }
 }

@@ -112,6 +112,17 @@ export const useWatch = () => {
     }
   };
 
+  const searchWatches = async (query: string) => {
+    setError(null);
+    try {
+      const data = await watch.search(query);
+      return data;
+    } catch (err) {
+      setError("Failed to search watches");
+      throw err;
+    } 
+  };
+
   return {
     watches,
     isLoading,
@@ -121,5 +132,6 @@ export const useWatch = () => {
     createWatch,
     updateWatch,
     deleteWatch,
+    searchWatches,
   };
 };
