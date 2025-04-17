@@ -18,7 +18,10 @@ import ManageBandMaterial from "./pages/Admin/band-material/ManageBandMaterial";
 import AddBandMaterial from "./pages/Admin/band-material/AddBandMaterial";
 import UserPage from "./pages/User/UserPage";
 import ContactPage from "./pages/ContactPage";
-import Orders from "./components/User/Orders";
+import TermOfUsePage from "./pages/TermOfUsePage";
+import PrivacyPolicyPage from "./pages/PrivacyPolicyPage";
+import ShippingAndReturns from "./pages/ShippingAndReturns";
+import RefundPolicyPage from "./pages/RefundPolicyPage";
 const App = () => {
   const { getUser } = useAuth();
   const user = getUser();
@@ -29,6 +32,12 @@ const App = () => {
         <Route index element={<HomePage />} />
         <Route path="/contact" element={<ContactPage />} />
         <Route path="/profile" element={<UserPage />} />
+        <Route path="/term-of-use" element={<TermOfUsePage />} />
+        <Route path="/privacy-policy" element={<PrivacyPolicyPage />} />
+        <Route path="/shipping-return" element={<ShippingAndReturns />} />
+        <Route path="/refund-policy" element={<RefundPolicyPage />} />
+
+
 
       </Route>
       <Route path="/auth" element={<AuthLayout />}>

@@ -51,10 +51,9 @@ const Contact = () => {
                 setFormStatus({ submitted: false, error: true })
             })
     }
-
     return (
         <section id="contact" className="py-16 bg-gray-50 w-full">
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="container mx-auto px-4 sm:px-6 lg:px-8">
                 <div className="text-center mb-16">
                     <h2 className="text-3xl font-bold text-gray-900 sm:text-4xl">Contact Us</h2>
                     <p className="mt-4 max-w-3xl mx-auto text-xl text-gray-600">

@@ -18,19 +18,19 @@ const routes = [
   {
     title: "Support",
     children: [
+      { path: "/contact", title: "About Us" },
       { path: "/contact", title: "Contact" },
-      { path: "/about", title: "About Us" },
-      { path: "/", title: "FAQ" },
+      { path: "/contact", title: "FAQ" },
 
     ],
   },
   {
     title: "Policy",
     children: [
-      { path: "/term-of-use", title: "Term of use" },
+      { path: "/term-of-use", title: "Term Of Use" },
       { path: "/privacy-policy", title: "Privacy Policy" },
       { path: "/shipping-return", title: "Shipping And Returns" },
-      { path: "/refund-policy", title: "Refund policy" },
+      { path: "/refund-policy", title: "Refund Policy" },
     ],
   },
 ];
@@ -48,13 +48,6 @@ const icons = [
     url: "https://www.youtube.com/@hailoc3403",
   },
 ];
-
-// const cards = [
-//   { path_svg: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQtEsc02ToGGTTAGB6EJcLgsVMNjoGp6iGfMQ&s", name: "Credit Card" },
-//   { path_svg: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ3COWM_ZKAhlFk1oegOaER5-eu5oqQz2888A&s", name: "JCB" },
-//   { path_svg: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRPjT1k-UiypgI080po56u-2w9BIle0rngmvA&s", name: "Visa" },
-// ];
-
 const Footer = () => {
   const [openIndex, setOpenIndex] = useState<number | null>(null);
 
@@ -65,13 +58,11 @@ const Footer = () => {
   const [email, setEmail] = useState('');
 
   const handleEmailChange = (event: any) => {
-    setEmail(event.target.value);  // Cập nhật giá trị email khi người dùng nhập
+    setEmail(event.target.value);
   };
 
   const handleSubmit = (event: any) => {
-    event.preventDefault();  // Ngừng hành động mặc định của form (không tải lại trang)
-
-    // Gọi hàm gửi email (sử dụng emailjs hoặc cách khác)
+    event.preventDefault();
     const templateParams = {
       user_email: email,
     };
