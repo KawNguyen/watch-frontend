@@ -32,7 +32,13 @@ const Header = () => {
           ))}
         </div>
 
-        <div className="text-4xl">LOGO</div>
+        <Link to="/">
+          <img
+            src="../../public/Image/logo.png"
+            alt=""
+            className="h-40 w-40"
+          />
+        </Link>
 
         <div className="flex space-x-4 w-[32%] justify-end items-center">
           <div>
@@ -84,7 +90,7 @@ const Header = () => {
           )}
         </div>
       </div>
-    </header>
+    </header >
   );
 };
 

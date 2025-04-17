@@ -92,9 +92,9 @@ const Footer = () => {
           <div className="font-bold text-xl">FROM LUXWATCH INC</div>
           <div>THE LUXURIOUS WATCH</div>
           <img
-            src="https://uploads.turbologo.com/uploads/design/preview_image/68461085/preview_image20241130-1-sil8qo.png"
+            src="../../public/Image/logo.png"
             alt="icon"
-            className="w-40  aspect-square "
+            className="w-40 h-40"
           />
           <div className="flex space-x-4">
             {icons.map((icon, index: number) => (
