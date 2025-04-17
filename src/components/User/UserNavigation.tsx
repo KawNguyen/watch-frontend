@@ -1,21 +1,26 @@
-import { ShoppingCart, Star, UserRoundPen } from "lucide-react";
+import { ShoppingCart, Star, Truck, UserRoundPen } from "lucide-react";
 import { useNavigate, useLocation } from "react-router-dom";
 
 const routes = [
     {
         name: "Account Information",
         icon: <UserRoundPen />,
-        tab: "info" 
+        tab: "info"
     },
     {
         name: "Cart",
         icon: <ShoppingCart />,
-        tab: "cart" 
+        tab: "cart"
     },
     {
         name: "Favorites",
         icon: <Star />,
-        tab: "favorites" 
+        tab: "favorites"
+    },
+    {
+        name: "Orders",
+        icon: <Truck />,
+        tab: "orders    "
     },
 ];
 
@@ -40,11 +45,10 @@ const UserNavigation = () => {
                 <div
                     key={index}
                     onClick={() => handleNavigation(route)}
-                    className={`cursor-pointer ${
-                        isActive(route.tab)
-                            ? "text-black" 
-                            : "hover:text-black duration-200"
-                    }`}
+                    className={`cursor-pointer ${isActive(route.tab)
+                        ? "text-black"
+                        : "hover:text-black duration-200"
+                        }`}
                 >
                     <div className="flex gap-x-3 items-center justify-center md:justify-start">
                         <div>{route.icon}</div>

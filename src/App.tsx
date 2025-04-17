@@ -18,6 +18,7 @@ import ManageBandMaterial from "./pages/Admin/band-material/ManageBandMaterial";
 import AddBandMaterial from "./pages/Admin/band-material/AddBandMaterial";
 import UserPage from "./pages/User/UserPage";
 import ContactPage from "./pages/ContactPage";
+import Orders from "./components/User/Orders";
 const App = () => {
   const { getUser } = useAuth();
   const user = getUser();
@@ -27,7 +28,6 @@ const App = () => {
       <Route path="/" element={<MainLayout />}>
         <Route index element={<HomePage />} />
         <Route path="/contact" element={<ContactPage />} />
-
         <Route path="/profile" element={<UserPage />} />
 
       </Route>

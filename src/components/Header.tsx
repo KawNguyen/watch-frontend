@@ -38,8 +38,8 @@ const Header = () => {
           <div>
             <Search />
           </div>
-          <div>
-            <ShoppingBag />
+          <div className="cursor-pointer">
+            <ShoppingBag onClick={() => navigate("/profile?tab=orders")} />
           </div>
 
           {isAuthenticated() ? (
@@ -65,7 +65,6 @@ const Header = () => {
                     </div>
                   </div>
                 </DropdownMenuItem>
-                {/* <DropdownMenuItem>Orders</DropdownMenuItem> */}
                 {user?.role === "ADMIN" && (
                   <DropdownMenuItem onClick={() => navigate("/admin")}>
                     Dashboard

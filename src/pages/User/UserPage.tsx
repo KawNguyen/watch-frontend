@@ -3,6 +3,7 @@ import UserNavigation from "@/components/User/UserNavigation";
 import Profile from "@/components/User/Profile";
 import Cart from "@/components/User/Cart";
 import Favorites from "@/components/User/Favorites";
+import Orders from "@/components/User/Orders";
 
 const UserPage = () => {
     const [searchParams] = useSearchParams();
@@ -19,6 +20,7 @@ const UserPage = () => {
                             {tab === "info" && <Profile />}
                             {tab === "cart" && <Cart />}
                             {tab === "favorites" && <Favorites />}
+                            {tab === "orders" && <Orders />}
                         </div>
                     </div>
                 </div>
