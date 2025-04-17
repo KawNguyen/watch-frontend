@@ -1,54 +1,54 @@
 import { useState } from "react";
-import { watch } from "@/api/watch";
+import { movement } from "@/api/movement";
 import { useToast } from "./use-toast";
 
-export const useWatch = () => {
+export const useMovement = () => {
   const { toast } = useToast();
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [watches, setWatches] = useState([]);
+  const [movements, setMovements] = useState([]);
 
-  const getAllWatches = async () => {
+  const getAllMovements = async () => {
     try {
       setIsLoading(true);
       setError(null);
-      const data = await watch.getAll();
-      setWatches(data);
+      const data = await movement.getAll();
+      setMovements(data);
       return data;
     } catch (err: any) {
-      setError(err.response?.data?.message || "Failed to fetch watches");
+      setError(err.response?.data?.message || "Failed to fetch movements");
     } finally {
       setIsLoading(false);
     }
   };
 
-  const getWatchById = async (id: string) => {
+  const getMovementById = async (id: string) => {
     try {
       setIsLoading(true);
       setError(null);
-      const data = await watch.getById(id);
+      const data = await movement.getById(id);
       return data;
     } catch (err: any) {
-      setError(err.response?.data?.message || "Failed to fetch watch");
+      setError(err.response?.data?.message || "Failed to fetch movement");
     } finally {
       setIsLoading(false);
     }
   };
 
-  const createWatch = async (watchData: WatchData) => {
+  const createMovement = async (name: string) => {
     try {
       setIsLoading(true);
       setError(null);
-      const data = await watch.create(watchData);
-      await getAllWatches();
+      const data = await movement.create(name);
+      await getAllMovements();
       toast({
         title: "Success",
-        description: "Watch created successfully",
+        description: "Movement created successfully",
         className: "bg-green-500 text-white border-none",
       });
       return data;
     } catch (err: any) {
-      const errorMessage = err.response?.data?.message || "Failed to create watch";
+      const errorMessage = err.response?.data?.message || "Failed to create movement";
       setError(errorMessage);
       toast({
         variant: "destructive",
@@ -61,20 +61,20 @@ export const useWatch = () => {
     }
   };
 
-  const updateWatch = async (watchData: UpdateWatchData) => {
+  const updateMovement = async (id: string, name: string) => {
     try {
       setIsLoading(true);
       setError(null);
-      const data = await watch.update(watchData);
-      await getAllWatches();
+      const data = await movement.update(id, name);
+      await getAllMovements();
       toast({
         title: "Success",
-        description: "Watch updated successfully",
+        description: "Movement updated successfully",
         className: "bg-green-500 text-white border-none",
       });
       return data;
     } catch (err: any) {
-      const errorMessage = err.response?.data?.message || "Failed to update watch";
+      const errorMessage = err.response?.data?.message || "Failed to update movement";
       setError(errorMessage);
       toast({
         variant: "destructive",
@@ -87,19 +87,19 @@ export const useWatch = () => {
     }
   };
 
-  const deleteWatch = async (id: string) => {
+  const deleteMovement = async (id: string) => {
     try {
       setIsLoading(true);
       setError(null);
-      await watch.delete(id);
-      await getAllWatches();
+      await movement.delete(id);
+      await getAllMovements();
       toast({
         title: "Success",
-        description: "Watch deleted successfully",
+        description: "Movement deleted successfully",
         className: "bg-green-500 text-white border-none",
       });
     } catch (err: any) {
-      const errorMessage = err.response?.data?.message || "Failed to delete watch";
+      const errorMessage = err.response?.data?.message || "Failed to delete movement";
       setError(errorMessage);
       toast({
         variant: "destructive",
@@ -113,13 +113,13 @@ export const useWatch = () => {
   };
 
   return {
-    watches,
+    movements,
     isLoading,
     error,
-    getAllWatches,
-    getWatchById,
-    createWatch,
-    updateWatch,
-    deleteWatch,
+    getAllMovements,
+    getMovementById,
+    createMovement,
+    updateMovement,
+    deleteMovement,
   };
 };

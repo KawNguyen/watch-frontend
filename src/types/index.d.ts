@@ -9,3 +9,25 @@ interface LoginCredentials {
   password: string;
   remember: boolean;
 }
+
+type WatchGender = 'MEN' | 'WOMEN' | 'UNISEX';
+
+interface WatchData {
+  name: string;
+  description: string;
+  price: number;
+  gender: WatchGender;
+  brandId: string;
+  materialId: string;
+  bandMaterialId: string;
+  movementId: string;
+  stock: number;
+  diameter: number;
+  waterResistance: number;
+  warranty: number;
+  images: { url: string }[];
+}
+
+interface UpdateWatchData extends WatchData {
+  id: string;
+}
