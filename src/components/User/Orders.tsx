@@ -82,20 +82,22 @@ const Orders = () => {
                     key={product.id}
                     className="flex flex-col md:flex-row items-center justify-between gap-6 border rounded-lg p-4 md:p-5 bg-white shadow-sm"
                   >
-                    {/* Ảnh sản phẩm - căn giữa */}
-                    <div className="h-full w-full md:h-28 md:w-28 flex-shrink-0 overflow-hidden rounded-md shadow-sm">
-                      <img
-                        src={product.image}
-                        alt={product.name}
-                        className="h-full w-full object-cover transition-transform hover:scale-105"
-                      />
-                    </div>
+                    <div className="flex flex-col md:flex-row items-center gap-4 md:gap-6 w-full">
+                      {/* Ảnh sản phẩm */}
+                      <div className="w-full md:w-full md:h-full overflow-hidden rounded-md shadow-sm">
+                        <img
+                          src={product.image}
+                          alt={product.name}
+                          className="w-full h-full object-cover transition-transform hover:scale-105"
+                        />
+                      </div>
 
-                    {/* Tên sản phẩm - căn giữa */}
-                    <div className="flex-1 text-center">
-                      <h4 className="text-base sm:text-lg font-semibold text-gray-800">
-                        {product.name}
-                      </h4>
+                      {/* Tên sản phẩm */}
+                      <div className="w-full text-center md:text-left">
+                        <h4 className="text-base sm:text-lg font-semibold text-gray-800">
+                          {product.name}
+                        </h4>
+                      </div>
                     </div>
 
                     {/* Thông tin giá và số lượng - căn giữa */}
