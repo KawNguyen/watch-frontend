@@ -7,7 +7,6 @@ const mockOrders = [
     id: "ORD001",
     date: "October 15, 2025",
     status: "pending",
-    total: 299.98,
     products: [
       {
         id: "PROD1",
@@ -23,7 +22,6 @@ const mockOrders = [
     id: "ORD002",
     date: "October 14, 2025",
     status: "processing",
-    total: 449.97,
     products: [
       {
         id: "PROD2",
@@ -39,7 +37,6 @@ const mockOrders = [
     id: "ORD003",
     date: "October 13, 2025",
     status: "shipped",
-    total: 199.99,
     products: [
       {
         id: "PROD3",
@@ -125,7 +122,12 @@ const Orders = () => {
                     Total:
                   </span>
                   <span className="font-semibold text-base sm:text-lg text-blue-600">
-                    ${order.total.toFixed(2)}
+                    ${" "}
+                    {order.products.reduce(
+                      (total, product) =>
+                        total + product.price * product.quantity,
+                      0
+                    )}
                   </span>
                 </div>
               </div>
