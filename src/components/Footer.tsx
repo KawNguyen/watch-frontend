@@ -92,7 +92,7 @@ const Footer = () => {
           <div className="font-bold text-xl">FROM LUXWATCH INC</div>
           <div>THE LUXURIOUS WATCH</div>
           <img
-            src="../../public/Image/logo.png"
+            src="/Image/logo.png"
             alt="icon"
             className="w-40 h-40"
           />
