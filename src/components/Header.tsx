@@ -55,7 +55,7 @@ const Header = () => {
               <DropdownMenuContent>
                 <DropdownMenuLabel>{user.name}</DropdownMenuLabel>
                 <DropdownMenuSeparator />
-                <DropdownMenuItem onClick={() => navigate("/profile")}>
+                <DropdownMenuItem onClick={() => navigate("/profile?tab=info")}>
                   <div className="flex space-x-2">
                     <div>
                       <UserCog />

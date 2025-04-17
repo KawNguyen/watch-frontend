@@ -49,11 +49,11 @@ const icons = [
   },
 ];
 
-const cards = [
-  { path_svg: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQtEsc02ToGGTTAGB6EJcLgsVMNjoGp6iGfMQ&s", name: "Credit Card" },
-  { path_svg: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ3COWM_ZKAhlFk1oegOaER5-eu5oqQz2888A&s", name: "JCB" },
-  { path_svg: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRPjT1k-UiypgI080po56u-2w9BIle0rngmvA&s", name: "Visa" },
-];
+// const cards = [
+//   { path_svg: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQtEsc02ToGGTTAGB6EJcLgsVMNjoGp6iGfMQ&s", name: "Credit Card" },
+//   { path_svg: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ3COWM_ZKAhlFk1oegOaER5-eu5oqQz2888A&s", name: "JCB" },
+//   { path_svg: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRPjT1k-UiypgI080po56u-2w9BIle0rngmvA&s", name: "Visa" },
+// ];
 
 const Footer = () => {
   const [openIndex, setOpenIndex] = useState<number | null>(null);
@@ -197,16 +197,15 @@ const Footer = () => {
 
       <div className="border-t-[1px]"></div>
 
-      <div className="container mx-auto md:flex justify-between items-center text-black">
-        <div className="flex space-x-2 py-4 md:px-0 px-4">
-          {cards.map((card, index: number) => (
-            <div key={index}>
-              <img src={card.path_svg} alt={card.name} className="h-10 w-10" />
-            </div>
-          ))}
+      <div className="container mx-auto py-4 flex flex-col md:flex-row   md:flex justify-between items-center text-black">
+        <div>
+          <p>tranhailoc7@gmail.com</p>
         </div>
-        <div className="text-[12px] md:px-0 px-4 md:pb-0 pb-4">
-          || 2025 || tranhailoc7@gmail.com X khoanguyencool12@gmail.com ||
+        <div>
+          <p>khoanguyencool12@gmail.com</p>
+        </div>
+        <div>
+          <p>danghoaian230903@gmail.com</p>
         </div>
       </div>
     </div>
