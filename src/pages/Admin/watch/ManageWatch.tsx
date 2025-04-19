@@ -25,6 +25,7 @@ import { useWatch } from "@/hooks/useWatch";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Plus } from "lucide-react";
+import useDebounce from "@/hooks/useDebounce";
 
 const WatchTableSkeleton = () => (
   <Table>
@@ -62,8 +63,9 @@ const WatchTableSkeleton = () => (
 
 const ManageWatch = () => {
   const navigate = useNavigate();
-  const { watches, isLoading, error, getAllWatches, deleteWatch } = useWatch();
+  const { watches, isLoading, error, getAllWatches, deleteWatch, searchWatches } = useWatch();
   const [searchTerm, setSearchTerm] = useState("");
+  const [results, setResults] = useState([]); // Assuming results is an array of objects with properties like id, name, etc.
 
   useEffect(() => {
     getAllWatches();
@@ -73,9 +75,21 @@ const ManageWatch = () => {
     await deleteWatch(id);
   };
 
-  const filteredWatches = watches.filter((watch: any) =>
-    watch.name.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  const debouncedSearchTerm = useDebounce(searchTerm, 500);
+
+  useEffect(() => {
+    const handleSearch = async () => {
+      if (debouncedSearchTerm) {
+        const response = await searchWatches(debouncedSearchTerm);
+        setResults(response.data.items);
+      } else {
+        getAllWatches();
+      }
+    };
+
+    handleSearch();
+  }, [debouncedSearchTerm]);
+
 
   if (error) return <div className="text-red-500">{error}</div>;
 
@@ -85,12 +99,19 @@ const ManageWatch = () => {
         <div className="flex items-center justify-between">
           <CardTitle>Watch Management</CardTitle>
           <div className="flex space-x-4">
-            <Input
-              placeholder="Search watches..."
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-              className="w-[300px]"
-            />
+            <div className="relative">
+              <Input
+                placeholder="Search watches..."
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                className="w-[300px]"
+              />
+              {searchTerm && (
+                <div className="absolute -bottom-6 left-0 text-sm text-gray-500">
+                  Found {results?.length !==0 ? `${results.length}` : 0} result
+                </div>
+              )}
+            </div>
             <Button onClick={() => navigate("/admin/watch/add")}>
               <Plus className="mr-2 h-4 w-4" />
               Add Watch
@@ -115,7 +136,7 @@ const ManageWatch = () => {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {filteredWatches.map((watch: any) => (
+              {(searchTerm ? results : watches)?.map((watch: any) => (
                 <TableRow key={watch.id}>
                   <TableCell>
                     <img
