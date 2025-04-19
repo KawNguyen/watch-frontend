@@ -1,13 +1,13 @@
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { 
-  Store, 
-  Globe, 
-  Circle, 
-  Link, 
-  Ruler, 
-  Users, 
-  Droplets, 
-  Shield, 
+import {
+  Store,
+  Globe,
+  Circle,
+  Link,
+  Ruler,
+  Users,
+  Droplets,
+  Shield,
   Cog
 } from "lucide-react";
 
@@ -25,17 +25,16 @@ interface ProductTabsProps {
     code?: string;
   };
 }
-
 export function ProductTabs({ description, specifications }: ProductTabsProps) {
   return (
     <div className="max-w-4xl mx-auto">
-      <Tabs defaultValue="description" className="w-full">
+      <Tabs defaultValue="specifications" className="w-full">
         <TabsList className="w-full grid grid-cols-2 gap-4">
-          <TabsTrigger value="description" className="text-base">
-            Description
-          </TabsTrigger>
           <TabsTrigger value="specifications" className="text-base">
             Specifications
+          </TabsTrigger>
+          <TabsTrigger value="description" className="text-base">
+            Description
           </TabsTrigger>
         </TabsList>
         <TabsContent value="description" className="mt-6">

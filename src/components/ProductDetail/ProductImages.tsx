@@ -7,7 +7,7 @@ interface ProductImagesProps {
 
 export function ProductImages({ images, name }: ProductImagesProps) {
   return (
-    <div className="relative bg-gray-100 rounded-lg p-6">
+    <div className="relative  bg-gray-100 rounded-lg p-6">
       <Carousel className="w-full">
         <CarouselContent>
           {images.map((image, index) => (

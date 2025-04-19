@@ -4,6 +4,7 @@ import { useState } from "react";
 import emailjs from 'emailjs-com';
 import { Toaster } from "@/components/ui/toaster";
 import { useToast } from "@/hooks/use-toast";
+import Logo from "./Logo";
 
 const routes = [
   {

@@ -5,6 +5,10 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { ProductImages } from "@/components/ProductDetail/ProductImages";
 import { ProductInfo } from "@/components/ProductDetail/ProductInfo";
 import { ProductTabs } from "@/components/ProductDetail/ProductTabs";
+import { ProductName } from "@/components/ProductDetail/ProductName";
+import { ProductFeatures } from "@/components/ProductDetail/ProductFetures";
+import { ProductTrailer } from "@/components/ProductDetail/ProductTrailer";
+import { RelevantProducts } from "@/components/ProductDetail/RelevantProducts";
 
 const DetailProduct = () => {
   const { id } = useParams();
@@ -26,7 +30,7 @@ const DetailProduct = () => {
       }
     }
   };
-  
+
   useEffect(() => {
     fetchWatch();
   }, [id]);
@@ -45,18 +49,23 @@ const DetailProduct = () => {
       </div>
     );
   }
-
   if (!watch) {
     return <div className="container mx-auto py-10 text-center">Product not found</div>;
   }
-
   return (
-    <div className="container mx-auto py-16 space-y-10">
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
+    <div className="container mx-auto py-24 ">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-12 p-4">
         <ProductImages images={watch.images} name={watch.name} />
-        <ProductInfo watch={watch} quantity={quantity} setQuantity={setQuantity} />
+        <div className="md:mt-10 ">
+          <ProductName name={watch.name} />
+          <ProductTabs description={watch.description} specifications={watch} />
+          <ProductInfo watch={watch} quantity={quantity} setQuantity={setQuantity} />
+        </div>
       </div>
-      <ProductTabs description={watch.description} specifications={watch} />
+      <div>
+        <ProductFeatures name={watch.name} />
+        <RelevantProducts currentProductId={watch.id} category={watch.category} />
+      </div>
     </div>
   );
 };
