@@ -26,6 +26,7 @@ import ManageMovement from "./pages/Admin/movement/ManageMovement";
 import AddMovement from "./pages/Admin/movement/AddMovement";
 import ListProductPage from "./pages/ListProductPage";
 import DetailProduct from "./pages/DetailProduct";
+import CreateOrders from "./pages/Admin/create-orders/CreateOrders";
 
 const App = () => {
   const { getUser } = useAuth();
@@ -44,13 +45,13 @@ const App = () => {
         <Route path="/products" element={<ListProductPage />} />
         <Route path="/product/:id" element={<DetailProduct />} />
       </Route>
-      
+
       <Route path="/auth" element={<AuthLayout />}>
         <Route path="login" element={<LoginPage />} />
         <Route path="register" element={<RegisterPage />} />
 
       </Route>
-      
+
       <Route
         path="/admin"
         element={
@@ -69,6 +70,7 @@ const App = () => {
         <Route path="/admin/band-material/add" element={<AddBandMaterial />} />
         <Route path="/admin/movement/list" element={<ManageMovement />} />
         <Route path="/admin/movement/add" element={<AddMovement />} />
+        <Route path="/admin/createOrders/add" element={<CreateOrders />} />
       </Route>
       <Route path="/*" element={<NotFoundPage />} />
     </Routes>

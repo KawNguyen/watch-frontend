@@ -4,7 +4,6 @@ import { useState } from "react";
 import emailjs from 'emailjs-com';
 import { Toaster } from "@/components/ui/toaster";
 import { useToast } from "@/hooks/use-toast";
-import Logo from "./Logo";
 
 const routes = [
   {
@@ -100,9 +99,9 @@ const Footer = () => {
           <div className="flex space-x-4">
             {icons.map((icon, index: number) => (
               <div key={index}>
-                <a href={icon.url} className="hover:text-secondary-600">
+                <Link to={icon.url} className="hover:text-secondary-600">
                   {icon.icon_social}
-                </a>
+                </Link>
               </div>
             ))}
           </div>
