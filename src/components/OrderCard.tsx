@@ -1,4 +1,3 @@
-import React from "react";
 import { ChevronRightIcon } from "lucide-react";
 import {
   Card,

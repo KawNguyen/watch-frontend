@@ -2,7 +2,6 @@ import { ChevronDown, Facebook, Instagram, Youtube } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useState } from "react";
 import emailjs from 'emailjs-com';
-import { Toaster } from "@/components/ui/toaster";
 import { useToast } from "@/hooks/use-toast";
 
 const routes = [

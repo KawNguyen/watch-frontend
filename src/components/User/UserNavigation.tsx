@@ -20,7 +20,7 @@ const routes = [
     {
         name: "Orders",
         icon: <Truck />,
-        tab: "orders    "
+        tab: "orders"
     },
 ];
 
