@@ -3,6 +3,7 @@ import { MinusIcon, PlusIcon, TrashIcon } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
 import { CartItemType } from './User/Cart.tsx'
+import { formatPrice } from '@/lib/utils'
 
 export type Props = {
     item: CartItemType
@@ -41,7 +42,7 @@ const CartCard: React.FC<Props> = ({ item, onQuantityChange }) => {
                             <PlusIcon className="w-4 h-4 text-gray-600" />
                         </Button>
                         <span className="text-xl font-semibold text-gray-900">
-                            ${(item.price * item.quantity).toFixed(2)}
+                            {formatPrice(item.price * item.quantity)}
                         </span>
                     </div>
                     <Button variant="ghost" className="text-red-500 hover:text-red-600 px-2 py-1">

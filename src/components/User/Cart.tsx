@@ -4,6 +4,7 @@ import { Button } from '@/components/ui/button'
 import { Separator } from '@/components/ui/separator'
 import { ScrollArea } from '@/components/ui/scroll-area'
 import CartCard from '../CartCard'
+import { formatPrice } from '@/lib/utils'
 
 export type CartItemType = {
     id: number
@@ -85,18 +86,18 @@ const Cart: React.FC = () => {
                         <div className="space-y-3 text-sm">
                             <div className="flex justify-between">
                                 <span className="text-gray-600">Subtotal</span>
-                                <span className="text-gray-900">${subtotal.toFixed(2)}</span>
+                                <span className="text-gray-900">{formatPrice(subtotal)}</span>
                             </div>
                             <div className="flex justify-between">
                                 <span className="text-gray-600">Shipping</span>
-                                <span className="text-gray-900">${shipping.toFixed(2)}</span>
+                                <span className="text-gray-900">{formatPrice(shipping)}</span>
                             </div>
 
                             <Separator className="my-4" />
 
                             <div className="flex justify-between text-base font-semibold">
                                 <span className="text-gray-900">Total</span>
-                                <span className="text-gray-900">${total.toFixed(2)}</span>
+                                <span className="text-gray-900">{formatPrice(total)}</span>
                             </div>
                         </div>
 

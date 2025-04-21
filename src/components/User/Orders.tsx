@@ -1,6 +1,6 @@
-import React from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
+import { formatPrice } from "@/lib/utils";
 
 const mockOrders = [
   {
@@ -109,7 +109,7 @@ const Orders = () => {
                       <div className="text-center">
                         <div className="text-sm text-gray-500">Price</div>
                         <div className="font-medium">
-                          ${product.price.toFixed(2)}
+                          {formatPrice(product.price)}
                         </div>
                       </div>
                     </div>
@@ -122,11 +122,12 @@ const Orders = () => {
                     Total:
                   </span>
                   <span className="font-semibold text-base sm:text-lg text-blue-600">
-                    ${" "}
-                    {order.products.reduce(
-                      (total, product) =>
-                        total + product.price * product.quantity,
-                      0
+                    {formatPrice(
+                      order.products.reduce(
+                        (total, product) =>
+                          total + product.price * product.quantity,
+                        0
+                      )
                     )}
                   </span>
                 </div>
