@@ -11,7 +11,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import Logo from "./Logo";
+import Image from "./ui/image";
 
 const Header = () => {
   const { isAuthenticated, logout, getUser } = useAuth();
@@ -34,9 +34,9 @@ const Header = () => {
         </div>
 
         <Link to="/">
-          <img
-            src="../../public/Image/logo.png"
-            alt=""
+          <Image
+            src="/Images/logo.png"
+            alt="logo"
             className="h-24 w-24"
           />
           {/* <Logo /> */}
