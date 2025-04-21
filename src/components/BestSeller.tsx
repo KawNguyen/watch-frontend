@@ -43,10 +43,11 @@ const BestSeller: React.FC = () => {
               key={index}
               onClick={() => setActiveCategory(category)}
               className={`px-4 py-2 text-sm sm:text-base md:text-lg rounded-md whitespace-nowrap transition-all duration-200 
-                 ${activeCategory === category
-                  ? "bg-[#373A40] text-white"
-                  : "bg-gray-200 text-gray-800 hover:bg-gray-300"
-                }`}
+                 ${
+                   activeCategory === category
+                     ? "bg-[#373A40] text-white"
+                     : "bg-gray-200 text-gray-800 hover:bg-gray-300"
+                 }`}
             >
               {category}
             </div>

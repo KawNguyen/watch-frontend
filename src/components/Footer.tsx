@@ -1,7 +1,7 @@
 import { ChevronDown, Facebook, Instagram, Youtube } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useState } from "react";
-import emailjs from 'emailjs-com';
+import emailjs from "emailjs-com";
 import { Toaster } from "@/components/ui/toaster";
 import { useToast } from "@/hooks/use-toast";
 
@@ -12,7 +12,6 @@ const routes = [
       { path: "/allproducts", title: "All products" },
       { path: "/men", title: "Men" },
       { path: "/women", title: "Women" },
-
     ],
   },
   {
@@ -21,7 +20,6 @@ const routes = [
       { path: "/contact", title: "About Us" },
       { path: "/contact", title: "Contact" },
       { path: "/contact", title: "FAQ" },
-
     ],
   },
   {
@@ -55,7 +53,7 @@ const Footer = () => {
     setOpenIndex(openIndex === index ? null : index);
   };
   const { toast } = useToast();
-  const [email, setEmail] = useState('');
+  const [email, setEmail] = useState("");
 
   const handleEmailChange = (event: any) => {
     setEmail(event.target.value);
@@ -68,7 +66,12 @@ const Footer = () => {
     };
 
     emailjs
-      .send('service_kai5al5', 'template_42p8gqt', templateParams, 'hCS0IHarjxuWOm4BO')
+      .send(
+        "service_kai5al5",
+        "template_42p8gqt",
+        templateParams,
+        "hCS0IHarjxuWOm4BO",
+      )
       .then(() => {
         toast({
           title: "Sent!",
@@ -91,11 +94,7 @@ const Footer = () => {
         <div className="md:space-y-4 space-y-2 px-4 flex flex-col justify-between">
           <div className="font-bold text-xl">FROM LUXWATCH INC</div>
           <div>THE LUXURIOUS WATCH</div>
-          <img
-            src="/Image/logo.png"
-            alt="icon"
-            className="w-40 h-40"
-          />
+          <img src="/Image/logo.png" alt="icon" className="w-40 h-40" />
           <div className="flex space-x-4">
             {icons.map((icon, index: number) => (
               <div key={index}>
@@ -120,8 +119,9 @@ const Footer = () => {
               >
                 {route.title}
                 <span
-                  className={`transition-transform duration-300 ${openIndex === index ? "rotate-180" : "rotate-0"
-                    }`}
+                  className={`transition-transform duration-300 ${
+                    openIndex === index ? "rotate-180" : "rotate-0"
+                  }`}
                 >
                   <ChevronDown size={24} />
                 </span>
@@ -142,8 +142,9 @@ const Footer = () => {
               </div>
 
               <div
-                className={`overflow-hidden transition-all duration-500 ease-in-out ${openIndex === index ? "max-h-[500px]" : "max-h-0"
-                  }`}
+                className={`overflow-hidden transition-all duration-500 ease-in-out ${
+                  openIndex === index ? "max-h-[500px]" : "max-h-0"
+                }`}
               >
                 {route.children && route.children.length > 0 && (
                   <div className="flex flex-col space-y-2 mb-4">
@@ -166,7 +167,9 @@ const Footer = () => {
         </div>
 
         <div className="space-y-4 md:px-0 px-4">
-          <div className="text-lg md:text-2xl font-bold">Join the LUXWATCH family</div>
+          <div className="text-lg md:text-2xl font-bold">
+            Join the LUXWATCH family
+          </div>
           <form onSubmit={handleSubmit} className="space-x-4">
             <input
               type="email"

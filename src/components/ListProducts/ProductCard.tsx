@@ -22,9 +22,7 @@ interface WatchData {
 const ProductCard = ({ product }: { product: WatchData }) => {
   const navigate = useNavigate();
   return (
-    <Card
-      className="group relative overflow-hidden cursor-pointer hover:shadow-lg transition-shadow"
-    >
+    <Card className="group relative overflow-hidden cursor-pointer hover:shadow-lg transition-shadow">
       <div className="relative w-full h-80 overflow-hidden">
         <AspectRatio ratio={1} className="w-full">
           <Image
@@ -38,8 +36,12 @@ const ProductCard = ({ product }: { product: WatchData }) => {
           <TooltipProvider>
             <Tooltip>
               <TooltipTrigger asChild>
-                <Button size="icon" variant="secondary" className="hover:bg-black hover:text-white" >
-                  <ShoppingBag className="h-4 w-4"/>
+                <Button
+                  size="icon"
+                  variant="secondary"
+                  className="hover:bg-black hover:text-white"
+                >
+                  <ShoppingBag className="h-4 w-4" />
                 </Button>
               </TooltipTrigger>
               <TooltipContent>
@@ -49,7 +51,12 @@ const ProductCard = ({ product }: { product: WatchData }) => {
 
             <Tooltip>
               <TooltipTrigger asChild>
-                <Button size="icon" variant="secondary" className="hover:bg-black hover:text-white" onClick={()=> navigate(`/product/${product?.id}`)}>
+                <Button
+                  size="icon"
+                  variant="secondary"
+                  className="hover:bg-black hover:text-white"
+                  onClick={() => navigate(`/product/${product?.id}`)}
+                >
                   <Search className="h-4 w-4" />
                 </Button>
               </TooltipTrigger>
@@ -60,7 +67,11 @@ const ProductCard = ({ product }: { product: WatchData }) => {
 
             <Tooltip>
               <TooltipTrigger asChild>
-                <Button size="icon" variant="secondary" className="hover:bg-black hover:text-white">
+                <Button
+                  size="icon"
+                  variant="secondary"
+                  className="hover:bg-black hover:text-white"
+                >
                   <Heart className="h-4 w-4" />
                 </Button>
               </TooltipTrigger>

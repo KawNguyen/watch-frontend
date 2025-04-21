@@ -39,5 +39,4 @@ const ProductSidebar = ({ children }: ProductSidebarProps) => {
   );
 };
 
-
 export default ProductSidebar;

@@ -126,7 +126,7 @@ const Orders = () => {
                     {order.products.reduce(
                       (total, product) =>
                         total + product.price * product.quantity,
-                      0
+                      0,
                     )}
                   </span>
                 </div>

@@ -19,7 +19,13 @@ const ProductSkeleton = () => (
   </div>
 );
 
-const ProductGrid = ({ products, isLoading }: { products: UpdateWatchData[], isLoading?: boolean }) => {
+const ProductGrid = ({
+  products,
+  isLoading,
+}: {
+  products: UpdateWatchData[];
+  isLoading?: boolean;
+}) => {
   const [sortBy, setSortBy] = useState("featured");
 
   if (isLoading) {

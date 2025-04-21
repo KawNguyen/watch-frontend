@@ -48,7 +48,8 @@ export const useWatch = () => {
       });
       return data;
     } catch (err: any) {
-      const errorMessage = err.response?.data?.message || "Failed to create watch";
+      const errorMessage =
+        err.response?.data?.message || "Failed to create watch";
       setError(errorMessage);
       toast({
         variant: "destructive",
@@ -74,7 +75,8 @@ export const useWatch = () => {
       });
       return data;
     } catch (err: any) {
-      const errorMessage = err.response?.data?.message || "Failed to update watch";
+      const errorMessage =
+        err.response?.data?.message || "Failed to update watch";
       setError(errorMessage);
       toast({
         variant: "destructive",
@@ -99,7 +101,8 @@ export const useWatch = () => {
         className: "bg-green-500 text-white border-none",
       });
     } catch (err: any) {
-      const errorMessage = err.response?.data?.message || "Failed to delete watch";
+      const errorMessage =
+        err.response?.data?.message || "Failed to delete watch";
       setError(errorMessage);
       toast({
         variant: "destructive",
@@ -120,7 +123,7 @@ export const useWatch = () => {
     } catch (err) {
       setError("Failed to search watches");
       throw err;
-    } 
+    }
   };
 
   return {

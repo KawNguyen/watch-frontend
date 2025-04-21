@@ -9,7 +9,6 @@ import { useMovement } from "@/hooks/useMovement";
 import { useWatch } from "@/hooks/useWatch";
 import { useEffect } from "react";
 
-
 const ListProductPage = () => {
   const { brands, isLoading: isBrandLoading, getAllBrands } = useBrand();
   const {
@@ -44,7 +43,7 @@ const ListProductPage = () => {
         description="Discover the latest watches and styles."
         imageUrl="https://luxatch-store-newdemo.myshopify.com/cdn/shop/files/breadcumb.jpg"
       />
-      
+
       <div className="flex mx-auto container gap-10">
         <ProductSidebar>
           <PropsSidebar

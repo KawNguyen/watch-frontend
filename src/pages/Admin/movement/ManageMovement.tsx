@@ -57,7 +57,13 @@ const ManageMovement = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [editingId, setEditingId] = useState<string | null>(null);
   const [editingName, setEditingName] = useState("");
-  const { movements, isLoading, getAllMovements, deleteMovement, updateMovement } = useMovement();
+  const {
+    movements,
+    isLoading,
+    getAllMovements,
+    deleteMovement,
+    updateMovement,
+  } = useMovement();
 
   const handleEdit = (movement: any) => {
     setEditingId(movement.id);
@@ -82,7 +88,7 @@ const ManageMovement = () => {
   }, []);
 
   const filteredMovements = movements.filter((movement: any) =>
-    movement.name.toLowerCase().includes(searchTerm.toLowerCase())
+    movement.name.toLowerCase().includes(searchTerm.toLowerCase()),
   );
 
   if (isLoading)
@@ -184,7 +190,9 @@ const ManageMovement = () => {
                           </AlertDialogTrigger>
                           <AlertDialogContent>
                             <AlertDialogHeader>
-                              <AlertDialogTitle>Delete Movement</AlertDialogTitle>
+                              <AlertDialogTitle>
+                                Delete Movement
+                              </AlertDialogTitle>
                               <AlertDialogDescription>
                                 Are you sure you want to delete {movement.name}?
                                 This action cannot be undone.

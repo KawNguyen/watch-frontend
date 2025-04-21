@@ -13,7 +13,11 @@ interface PropsSidebarProps {
   isLoading?: boolean;
 }
 
-const PropsSidebar = ({ items, title, isLoading = false }: PropsSidebarProps) => {  
+const PropsSidebar = ({
+  items,
+  title,
+  isLoading = false,
+}: PropsSidebarProps) => {
   const [isOpen, setIsOpen] = useState(false);
 
   if (isLoading) {

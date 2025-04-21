@@ -48,7 +48,8 @@ export const useBandMaterial = () => {
       });
       return data;
     } catch (err: any) {
-      const errorMessage = err.response?.data?.message || "Failed to create band material";
+      const errorMessage =
+        err.response?.data?.message || "Failed to create band material";
       setError(errorMessage);
       toast({
         variant: "destructive",
@@ -74,7 +75,8 @@ export const useBandMaterial = () => {
       });
       return data;
     } catch (err: any) {
-      const errorMessage = err.response?.data?.message || "Failed to update band material";
+      const errorMessage =
+        err.response?.data?.message || "Failed to update band material";
       setError(errorMessage);
       toast({
         variant: "destructive",
@@ -99,7 +101,8 @@ export const useBandMaterial = () => {
         className: "bg-green-500 text-white border-none",
       });
     } catch (err: any) {
-      const errorMessage = err.response?.data?.message || "Failed to delete band material";
+      const errorMessage =
+        err.response?.data?.message || "Failed to delete band material";
       setError(errorMessage);
       toast({
         variant: "destructive",

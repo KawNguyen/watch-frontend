@@ -48,7 +48,8 @@ export const useBrand = () => {
       });
       return data;
     } catch (err: any) {
-      const errorMessage = err.response?.data?.message || "Failed to create brand";
+      const errorMessage =
+        err.response?.data?.message || "Failed to create brand";
       setError(errorMessage);
       toast({
         variant: "destructive",
@@ -74,7 +75,8 @@ export const useBrand = () => {
       });
       return data;
     } catch (err: any) {
-      const errorMessage = err.response?.data?.message || "Failed to update brand";
+      const errorMessage =
+        err.response?.data?.message || "Failed to update brand";
       setError(errorMessage);
       toast({
         variant: "destructive",
@@ -99,7 +101,8 @@ export const useBrand = () => {
         className: "bg-green-500 text-white border-none",
       });
     } catch (err: any) {
-      const errorMessage = err.response?.data?.message || "Failed to delete brand";
+      const errorMessage =
+        err.response?.data?.message || "Failed to delete brand";
       setError(errorMessage);
       toast({
         variant: "destructive",

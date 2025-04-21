@@ -10,7 +10,7 @@ interface LoginCredentials {
   remember: boolean;
 }
 
-type WatchGender = 'MEN' | 'WOMEN' | 'UNISEX';
+type WatchGender = "MEN" | "WOMEN" | "UNISEX";
 
 interface WatchData {
   name: string;

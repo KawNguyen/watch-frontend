@@ -15,7 +15,7 @@ export const watch = {
     name: string;
     description: string;
     price: number;
-    gender: 'MEN' | 'WOMEN' | 'UNISEX';
+    gender: "MEN" | "WOMEN" | "UNISEX";
     brandId: string;
     materialId: string;
     bandMaterialId: string;
@@ -35,7 +35,7 @@ export const watch = {
     name: string;
     description: string;
     price: number;
-    gender: 'MEN' | 'WOMEN' | 'UNISEX';
+    gender: "MEN" | "WOMEN" | "UNISEX";
     brandId: string;
     materialId: string;
     bandMaterialId: string;
@@ -46,8 +46,11 @@ export const watch = {
     warranty: number;
     images: { url: string }[];
   }) => {
-    const response = await axiosInstance.put(`/watches/update/${watchData?.id}`, watchData);
-    return response.data; 
+    const response = await axiosInstance.put(
+      `/watches/update/${watchData?.id}`,
+      watchData,
+    );
+    return response.data;
   },
 
   delete: async (id: string) => {
@@ -58,5 +61,5 @@ export const watch = {
   search: async (query: string) => {
     const response = await axiosInstance.get(`/watches/search?name=${query}`);
     return response.data;
-  }
-}
+  },
+};

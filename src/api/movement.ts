@@ -11,16 +11,16 @@ export const movement = {
     return response.data.items;
   },
 
-  create: async (name: string ) => {
+  create: async (name: string) => {
     const response = await axiosInstance.post(`/movements/create`, {
-      name
+      name,
     });
     return response.data.items;
   },
 
-  update: async (id: string, name: string)=>{
+  update: async (id: string, name: string) => {
     const response = await axiosInstance.put(`/movements/update/${id}`, {
-      name
+      name,
     });
     return response.data.items;
   },
@@ -29,5 +29,4 @@ export const movement = {
     const response = await axiosInstance.delete(`/movements/delete/${id}`);
     return response.data.items;
   },
-  
 };

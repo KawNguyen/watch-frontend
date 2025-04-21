@@ -7,7 +7,11 @@ interface ProductInfoProps {
   quantity: number;
   setQuantity: (quantity: number) => void;
 }
-export function ProductInfo({ watch, quantity, setQuantity }: ProductInfoProps) {
+export function ProductInfo({
+  watch,
+  quantity,
+  setQuantity,
+}: ProductInfoProps) {
   return (
     <div className="space-y-6 mt-6">
       <div className="flex items-center justify-around">

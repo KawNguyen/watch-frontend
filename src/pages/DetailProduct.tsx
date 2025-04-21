@@ -21,7 +21,7 @@ const DetailProduct = () => {
     if (id) {
       try {
         const data = await getWatchById(id);
-        console.log(data)
+        console.log(data);
         setWatch(data);
       } catch (error) {
         console.error("Failed to fetch watch:", error);
@@ -50,7 +50,11 @@ const DetailProduct = () => {
     );
   }
   if (!watch) {
-    return <div className="container mx-auto py-10 text-center">Product not found</div>;
+    return (
+      <div className="container mx-auto py-10 text-center">
+        Product not found
+      </div>
+    );
   }
   return (
     <div className="container mx-auto py-24 ">
@@ -59,12 +63,19 @@ const DetailProduct = () => {
         <div className="md:mt-10 ">
           <ProductName name={watch.name} />
           <ProductTabs description={watch.description} specifications={watch} />
-          <ProductInfo watch={watch} quantity={quantity} setQuantity={setQuantity} />
+          <ProductInfo
+            watch={watch}
+            quantity={quantity}
+            setQuantity={setQuantity}
+          />
         </div>
       </div>
       <div>
         <ProductFeatures name={watch.name} />
-        <RelevantProducts currentProductId={watch.id} category={watch.category} />
+        <RelevantProducts
+          currentProductId={watch.id}
+          category={watch.category}
+        />
       </div>
     </div>
   );

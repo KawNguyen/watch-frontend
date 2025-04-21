@@ -27,7 +27,7 @@ import AddMovement from "./pages/Admin/movement/AddMovement";
 import ListProductPage from "./pages/ListProductPage";
 import DetailProduct from "./pages/DetailProduct";
 import CreateOrders from "./pages/Admin/create-orders/CreateOrders";
-import CustomerManage from "./components/CustomerManage";
+import ManageCustomer from "./pages/Admin/customer-list/ManageCustomer";
 
 const App = () => {
   const { getUser } = useAuth();
@@ -50,7 +50,6 @@ const App = () => {
       <Route path="/auth" element={<AuthLayout />}>
         <Route path="login" element={<LoginPage />} />
         <Route path="register" element={<RegisterPage />} />
-
       </Route>
 
       <Route
@@ -67,12 +66,15 @@ const App = () => {
         <Route path="/admin/watch/add" element={<AddWatch />} />
         <Route path="/admin/material/list" element={<ManageMaterial />} />
         <Route path="/admin/material/add" element={<AddMaterial />} />
-        <Route path="/admin/band-material/list" element={<ManageBandMaterial />} />
+        <Route
+          path="/admin/band-material/list"
+          element={<ManageBandMaterial />}
+        />
         <Route path="/admin/band-material/add" element={<AddBandMaterial />} />
         <Route path="/admin/movement/list" element={<ManageMovement />} />
         <Route path="/admin/movement/add" element={<AddMovement />} />
         <Route path="/admin/createOrders/add" element={<CreateOrders />} />
-        <Route path="/admin/userList/list" element={<CustomerManage />} />
+        <Route path="/admin/userList/list" element={<ManageCustomer />} />
       </Route>
       <Route path="/*" element={<NotFoundPage />} />
     </Routes>

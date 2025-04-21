@@ -21,7 +21,7 @@ export const bandMaterial = {
   update: async (id: string, name: string) => {
     const response = await axiosInstance.put(`/band-materials/update/${id}`, {
       name,
-    });  
+    });
     return response.data;
   },
 
@@ -29,4 +29,4 @@ export const bandMaterial = {
     const response = await axiosInstance.delete(`/band-materials/delete/${id}`);
     return response.data;
   },
-}
+};

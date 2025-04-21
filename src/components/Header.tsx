@@ -34,11 +34,7 @@ const Header = () => {
         </div>
 
         <Link to="/">
-          <Image
-            src="/Images/logo.png"
-            alt="logo"
-            className="h-24 w-24"
-          />
+          <Image src="/Images/logo.png" alt="logo" className="h-24 w-24" />
           {/* <Logo /> */}
         </Link>
 
@@ -68,9 +64,7 @@ const Header = () => {
                     <div>
                       <UserCog />
                     </div>
-                    <div>
-                      Profile
-                    </div>
+                    <div>Profile</div>
                   </div>
                 </DropdownMenuItem>
                 {user?.role === "ADMIN" && (
@@ -92,7 +86,7 @@ const Header = () => {
           )}
         </div>
       </div>
-    </header >
+    </header>
   );
 };
 

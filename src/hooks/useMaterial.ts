@@ -48,7 +48,8 @@ export const useMaterial = () => {
       });
       return data;
     } catch (err: any) {
-      const errorMessage = err.response?.data?.message || "Failed to create material";
+      const errorMessage =
+        err.response?.data?.message || "Failed to create material";
       setError(errorMessage);
       toast({
         variant: "destructive",
@@ -74,7 +75,8 @@ export const useMaterial = () => {
       });
       return data;
     } catch (err: any) {
-      const errorMessage = err.response?.data?.message || "Failed to update material";
+      const errorMessage =
+        err.response?.data?.message || "Failed to update material";
       setError(errorMessage);
       toast({
         variant: "destructive",
@@ -99,7 +101,8 @@ export const useMaterial = () => {
         className: "bg-green-500 text-white border-none",
       });
     } catch (err: any) {
-      const errorMessage = err.response?.data?.message || "Failed to delete material";
+      const errorMessage =
+        err.response?.data?.message || "Failed to delete material";
       setError(errorMessage);
       toast({
         variant: "destructive",
