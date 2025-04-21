@@ -98,9 +98,9 @@ const Footer = () => {
           <div className="flex space-x-4">
             {icons.map((icon, index: number) => (
               <div key={index}>
-                <a href={icon.url} className="hover:text-secondary-600">
+                <Link to={icon.url} className="hover:text-secondary-600">
                   {icon.icon_social}
-                </a>
+                </Link>
               </div>
             ))}
           </div>
