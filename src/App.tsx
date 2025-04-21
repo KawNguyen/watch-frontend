@@ -28,6 +28,7 @@ import ListProductPage from "./pages/ListProductPage";
 import DetailProduct from "./pages/DetailProduct";
 import CreateOrders from "./pages/Admin/create-orders/CreateOrders";
 import ManageCustomer from "./pages/Admin/customer-list/ManageCustomer";
+import Dashboard from "./pages/Admin/dashboard/Dashboard";
 
 const App = () => {
   const { getUser } = useAuth();
@@ -75,6 +76,7 @@ const App = () => {
         <Route path="/admin/movement/add" element={<AddMovement />} />
         <Route path="/admin/createOrders/add" element={<CreateOrders />} />
         <Route path="/admin/userList/list" element={<ManageCustomer />} />
+        <Route path="/admin/dashboard/list" element={<Dashboard />} />
       </Route>
       <Route path="/*" element={<NotFoundPage />} />
     </Routes>

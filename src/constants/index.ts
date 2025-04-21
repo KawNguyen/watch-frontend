@@ -6,6 +6,7 @@ import {
   Watch,
   PackagePlus,
   Users,
+  LayoutDashboard,
 } from "lucide-react";
 
 export const Routes = [
@@ -15,6 +16,12 @@ export const Routes = [
 ];
 
 export const AdminRoutes = [
+  {
+    title: "Dashboard",
+    icon: LayoutDashboard,
+    children: [{ title: "Manage", url: "/admin/dashboard/list" }],
+
+  },
   {
     title: "Customer",
     icon: Users,
