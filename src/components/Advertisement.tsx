@@ -32,10 +32,9 @@ const watches: Watch[] = [
 ];
 const Advertisement: React.FC = () => {
   return (
-    <section className="container mx-auto py-8 text-center">
-      <h1 className="text-4xl font-bold mb-4">Hand-picked</h1>
-      <p className="text-gray-500 mb-8">AI BiET GHI CÁI GÌ THÌ CMT BÊN DƯỚI.</p>
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-6 px-4 md:px-16">
+    <section className="container mx-auto pb-10 text-center">
+      <h1 className="text-4xl font-bold mb-8">Hand-picked</h1>
+      <div className="grid grid-cols-2  md:grid-cols-4 gap-6 px-4 md:px-16">
         {watches.map((watch) => (
           <div key={watch.id} className="relative group">
             <img

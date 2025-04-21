@@ -23,7 +23,7 @@ const Category = () => {
           alt="Women's Best Watch"
           className="w-full h-full object-cover transform group-hover:scale-110 transition duration-300"
         />
-        <div className="absolute inset-0 flex flex-col justify-center items-end pr-10 text-white">
+        <div className=" absolute inset-0 flex flex-col justify-center items-end pr-10 text-white">
           <h2 className="text-xs md:text-sm  uppercase opacity-90">
             Luxatch Shop
           </h2>
