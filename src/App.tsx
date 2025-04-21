@@ -48,7 +48,6 @@ const App = () => {
       <Route path="/auth" element={<AuthLayout />}>
         <Route path="login" element={<LoginPage />} />
         <Route path="register" element={<RegisterPage />} />
-
       </Route>
       
       <Route
