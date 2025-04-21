@@ -28,7 +28,7 @@ const products = [
   },
 ];
 
-const categories = ["TOP RATING", "BEST SELLER", "SPECIAL OFFERS", "PROMOTION"];
+const categories = ["AUTOMATIC", "QUART", "MECHANICAL"];
 
 const BestSeller: React.FC = () => {
   const [activeCategory, setActiveCategory] = useState(categories[0]);
@@ -37,17 +37,16 @@ const BestSeller: React.FC = () => {
     <div className="container mx-auto px-4">
       {/* Danh mục */}
       <div className="w-full overflow-x-auto scroll-smooth">
-        <div className="flex justify-start sm:justify-center w-fit mx-auto gap-4 sm:gap-6 md:gap-8 px-4 py-2">
+        <div className="flex justify-start sm:justify-center w-fit mx-auto gap-4 sm:gap-6 md:gap-8 px-4 py-2 cursor-pointer">
           {categories.map((category, index) => (
             <div
               key={index}
               onClick={() => setActiveCategory(category)}
               className={`px-4 py-2 text-sm sm:text-base md:text-lg rounded-md whitespace-nowrap transition-all duration-200 
-                 ${
-                   activeCategory === category
-                     ? "bg-[#373A40] text-white"
-                     : "bg-gray-200 text-gray-800 hover:bg-gray-300"
-                 }`}
+                 ${activeCategory === category
+                  ? "bg-[#373A40] text-white"
+                  : "bg-gray-200 text-gray-800 hover:bg-gray-300"
+                }`}
             >
               {category}
             </div>

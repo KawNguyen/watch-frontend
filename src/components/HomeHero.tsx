@@ -34,7 +34,7 @@ const poster = [
 const HomeHero = () => {
   const [activeIndex, setActiveIndex] = useState(0);
   return (
-    <div className="w-full">
+    <div className="w-full mt-20">
       <Swiper
         spaceBetween={30}
         centeredSlides={true}
