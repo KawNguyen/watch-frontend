@@ -21,7 +21,7 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
-import { useWatch } from "@/hooks/useWatch";
+import { useWatch } from "@/hooks/use-api/useWatch";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Plus } from "lucide-react";
@@ -76,20 +76,19 @@ const ManageWatch = () => {
   };
 
   const debouncedSearchTerm = useDebounce(searchTerm, 500);
+  
+  const handleSearch = async () => {
+    if (debouncedSearchTerm) {
+      const response = await searchWatches(debouncedSearchTerm);
+      setResults(response.data.items);
+    } else {
+      getAllWatches();
+    }
+  };
 
   useEffect(() => {
-    const handleSearch = async () => {
-      if (debouncedSearchTerm) {
-        const response = await searchWatches(debouncedSearchTerm);
-        setResults(response.data.items);
-      } else {
-        getAllWatches();
-      }
-    };
-
     handleSearch();
   }, [debouncedSearchTerm]);
-
 
   if (error) return <div className="text-red-500">{error}</div>;
 

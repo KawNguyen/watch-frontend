@@ -2,11 +2,11 @@ import HeroBanner from "@/components/ListProducts/HeroBanner";
 import ProductGrid from "@/components/ListProducts/ProductGrid";
 import ProductSidebar from "@/components/ListProducts/ProductSidebar";
 import PropsSidebar from "@/components/ListProducts/PropsSidebar";
-import { useBandMaterial } from "@/hooks/useBandMaterial";
-import { useBrand } from "@/hooks/useBrand";
-import { useMaterial } from "@/hooks/useMaterial";
-import { useMovement } from "@/hooks/useMovement";
-import { useWatch } from "@/hooks/useWatch";
+import { useBandMaterial } from "@/hooks/use-api/useBandMaterial";
+import { useBrand } from "@/hooks/use-api/useBrand";
+import { useMaterial } from "@/hooks/use-api/useMaterial";
+import { useMovement } from "@/hooks/use-api/useMovement";
+import { useWatch } from "@/hooks/use-api/useWatch";
 import { useEffect } from "react";
 
 

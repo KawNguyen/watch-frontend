@@ -1,7 +1,14 @@
 import { Routes } from "@/constants";
-import { LogIn, LogOut, Search, ShoppingBag, UserCog } from "lucide-react";
+import {
+  LayoutDashboard,
+  LogIn,
+  LogOut,
+  Search,
+  ShoppingBag,
+  UserCog,
+} from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
-import { useAuth } from "@/hooks/useAuth";
+import { useAuth } from "@/hooks/use-api/useAuth";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -12,11 +19,33 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import Image from "./ui/image";
+import { useUser } from "@/hooks/use-api/useUser";
+import { useEffect, useState } from "react";
 
 const Header = () => {
-  const { isAuthenticated, logout, getUser } = useAuth();
+  const { isAuthenticated, logout } = useAuth();
+  const { getUserById } = useUser();
+  const [userData, setUserData] = useState({
+    name: "",
+    avatar: "",
+    role: "",
+    email: "",
+  });
+  
+  const fetchUserData = async () => {
+    const data = await getUserById();
+    console.log(data)
+    setUserData(data);
+  };
+
+  console.log(userData?.role)
+
+  useEffect(() => {
+    fetchUserData();
+    console.log("a")
+  }, []);
+
   const navigate = useNavigate();
-  const user = getUser();
 
   return (
     <header className="fixed top-0 bg-white h-20 w-full z-50 ">
@@ -34,12 +63,7 @@ const Header = () => {
         </div>
 
         <Link to="/">
-          <Image
-            src="/Images/logo.png"
-            alt="logo"
-            className="h-24 w-24"
-          />
-          {/* <Logo /> */}
+          <Image src="/Images/logo.png" alt="logo" className="h-24 w-24" />
         </Link>
 
         <div className="flex space-x-4 w-[32%] justify-end items-center">
@@ -54,27 +78,22 @@ const Header = () => {
             <DropdownMenu>
               <DropdownMenuTrigger className="flex items-center space-x-2 outline-none">
                 <Avatar>
-                  <AvatarImage src={user?.avatar} />
+                  <AvatarImage src={userData?.avatar} />
                   <AvatarFallback>
-                    {user?.name?.charAt(0).toUpperCase()}
+                    {userData?.name?.charAt(0).toUpperCase()}
                   </AvatarFallback>
                 </Avatar>
               </DropdownMenuTrigger>
               <DropdownMenuContent>
-                <DropdownMenuLabel>{user.name}</DropdownMenuLabel>
+                <DropdownMenuLabel>{userData.name}</DropdownMenuLabel>
                 <DropdownMenuSeparator />
                 <DropdownMenuItem onClick={() => navigate("/profile?tab=info")}>
-                  <div className="flex space-x-2">
-                    <div>
-                      <UserCog />
-                    </div>
-                    <div>
-                      Profile
-                    </div>
-                  </div>
+                  <UserCog />
+                  Profile
                 </DropdownMenuItem>
-                {user?.role === "ADMIN" && (
+                {userData?.role === "ADMIN" && (
                   <DropdownMenuItem onClick={() => navigate("/admin")}>
+                    <LayoutDashboard />
                     Dashboard
                   </DropdownMenuItem>
                 )}
@@ -92,7 +111,7 @@ const Header = () => {
           )}
         </div>
       </div>
-    </header >
+    </header>
   );
 };
 

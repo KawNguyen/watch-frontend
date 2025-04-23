@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { authAPI } from "@/api/auth";
-import { useToast } from "./use-toast";
+import { useToast } from "../use-toast";
 
 interface LoginCredentials {
   email: string;

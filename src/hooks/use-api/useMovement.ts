@@ -1,54 +1,54 @@
 import { useState } from "react";
-import { material } from "@/api/material";
-import { useToast } from "./use-toast";
+import { movement } from "@/api/movement";
+import { useToast } from "../use-toast";
 
-export const useMaterial = () => {
+export const useMovement = () => {
   const { toast } = useToast();
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [materials, setMaterials] = useState([]);
+  const [movements, setMovements] = useState([]);
 
-  const getAllMaterials = async () => {
+  const getAllMovements = async () => {
     try {
       setIsLoading(true);
       setError(null);
-      const data = await material.getAll();
-      setMaterials(data);
-      return data;
+      const res = await movement.getAll();
+      setMovements(res.data.items);
+      return res;
     } catch (err: any) {
-      setError(err.response?.data?.message || "Failed to fetch materials");
+      setError(err.response?.data?.message || "Failed to fetch movements");
     } finally {
       setIsLoading(false);
     }
   };
 
-  const getMaterialById = async (id: string) => {
+  const getMovementById = async (id: string) => {
     try {
       setIsLoading(true);
       setError(null);
-      const data = await material.getById(id);
+      const data = await movement.getById(id);
       return data;
     } catch (err: any) {
-      setError(err.response?.data?.message || "Failed to fetch material");
+      setError(err.response?.data?.message || "Failed to fetch movement");
     } finally {
       setIsLoading(false);
     }
   };
 
-  const createMaterial = async (name: string) => {
+  const createMovement = async (name: string) => {
     try {
       setIsLoading(true);
       setError(null);
-      const data = await material.create(name);
-      await getAllMaterials();
+      const data = await movement.create(name);
+      await getAllMovements();
       toast({
         title: "Success",
-        description: "Material created successfully",
+        description: "Movement created successfully",
         className: "bg-green-500 text-white border-none",
       });
       return data;
     } catch (err: any) {
-      const errorMessage = err.response?.data?.message || "Failed to create material";
+      const errorMessage = err.response?.data?.message || "Failed to create movement";
       setError(errorMessage);
       toast({
         variant: "destructive",
@@ -61,20 +61,20 @@ export const useMaterial = () => {
     }
   };
 
-  const updateMaterial = async (id: string, name: string) => {
+  const updateMovement = async (id: string, name: string) => {
     try {
       setIsLoading(true);
       setError(null);
-      const data = await material.update(id, name);
-      await getAllMaterials();
+      const data = await movement.update(id, name);
+      await getAllMovements();
       toast({
         title: "Success",
-        description: "Material updated successfully",
+        description: "Movement updated successfully",
         className: "bg-green-500 text-white border-none",
       });
       return data;
     } catch (err: any) {
-      const errorMessage = err.response?.data?.message || "Failed to update material";
+      const errorMessage = err.response?.data?.message || "Failed to update movement";
       setError(errorMessage);
       toast({
         variant: "destructive",
@@ -87,19 +87,19 @@ export const useMaterial = () => {
     }
   };
 
-  const deleteMaterial = async (id: string) => {
+  const deleteMovement = async (id: string) => {
     try {
       setIsLoading(true);
       setError(null);
-      await material.delete(id);
-      await getAllMaterials();
+      await movement.delete(id);
+      await getAllMovements();
       toast({
         title: "Success",
-        description: "Material deleted successfully",
+        description: "Movement deleted successfully",
         className: "bg-green-500 text-white border-none",
       });
     } catch (err: any) {
-      const errorMessage = err.response?.data?.message || "Failed to delete material";
+      const errorMessage = err.response?.data?.message || "Failed to delete movement";
       setError(errorMessage);
       toast({
         variant: "destructive",
@@ -113,13 +113,13 @@ export const useMaterial = () => {
   };
 
   return {
-    materials,
+    movements,
     isLoading,
     error,
-    getAllMaterials,
-    getMaterialById,
-    createMaterial,
-    updateMaterial,
-    deleteMaterial,
+    getAllMovements,
+    getMovementById,
+    createMovement,
+    updateMovement,
+    deleteMovement,
   };
 };

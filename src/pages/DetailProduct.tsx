@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
-import { useWatch } from "@/hooks/useWatch";
+import { useWatch } from "@/hooks/use-api/useWatch";
 import { Skeleton } from "@/components/ui/skeleton";
 import { ProductImages } from "@/components/ProductDetail/ProductImages";
 import { ProductInfo } from "@/components/ProductDetail/ProductInfo";

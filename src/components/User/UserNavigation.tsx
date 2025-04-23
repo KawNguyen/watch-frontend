@@ -1,63 +1,55 @@
-import { ShoppingCart, Star, Truck, UserRoundPen } from "lucide-react";
-import { useNavigate, useLocation } from "react-router-dom";
+import { Link, useSearchParams } from "react-router-dom";
+import { User, ShoppingCart, Heart, Package } from "lucide-react";
 
-const routes = [
-    {
-        name: "Account Information",
-        icon: <UserRoundPen />,
-        tab: "info"
-    },
-    {
-        name: "Cart",
-        icon: <ShoppingCart />,
-        tab: "cart"
-    },
-    {
-        name: "Favorites",
-        icon: <Star />,
-        tab: "favorites"
-    },
-    {
-        name: "Orders",
-        icon: <Truck />,
-        tab: "orders"
-    },
+const navigationItems = [
+  {
+    label: "Profile Information",
+    icon: <User className="w-5 h-5" />,
+    href: "?tab=info",
+    value: "info",
+  },
+  {
+    label: "My Cart",
+    icon: <ShoppingCart className="w-5 h-5" />,
+    href: "?tab=cart",
+    value: "cart",
+  },
+  {
+    label: "My Favorites",
+    icon: <Heart className="w-5 h-5" />,
+    href: "?tab=favorites",
+    value: "favorites",
+  },
+  {
+    label: "My Orders",
+    icon: <Package className="w-5 h-5" />,
+    href: "?tab=orders",
+    value: "orders",
+  },
 ];
 
 const UserNavigation = () => {
-    const navigate = useNavigate();
-    const location = useLocation();
+  const [searchParams] = useSearchParams();
+  const currentTab = searchParams.get("tab");
 
-    const handleNavigation = (route: typeof routes[0]) => {
-        navigate({
-            pathname: '/profile',
-            search: `?tab=${route.tab}`
-        });
-    };
-
-    const isActive = (tab: string) => {
-        return new URLSearchParams(location.search).get('tab') === tab;
-    };
-
-    return (
-        <div className="flex flex-row justify-around md:flex-col gap-y-4 border rounded p-4 text-gray-400">
-            {routes.map((route, index) => (
-                <div
-                    key={index}
-                    onClick={() => handleNavigation(route)}
-                    className={`cursor-pointer ${isActive(route.tab)
-                        ? "text-black"
-                        : "hover:text-black duration-200"
-                        }`}
-                >
-                    <div className="flex gap-x-3 items-center justify-center md:justify-start">
-                        <div>{route.icon}</div>
-                        <span className="hidden md:block">{route.name}</span>
-                    </div>
-                </div>
-            ))}
-        </div>
-    );
+  return (
+    <nav className="flex flex-col space-y-1">
+      {navigationItems.map((item) => (
+        <Link
+          key={item.value}
+          to={item.href}
+          className={`flex items-center space-x-3 px-4 py-3 rounded-lg transition-colors ${
+            currentTab === item.value
+              ? "bg-primary text-primary-foreground"
+              : "hover:bg-muted"
+          }`}
+        >
+          {item.icon}
+          <span className="font-medium">{item.label}</span>
+        </Link>
+      ))}
+    </nav>
+  );
 };
 
 export default UserNavigation;

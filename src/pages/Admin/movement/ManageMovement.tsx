@@ -20,7 +20,7 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
-import { useMovement } from "@/hooks/useMovement";
+import { useMovement } from "@/hooks/use-api/useMovement";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Plus } from "lucide-react";
@@ -81,10 +81,6 @@ const ManageMovement = () => {
     getAllMovements();
   }, []);
 
-  const filteredMovements = movements.filter((movement: any) =>
-    movement.name.toLowerCase().includes(searchTerm.toLowerCase())
-  );
-
   if (isLoading)
     return (
       <Card>
@@ -130,7 +126,7 @@ const ManageMovement = () => {
             </TableRow>
           </TableHeader>
           <TableBody>
-            {filteredMovements.map((movement: any) => (
+            {movements.map((movement: any) => (
               <TableRow key={movement.id}>
                 <TableCell className="font-medium">
                   {editingId === movement.id ? (

@@ -3,7 +3,7 @@ import axiosInstance from "@/config/axiosInstance";
 export const bandMaterial = {
   getAll: async () => {
     const response = await axiosInstance.get(`/band-materials`);
-    return response.data;
+    return response?.data;
   },
 
   getById: async (id: string) => {
@@ -27,6 +27,11 @@ export const bandMaterial = {
 
   delete: async (id: string) => {
     const response = await axiosInstance.delete(`/band-materials/delete/${id}`);
+    return response.data;
+  },
+
+  search: async (query: string) => {
+    const response = await axiosInstance.get(`/band-materials/search?name=${query}`);
     return response.data;
   },
 }

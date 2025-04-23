@@ -10,7 +10,9 @@ import { NavMain } from "./nav-main";
 import { TeamSwitcher } from "./team-switcher";
 import { AudioWaveform, Command, GalleryVerticalEnd } from "lucide-react";
 import { NavUser } from "./nav-user";
-import { useAuth } from "@/hooks/useAuth";
+import { useAuth } from "@/hooks/use-api/useAuth";
+import { useUser } from "@/hooks/use-api/useUser";
+import { useEffect, useState } from "react";
 
 const teams = [
   {
@@ -31,8 +33,23 @@ const teams = [
 ];
 
 export function AppSidebar() {
-  const { logout, getUser } = useAuth();
-  const user = getUser();
+  const { logout } = useAuth();
+  const { getUserById } = useUser();
+  const [ user, setUser ] = useState({
+    name: "",
+    email: "",
+    avatar: "",
+  });
+  
+  const fetchUser = async () => {
+    const res = await getUserById();
+    setUser(res);
+  };
+
+  useEffect(() => { 
+    fetchUser();
+  }, []);
+
   return (
     <Sidebar>
       <SidebarHeader>

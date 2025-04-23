@@ -14,7 +14,7 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import { useAuth } from "@/hooks/useAuth";
+import { useAuth } from "@/hooks/use-api/useAuth";
 
 interface LoginFormInputs {
   email: string;

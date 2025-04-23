@@ -8,19 +8,25 @@ import Orders from "@/components/User/Orders";
 const UserPage = () => {
     const [searchParams] = useSearchParams();
     const tab = searchParams.get('tab');
+
     return (
-        <main className="mt-16 md:mt-20 container mx-auto">
-            <div className="py-10 space-y-4">
-                <div className="grid grid-cols-12 gap-4">
-                    <div className="col-span-full md:col-span-3">
-                        <UserNavigation />
-                    </div>
-                    <div className="col-span-full md:col-span-9">
-                        <div className="p-4 border rounded h-full">
-                            {tab === "info" && <Profile />}
-                            {tab === "cart" && <Cart />}
-                            {tab === "favorites" && <Favorites />}
-                            {tab === "orders" && <Orders />}
+        <main className="min-h-screen bg-gray-50">
+            <div className="container mx-auto px-4 py-8">
+                <div className="max-w-7xl mx-auto">
+                    <h1 className="text-3xl font-bold mb-8">My Account</h1>
+                    <div className="grid grid-cols-12 gap-6">
+                        <div className="col-span-full lg:col-span-3">
+                            <div className="bg-white rounded-lg shadow-sm p-4">
+                                <UserNavigation />
+                            </div>
+                        </div>
+                        <div className="col-span-full lg:col-span-9">
+                            <div className="bg-white rounded-lg shadow-sm min-h-[600px]">
+                                {tab === "info" && <Profile />}
+                                {tab === "cart" && <Cart />}
+                                {tab === "favorites" && <Favorites />}
+                                {tab === "orders" && <Orders />}
+                            </div>
                         </div>
                     </div>
                 </div>

@@ -3,7 +3,7 @@ import axiosInstance from "@/config/axiosInstance";
 export const brand = {
   getAll: async () => {
     const response = await axiosInstance.get(`/brands`);
-    return response.data;
+    return response?.data;
   },
 
   getById: async (id: number) => {
@@ -30,6 +30,11 @@ export const brand = {
 
   delete: async (id: number) => {
     const response = await axiosInstance.delete(`/brands/delete/${id}`);
+    return response.data;
+  },
+
+  search: async (query: string) => {
+    const response = await axiosInstance.get(`/brands/search?name=${query}`);
     return response.data;
   },
 };

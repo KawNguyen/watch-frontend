@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { brand } from "@/api/brand";
-import { useToast } from "./use-toast";
+import { useToast } from "../use-toast";
 
 export const useBrand = () => {
   const { toast } = useToast();
@@ -12,9 +12,9 @@ export const useBrand = () => {
     try {
       setIsLoading(true);
       setError(null);
-      const data = await brand.getAll();
-      setBrands(data);
-      return data;
+      const res = await brand.getAll();
+      setBrands(res.data.items);
+      return res;
     } catch (err: any) {
       setError(err.response?.data?.message || "Failed to fetch brands");
     } finally {
@@ -48,7 +48,8 @@ export const useBrand = () => {
       });
       return data;
     } catch (err: any) {
-      const errorMessage = err.response?.data?.message || "Failed to create brand";
+      const errorMessage =
+        err.response?.data?.message || "Failed to create brand";
       setError(errorMessage);
       toast({
         variant: "destructive",
@@ -74,7 +75,8 @@ export const useBrand = () => {
       });
       return data;
     } catch (err: any) {
-      const errorMessage = err.response?.data?.message || "Failed to update brand";
+      const errorMessage =
+        err.response?.data?.message || "Failed to update brand";
       setError(errorMessage);
       toast({
         variant: "destructive",
@@ -99,7 +101,8 @@ export const useBrand = () => {
         className: "bg-green-500 text-white border-none",
       });
     } catch (err: any) {
-      const errorMessage = err.response?.data?.message || "Failed to delete brand";
+      const errorMessage =
+        err.response?.data?.message || "Failed to delete brand";
       setError(errorMessage);
       toast({
         variant: "destructive",
@@ -112,10 +115,20 @@ export const useBrand = () => {
     }
   };
 
+  const search = async (query: string) => {
+    try {
+      const res = await brand.search(query);
+      return res.data.items;
+    } catch (err: any) {
+      setError(err.response?.data?.message || "Failed to search brand");
+    }
+  };
+
   return {
     brands,
     isLoading,
     error,
+    search,
     getAllBrands,
     getBrandById,
     createBrand,

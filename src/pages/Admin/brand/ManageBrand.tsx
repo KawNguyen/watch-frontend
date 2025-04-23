@@ -9,7 +9,7 @@ import {
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { useBrand } from "@/hooks/useBrand";
+import { useBrand } from "@/hooks/use-api/useBrand";
 import { useEffect, useState } from "react";
 import {
   AlertDialog,
@@ -25,6 +25,8 @@ import {
 import { Skeleton } from "@/components/ui/skeleton";
 import { useNavigate } from "react-router-dom";
 import { Plus } from "lucide-react";
+import useDebounce from "@/hooks/useDebounce";
+import Image from "@/components/ui/image";
 
 const BrandTableSkeleton = () => (
   <Table>
@@ -61,15 +63,38 @@ const BrandTableSkeleton = () => (
 );
 
 const ManageBrand = () => {
-  const { brands, isLoading, error, getAllBrands, deleteBrand, updateBrand } =
-    useBrand();
+  const {
+    brands,
+    isLoading,
+    getAllBrands,
+    deleteBrand,
+    updateBrand,
+    search,
+  } = useBrand();
   const [editingId, setEditingId] = useState<number | null>(null);
   const [editData, setEditData] = useState({ name: "", country: "" });
+  const [searchTerm, setSearchTerm] = useState("");
+  const [results, setResults] = useState([]);
   const navigate = useNavigate();
 
   useEffect(() => {
     getAllBrands();
   }, []);
+
+  const debouncedSearchTerm = useDebounce(searchTerm, 300);
+
+  const handleSearch = async () => {
+    if (debouncedSearchTerm) {
+      const response = await search(debouncedSearchTerm);
+      setResults(response);
+    } else {
+      getAllBrands();
+    }
+  };
+
+  useEffect(() => {
+    handleSearch();
+  }, [debouncedSearchTerm]);
 
   const handleEdit = (brand: any) => {
     setEditingId(brand.id);
@@ -106,7 +131,6 @@ const ManageBrand = () => {
         </CardContent>
       </Card>
     );
-  if (error) return <div className="text-red-500">{error}</div>;
 
   return (
     <Card>
@@ -114,7 +138,19 @@ const ManageBrand = () => {
         <div className="flex items-center justify-between">
           <CardTitle>Brand Management</CardTitle>
           <div className="flex space-x-2">
-            <Input placeholder="Search brands..." className="w-[300px]" />
+            <div className="relative">
+              <Input
+                placeholder="Search brands..."
+                className="w-[300px]"
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+              />
+              {searchTerm && (
+                <div className="absolute -bottom-6 left-0 text-sm text-gray-500">
+                  Found {results?.length !== 0 ? `${results.length}` : 0} result
+                </div>
+              )}
+            </div>
             <Button onClick={() => navigate("/admin/brand/add")}>
               <Plus className="mr-2 h-4 w-4" />
               Add Brand
@@ -133,104 +169,117 @@ const ManageBrand = () => {
             </TableRow>
           </TableHeader>
           <TableBody>
-            {brands.map((brand: any) => (
-              <TableRow key={brand.id}>
-                <TableCell className="w-24">
-                  <img
-                    src={brand.logo}
-                    alt={brand.name}
-                    className="w-16 h-16 object-contain"
-                  />
-                </TableCell>
-                <TableCell className="w-64 font-medium">
-                  {editingId === brand.id ? (
-                    <Input
-                      value={editData.name}
-                      onChange={(e) =>
-                        setEditData({ ...editData, name: e.target.value })
-                      }
-                      className="w-full"
-                    />
-                  ) : (
-                    brand.name
-                  )}
-                </TableCell>
-                <TableCell className="w-48">
-                  {editingId === brand.id ? (
-                    <Input
-                      value={editData.country}
-                      onChange={(e) =>
-                        setEditData({ ...editData, country: e.target.value })
-                      }
-                      className="w-full"
-                    />
-                  ) : (
-                    brand.country
-                  )}
-                </TableCell>
-                <TableCell>
-                  <div className="flex space-x-2">
-                    {editingId === brand.id ? (
-                      <>
-                        <Button
-                          size="sm"
-                          className="h-8 px-3"
-                          onClick={() => handleSave(brand.id)}
-                        >
-                          Save
-                        </Button>
-                        <Button
-                          size="sm"
-                          className="h-8 px-3"
-                          variant="ghost"
-                          onClick={() => setEditingId(null)}
-                        >
-                          Cancel
-                        </Button>
-                      </>
-                    ) : (
-                      <>
-                        <Button
-                          size="sm"
-                          className="h-8 px-3"
-                          onClick={() => handleEdit(brand)}
-                        >
-                          Edit
-                        </Button>
-                        <AlertDialog>
-                          <AlertDialogTrigger asChild>
-                            <Button
-                              size="sm"
-                              className="h-8 px-3"
-                              variant="destructive"
-                            >
-                              Delete
-                            </Button>
-                          </AlertDialogTrigger>
-                          <AlertDialogContent>
-                            <AlertDialogHeader>
-                              <AlertDialogTitle>Delete Brand</AlertDialogTitle>
-                              <AlertDialogDescription>
-                                Are you sure you want to delete {brand.name}?
-                                This action cannot be undone.
-                              </AlertDialogDescription>
-                            </AlertDialogHeader>
-                            <AlertDialogFooter>
-                              <AlertDialogCancel>Cancel</AlertDialogCancel>
-                              <AlertDialogAction
-                                onClick={() => handleDelete(brand.id)}
-                              >
-                                Delete
-                              </AlertDialogAction>
-                            </AlertDialogFooter>
-                          </AlertDialogContent>
-                        </AlertDialog>
-                      </>
-                    )}
-                  </div>
+            {(searchTerm ? results : brands)?.length === 0 ? (
+              <TableRow>
+                <TableCell
+                  colSpan={4}
+                  className="text-center py-10 text-muted-foreground"
+                >
+                  No brands found
                 </TableCell>
               </TableRow>
-            ))}
+            ) : (
+              (searchTerm ? results : brands)?.map((brand: any) => (
+                <TableRow key={brand.id}>
+                  <TableCell className="w-24">
+                    <Image
+                      src={brand.logo}
+                      alt={brand.name}
+                      className="w-16 h-16 object-contain"
+                    />
+                  </TableCell>
+                  <TableCell className="w-64 font-medium">
+                    {editingId === brand.id ? (
+                      <Input
+                        value={editData.name}
+                        onChange={(e) =>
+                          setEditData({ ...editData, name: e.target.value })
+                        }
+                        className="w-full"
+                      />
+                    ) : (
+                      brand.name
+                    )}
+                  </TableCell>
+                  <TableCell className="w-48">
+                    {editingId === brand.id ? (
+                      <Input
+                        value={editData.country}
+                        onChange={(e) =>
+                          setEditData({ ...editData, country: e.target.value })
+                        }
+                        className="w-full"
+                      />
+                    ) : (
+                      brand.country
+                    )}
+                  </TableCell>
+                  <TableCell>
+                    <div className="flex space-x-2">
+                      {editingId === brand.id ? (
+                        <>
+                          <Button
+                            size="sm"
+                            className="h-8 px-3"
+                            onClick={() => handleSave(brand.id)}
+                          >
+                            Save
+                          </Button>
+                          <Button
+                            size="sm"
+                            className="h-8 px-3"
+                            variant="ghost"
+                            onClick={() => setEditingId(null)}
+                          >
+                            Cancel
+                          </Button>
+                        </>
+                      ) : (
+                        <>
+                          <Button
+                            size="sm"
+                            className="h-8 px-3"
+                            onClick={() => handleEdit(brand)}
+                          >
+                            Edit
+                          </Button>
+                          <AlertDialog>
+                            <AlertDialogTrigger asChild>
+                              <Button
+                                size="sm"
+                                className="h-8 px-3"
+                                variant="destructive"
+                              >
+                                Delete
+                              </Button>
+                            </AlertDialogTrigger>
+                            <AlertDialogContent>
+                              <AlertDialogHeader>
+                                <AlertDialogTitle>
+                                  Delete Brand
+                                </AlertDialogTitle>
+                                <AlertDialogDescription>
+                                  Are you sure you want to delete {brand.name}?
+                                  This action cannot be undone.
+                                </AlertDialogDescription>
+                              </AlertDialogHeader>
+                              <AlertDialogFooter>
+                                <AlertDialogCancel>Cancel</AlertDialogCancel>
+                                <AlertDialogAction
+                                  onClick={() => handleDelete(brand.id)}
+                                >
+                                  Delete
+                                </AlertDialogAction>
+                              </AlertDialogFooter>
+                            </AlertDialogContent>
+                          </AlertDialog>
+                        </>
+                      )}
+                    </div>
+                  </TableCell>
+                </TableRow>
+              ))
+            )}
           </TableBody>
         </Table>
       </CardContent>

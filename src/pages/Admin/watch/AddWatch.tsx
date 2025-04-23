@@ -10,14 +10,14 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { useWatch } from "@/hooks/useWatch";
-import { useBrand } from "@/hooks/useBrand";
-import { useMaterial } from "@/hooks/useMaterial";
-import { useBandMaterial } from "@/hooks/useBandMaterial";
+import { useWatch } from "@/hooks/use-api/useWatch";
+import { useBrand } from "@/hooks/use-api/useBrand";
+import { useMaterial } from "@/hooks/use-api/useMaterial";
+import { useBandMaterial } from "@/hooks/use-api/useBandMaterial";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { ArrowLeft } from "lucide-react";
-import { useMovement } from "@/hooks/useMovement";
+import { useMovement } from "@/hooks/use-api/useMovement";
 
 const AddWatch = () => {
   const navigate = useNavigate();

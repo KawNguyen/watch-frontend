@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { watch } from "@/api/watch";
-import { useToast } from "./use-toast";
+import { useToast } from "../use-toast";
 
 export const useWatch = () => {
   const { toast } = useToast();
@@ -113,7 +113,6 @@ export const useWatch = () => {
   };
 
   const searchWatches = async (query: string) => {
-    setError(null);
     try {
       const data = await watch.search(query);
       return data;

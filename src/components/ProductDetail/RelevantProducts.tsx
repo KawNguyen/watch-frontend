@@ -1,4 +1,4 @@
-import { useWatch } from "@/hooks/useWatch";
+import { useWatch } from "@/hooks/use-api/useWatch";
 import { useState, useEffect } from "react";
 import { ProductCard } from "../ProductCard";
 

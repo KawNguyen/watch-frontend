@@ -2,7 +2,7 @@ import { useForm } from "react-hook-form";
 import { Link } from "react-router-dom";
 import { useState } from "react";
 import { Mail, Lock, User, LogIn, Eye, EyeOff } from "lucide-react";
-import { useAuth } from "@/hooks/useAuth";
+import { useAuth } from "@/hooks/use-api/useAuth";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {

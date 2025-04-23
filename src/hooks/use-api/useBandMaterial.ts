@@ -1,54 +1,54 @@
 import { useState } from "react";
-import { movement } from "@/api/movement";
-import { useToast } from "./use-toast";
+import { bandMaterial } from "@/api/bandMaterial";
+import { useToast } from "../use-toast";
 
-export const useMovement = () => {
+export const useBandMaterial = () => {
   const { toast } = useToast();
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [movements, setMovements] = useState([]);
+  const [bandMaterials, setBandMaterials] = useState([]);
 
-  const getAllMovements = async () => {
+  const getAllBandMaterials = async () => {
     try {
       setIsLoading(true);
       setError(null);
-      const data = await movement.getAll();
-      setMovements(data);
-      return data;
+      const res = await bandMaterial.getAll();
+      setBandMaterials(res.data.items);
+      return res;
     } catch (err: any) {
-      setError(err.response?.data?.message || "Failed to fetch movements");
+      setError(err.response?.data?.message || "Failed to fetch band materials");
     } finally {
       setIsLoading(false);
     }
   };
 
-  const getMovementById = async (id: string) => {
+  const getBandMaterialById = async (id: string) => {
     try {
       setIsLoading(true);
       setError(null);
-      const data = await movement.getById(id);
+      const data = await bandMaterial.getById(id);
       return data;
     } catch (err: any) {
-      setError(err.response?.data?.message || "Failed to fetch movement");
+      setError(err.response?.data?.message || "Failed to fetch band material");
     } finally {
       setIsLoading(false);
     }
   };
 
-  const createMovement = async (name: string) => {
+  const createBandMaterial = async (name: string) => {
     try {
       setIsLoading(true);
       setError(null);
-      const data = await movement.create(name);
-      await getAllMovements();
+      const data = await bandMaterial.create(name);
+      await getAllBandMaterials();
       toast({
         title: "Success",
-        description: "Movement created successfully",
+        description: "Band material created successfully",
         className: "bg-green-500 text-white border-none",
       });
       return data;
     } catch (err: any) {
-      const errorMessage = err.response?.data?.message || "Failed to create movement";
+      const errorMessage = err.response?.data?.message || "Failed to create band material";
       setError(errorMessage);
       toast({
         variant: "destructive",
@@ -61,20 +61,20 @@ export const useMovement = () => {
     }
   };
 
-  const updateMovement = async (id: string, name: string) => {
+  const updateBandMaterial = async (id: string, name: string) => {
     try {
       setIsLoading(true);
       setError(null);
-      const data = await movement.update(id, name);
-      await getAllMovements();
+      const data = await bandMaterial.update(id, name);
+      await getAllBandMaterials();
       toast({
         title: "Success",
-        description: "Movement updated successfully",
+        description: "Band material updated successfully",
         className: "bg-green-500 text-white border-none",
       });
       return data;
     } catch (err: any) {
-      const errorMessage = err.response?.data?.message || "Failed to update movement";
+      const errorMessage = err.response?.data?.message || "Failed to update band material";
       setError(errorMessage);
       toast({
         variant: "destructive",
@@ -87,19 +87,19 @@ export const useMovement = () => {
     }
   };
 
-  const deleteMovement = async (id: string) => {
+  const deleteBandMaterial = async (id: string) => {
     try {
       setIsLoading(true);
       setError(null);
-      await movement.delete(id);
-      await getAllMovements();
+      await bandMaterial.delete(id);
+      await getAllBandMaterials();
       toast({
         title: "Success",
-        description: "Movement deleted successfully",
+        description: "Band material deleted successfully",
         className: "bg-green-500 text-white border-none",
       });
     } catch (err: any) {
-      const errorMessage = err.response?.data?.message || "Failed to delete movement";
+      const errorMessage = err.response?.data?.message || "Failed to delete band material";
       setError(errorMessage);
       toast({
         variant: "destructive",
@@ -113,13 +113,13 @@ export const useMovement = () => {
   };
 
   return {
-    movements,
+    bandMaterials,
     isLoading,
     error,
-    getAllMovements,
-    getMovementById,
-    createMovement,
-    updateMovement,
-    deleteMovement,
+    getAllBandMaterials,
+    getBandMaterialById,
+    createBandMaterial,
+    updateBandMaterial,
+    deleteBandMaterial,
   };
 };

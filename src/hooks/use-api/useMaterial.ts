@@ -1,54 +1,54 @@
 import { useState } from "react";
-import { bandMaterial } from "@/api/bandMaterial";
-import { useToast } from "./use-toast";
+import { material } from "@/api/material";
+import { useToast } from "../use-toast";
 
-export const useBandMaterial = () => {
+export const useMaterial = () => {
   const { toast } = useToast();
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [bandMaterials, setBandMaterials] = useState([]);
+  const [materials, setMaterials] = useState([]);
 
-  const getAllBandMaterials = async () => {
+  const getAllMaterials = async () => {
     try {
       setIsLoading(true);
       setError(null);
-      const data = await bandMaterial.getAll();
-      setBandMaterials(data);
-      return data;
+      const res = await material.getAll();
+      setMaterials(res.data.items);
+      return res;
     } catch (err: any) {
-      setError(err.response?.data?.message || "Failed to fetch band materials");
+      setError(err.response?.data?.message || "Failed to fetch materials");
     } finally {
       setIsLoading(false);
     }
   };
 
-  const getBandMaterialById = async (id: string) => {
+  const getMaterialById = async (id: string) => {
     try {
       setIsLoading(true);
       setError(null);
-      const data = await bandMaterial.getById(id);
+      const data = await material.getById(id);
       return data;
     } catch (err: any) {
-      setError(err.response?.data?.message || "Failed to fetch band material");
+      setError(err.response?.data?.message || "Failed to fetch material");
     } finally {
       setIsLoading(false);
     }
   };
 
-  const createBandMaterial = async (name: string) => {
+  const createMaterial = async (name: string) => {
     try {
       setIsLoading(true);
       setError(null);
-      const data = await bandMaterial.create(name);
-      await getAllBandMaterials();
+      const data = await material.create(name);
+      await getAllMaterials();
       toast({
         title: "Success",
-        description: "Band material created successfully",
+        description: "Material created successfully",
         className: "bg-green-500 text-white border-none",
       });
       return data;
     } catch (err: any) {
-      const errorMessage = err.response?.data?.message || "Failed to create band material";
+      const errorMessage = err.response?.data?.message || "Failed to create material";
       setError(errorMessage);
       toast({
         variant: "destructive",
@@ -61,20 +61,20 @@ export const useBandMaterial = () => {
     }
   };
 
-  const updateBandMaterial = async (id: string, name: string) => {
+  const updateMaterial = async (id: string, name: string) => {
     try {
       setIsLoading(true);
       setError(null);
-      const data = await bandMaterial.update(id, name);
-      await getAllBandMaterials();
+      const data = await material.update(id, name);
+      await getAllMaterials();
       toast({
         title: "Success",
-        description: "Band material updated successfully",
+        description: "Material updated successfully",
         className: "bg-green-500 text-white border-none",
       });
       return data;
     } catch (err: any) {
-      const errorMessage = err.response?.data?.message || "Failed to update band material";
+      const errorMessage = err.response?.data?.message || "Failed to update material";
       setError(errorMessage);
       toast({
         variant: "destructive",
@@ -87,19 +87,19 @@ export const useBandMaterial = () => {
     }
   };
 
-  const deleteBandMaterial = async (id: string) => {
+  const deleteMaterial = async (id: string) => {
     try {
       setIsLoading(true);
       setError(null);
-      await bandMaterial.delete(id);
-      await getAllBandMaterials();
+      await material.delete(id);
+      await getAllMaterials();
       toast({
         title: "Success",
-        description: "Band material deleted successfully",
+        description: "Material deleted successfully",
         className: "bg-green-500 text-white border-none",
       });
     } catch (err: any) {
-      const errorMessage = err.response?.data?.message || "Failed to delete band material";
+      const errorMessage = err.response?.data?.message || "Failed to delete material";
       setError(errorMessage);
       toast({
         variant: "destructive",
@@ -113,13 +113,13 @@ export const useBandMaterial = () => {
   };
 
   return {
-    bandMaterials,
+    materials,
     isLoading,
     error,
-    getAllBandMaterials,
-    getBandMaterialById,
-    createBandMaterial,
-    updateBandMaterial,
-    deleteBandMaterial,
+    getAllMaterials,
+    getMaterialById,
+    createMaterial,
+    updateMaterial,
+    deleteMaterial,
   };
 };

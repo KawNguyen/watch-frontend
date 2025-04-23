@@ -21,7 +21,7 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
-import { useBandMaterial } from "@/hooks/useBandMaterial";
+import { useBandMaterial } from "@/hooks/use-api/useBandMaterial";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Plus } from "lucide-react";

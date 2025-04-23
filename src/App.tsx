@@ -1,5 +1,4 @@
 import { Route, Routes } from "react-router-dom";
-import { useAuth } from "./hooks/useAuth";
 import MainLayout from "./layouts/MainLayout";
 import HomePage from "./pages/HomePage";
 import NotFoundPage from "./pages/NotFoundPage";
@@ -27,12 +26,24 @@ import AddMovement from "./pages/Admin/movement/AddMovement";
 import ListProductPage from "./pages/ListProductPage";
 import DetailProduct from "./pages/DetailProduct";
 import CreateOrders from "./pages/Admin/create-orders/CreateOrders";
-import CustomerManage from "./components/CustomerManage";
+import ManageCustomer from "./pages/Admin/customer/ManageCustomer";
+import { useUser } from "./hooks/use-api/useUser";
+import { useEffect, useState } from "react";
 
 const App = () => {
-  const { getUser } = useAuth();
-  const user = getUser();
+  const { getUserById } = useUser();
+  const [ user, setUser ] = useState({
+    role: "",
+  });
+  
+  const fetchUser = async () => {
+    const res = await getUserById();
+    setUser(res);
+  };
 
+  useEffect(() => { 
+    fetchUser();
+  }, []);
   return (
     <Routes>
       <Route path="/" element={<MainLayout />}>
@@ -71,7 +82,7 @@ const App = () => {
         <Route path="/admin/movement/list" element={<ManageMovement />} />
         <Route path="/admin/movement/add" element={<AddMovement />} />
         <Route path="/admin/createOrders/add" element={<CreateOrders />} />
-        <Route path="/admin/userList/list" element={<CustomerManage />} />
+        <Route path="/admin/userList/list" element={<ManageCustomer />} />
       </Route>
       <Route path="/*" element={<NotFoundPage />} />
     </Routes>
