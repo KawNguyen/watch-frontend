@@ -1,8 +1,6 @@
 import { ClockIcon, ShieldIcon, AwardIcon, RefreshCwIcon } from 'lucide-react'
 import { ProductTrailer } from './ProductTrailer';
-interface ProductNameProps {
-    name: string;
-}
+
 const features = [
     {
         icon: ClockIcon,
@@ -40,7 +38,7 @@ const specifications = [
         value: "2 Years"
     }
 ];
-export const ProductFeatures = ({ name }: ProductNameProps) => {
+export const ProductFeatures = ({ watch }: any) => {
     return (
         <section className="py-16 m-4 rounded-md bg-gray-50">
             <div className="container mx-auto px-4 sm:px-6 lg:px-8">
@@ -51,7 +49,7 @@ export const ProductFeatures = ({ name }: ProductNameProps) => {
                     <p className="mt-4 text-lg text-gray-600 w-full mx-auto">
                         The
                         <span className='m-1 strong font-bold'>
-                            {name}
+                            {watch?.name}
                         </span>
                         is not only just a watch but also a testament to precision and craftsmanship.
                     </p>
@@ -82,7 +80,7 @@ export const ProductFeatures = ({ name }: ProductNameProps) => {
                     </div>
                 </div>
                 <div className="w-full h-full mt-16">
-                    <ProductTrailer videoUrl="https://www.youtube.com/watch?v=YZnf8jaNxmQ" />
+                    <ProductTrailer  videoUrl={watch?.videoUrl} />
                 </div>
             </div>
         </section>

@@ -119,7 +119,7 @@ const ManageWatch = () => {
         </div>
       </CardHeader>
       <CardContent>
-        {isLoading ? (
+        {isLoading("getAll") ? (
           <WatchTableSkeleton />
         ) : (
           <Table>

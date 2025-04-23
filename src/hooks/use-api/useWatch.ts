@@ -1,43 +1,46 @@
 import { useState } from "react";
 import { watch } from "@/api/watch";
 import { useToast } from "../use-toast";
+import { useLoading } from "../use-loading";
 
 export const useWatch = () => {
   const { toast } = useToast();
-  const [isLoading, setIsLoading] = useState(false);
+  const { startLoading, stopLoading, isLoading } = useLoading();
   const [error, setError] = useState<string | null>(null);
   const [watches, setWatches] = useState([]);
 
   const getAllWatches = async () => {
+    const key = "getAll";
+    startLoading(key);
     try {
-      setIsLoading(true);
       setError(null);
-      const data = await watch.getAll();
-      setWatches(data);
-      return data;
+      const res = await watch.getAll();
+      setWatches(res.data.items);
     } catch (err: any) {
       setError(err.response?.data?.message || "Failed to fetch watches");
     } finally {
-      setIsLoading(false);
+      stopLoading(key);
     }
   };
 
   const getWatchById = async (id: string) => {
+    const key = "getById";
+    startLoading(key);
     try {
-      setIsLoading(true);
       setError(null);
-      const data = await watch.getById(id);
-      return data;
+      const res = await watch.getById(id);
+      return res.data.item;
     } catch (err: any) {
       setError(err.response?.data?.message || "Failed to fetch watch");
     } finally {
-      setIsLoading(false);
+      stopLoading(key);
     }
   };
 
   const createWatch = async (watchData: WatchData) => {
+    const key = "create";
+    startLoading(key);
     try {
-      setIsLoading(true);
       setError(null);
       const data = await watch.create(watchData);
       await getAllWatches();
@@ -57,15 +60,16 @@ export const useWatch = () => {
         className: "bg-red-500 text-white border-none",
       });
     } finally {
-      setIsLoading(false);
+      stopLoading(key);
     }
   };
 
-  const updateWatch = async (watchData: UpdateWatchData) => {
+  const updateWatch = async (id: string, watchData: WatchData) => {
+    const key = "update";
+    startLoading(key);
     try {
-      setIsLoading(true);
       setError(null);
-      const data = await watch.update(watchData);
+      const data = await watch.update(id, watchData);
       await getAllWatches();
       toast({
         title: "Success",
@@ -83,13 +87,14 @@ export const useWatch = () => {
         className: "bg-red-500 text-white border-none",
       });
     } finally {
-      setIsLoading(false);
+      stopLoading(key);
     }
   };
 
   const deleteWatch = async (id: string) => {
+    const key = "delete";
+    startLoading(key);
     try {
-      setIsLoading(true);
       setError(null);
       await watch.delete(id);
       await getAllWatches();
@@ -108,29 +113,48 @@ export const useWatch = () => {
         className: "bg-red-500 text-white border-none",
       });
     } finally {
-      setIsLoading(false);
+      stopLoading(key);
     }
   };
 
   const searchWatches = async (query: string) => {
+    const key = "search";
+    startLoading(key);
     try {
       const data = await watch.search(query);
       return data;
     } catch (err) {
       setError("Failed to search watches");
       throw err;
-    } 
+    } finally {
+      stopLoading(key);
+    }
+  };
+
+  const getWatchesByBrand = async (brandId: string) => {
+    const key = "getByBrand";
+    startLoading(key);
+    try {
+      const res = await watch.getByBrand(brandId);
+      return res.data.items;
+    } catch (err) {
+      setError("Failed to get watches by brand");
+      throw err;
+    } finally {
+      stopLoading(key);
+    }
   };
 
   return {
     watches,
-    isLoading,
     error,
+    isLoading,
     getAllWatches,
     getWatchById,
     createWatch,
     updateWatch,
     deleteWatch,
     searchWatches,
+    getWatchesByBrand,
   };
 };

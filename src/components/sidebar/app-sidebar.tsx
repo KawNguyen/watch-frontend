@@ -12,7 +12,7 @@ import { AudioWaveform, Command, GalleryVerticalEnd } from "lucide-react";
 import { NavUser } from "./nav-user";
 import { useAuth } from "@/hooks/use-api/useAuth";
 import { useUser } from "@/hooks/use-api/useUser";
-import { useEffect, useState } from "react";
+
 
 const teams = [
   {
@@ -34,21 +34,7 @@ const teams = [
 
 export function AppSidebar() {
   const { logout } = useAuth();
-  const { getUserById } = useUser();
-  const [ user, setUser ] = useState({
-    name: "",
-    email: "",
-    avatar: "",
-  });
-  
-  const fetchUser = async () => {
-    const res = await getUserById();
-    setUser(res);
-  };
-
-  useEffect(() => { 
-    fetchUser();
-  }, []);
+  const { userData } = useUser();
 
   return (
     <Sidebar>
@@ -61,7 +47,7 @@ export function AppSidebar() {
         </SidebarGroupContent>
       </SidebarContent>
       <SidebarFooter>
-        <NavUser user={user} logout={logout} />
+        <NavUser user={userData} logout={logout} />
       </SidebarFooter>
     </Sidebar>
   );

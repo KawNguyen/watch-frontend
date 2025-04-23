@@ -1,14 +1,11 @@
-import React from 'react';
-
 interface VideoPlayerProps {
-    videoUrl: string;
+    videoUrl?: string;
 }
 
 export const ProductTrailer = ({ videoUrl }: VideoPlayerProps) => {
-    // Extract video ID from YouTube URL
-    const getYouTubeVideoId = (url: string) => {
+    const getYouTubeVideoId = (url?: string) => {
         const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=)([^#&?]*).*/;
-        const match = url.match(regExp);
+        const match = url?.match(regExp);
         return match && match[2].length === 11 ? match[2] : null;
     };
 

@@ -12,18 +12,19 @@ import {
 } from "@/components/ui/tooltip";
 import { useNavigate } from "react-router-dom";
 
-interface WatchData {
+interface ProductCardProps  {
   id: string;
   name: string;
   price: number;
   images: { url: string }[];
 }
 
-const ProductCard = ({ product }: { product: WatchData }) => {
+const ProductCard = ({ product }: { product: ProductCardProps }) => {
   const navigate = useNavigate();
   return (
     <Card
       className="group relative overflow-hidden cursor-pointer hover:shadow-lg transition-shadow"
+      onClick={() => navigate(`/product/${product?.id}`)}
     >
       <div className="relative w-full h-80 overflow-hidden">
         <AspectRatio ratio={1} className="w-full">

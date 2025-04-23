@@ -21,10 +21,10 @@ interface WatchData {
   materialId: string;
   bandMaterialId: string;
   movementId: string;
-  stock: number;
   diameter: number;
   waterResistance: number;
   warranty: number;
+  videoUrl: string;
   images: { url: string }[];
 }
 

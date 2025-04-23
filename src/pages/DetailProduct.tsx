@@ -7,7 +7,6 @@ import { ProductInfo } from "@/components/ProductDetail/ProductInfo";
 import { ProductTabs } from "@/components/ProductDetail/ProductTabs";
 import { ProductName } from "@/components/ProductDetail/ProductName";
 import { ProductFeatures } from "@/components/ProductDetail/ProductFetures";
-import { ProductTrailer } from "@/components/ProductDetail/ProductTrailer";
 import { RelevantProducts } from "@/components/ProductDetail/RelevantProducts";
 
 const DetailProduct = () => {
@@ -21,7 +20,6 @@ const DetailProduct = () => {
     if (id) {
       try {
         const data = await getWatchById(id);
-        console.log(data)
         setWatch(data);
       } catch (error) {
         console.error("Failed to fetch watch:", error);
@@ -63,8 +61,8 @@ const DetailProduct = () => {
         </div>
       </div>
       <div>
-        <ProductFeatures name={watch.name} />
-        <RelevantProducts currentProductId={watch.id} category={watch.category} />
+        <ProductFeatures watch={watch} />
+        <RelevantProducts currentProductId={watch.id} brandId={watch.brand?.id} />
       </div>
     </div>
   );

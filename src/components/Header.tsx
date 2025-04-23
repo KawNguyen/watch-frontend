@@ -19,31 +19,10 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import Image from "./ui/image";
-import { useUser } from "@/hooks/use-api/useUser";
-import { useEffect, useState } from "react";
 
 const Header = () => {
-  const { isAuthenticated, logout } = useAuth();
-  const { getUserById } = useUser();
-  const [userData, setUserData] = useState({
-    name: "",
-    avatar: "",
-    role: "",
-    email: "",
-  });
-  
-  const fetchUserData = async () => {
-    const data = await getUserById();
-    console.log(data)
-    setUserData(data);
-  };
-
-  console.log(userData?.role)
-
-  useEffect(() => {
-    fetchUserData();
-    console.log("a")
-  }, []);
+  const { isAuthenticated, logout, getUser } = useAuth();
+  const user = getUser();
 
   const navigate = useNavigate();
 
@@ -78,20 +57,20 @@ const Header = () => {
             <DropdownMenu>
               <DropdownMenuTrigger className="flex items-center space-x-2 outline-none">
                 <Avatar>
-                  <AvatarImage src={userData?.avatar} />
+                  <AvatarImage src={user?.avatar} />
                   <AvatarFallback>
-                    {userData?.name?.charAt(0).toUpperCase()}
+                    {user?.name?.charAt(0).toUpperCase()}
                   </AvatarFallback>
                 </Avatar>
               </DropdownMenuTrigger>
               <DropdownMenuContent>
-                <DropdownMenuLabel>{userData.name}</DropdownMenuLabel>
+                <DropdownMenuLabel>{user.name}</DropdownMenuLabel>
                 <DropdownMenuSeparator />
                 <DropdownMenuItem onClick={() => navigate("/profile?tab=info")}>
                   <UserCog />
                   Profile
                 </DropdownMenuItem>
-                {userData?.role === "ADMIN" && (
+                {user?.role === "ADMIN" && (
                   <DropdownMenuItem onClick={() => navigate("/admin")}>
                     <LayoutDashboard />
                     Dashboard

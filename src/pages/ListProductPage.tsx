@@ -27,7 +27,7 @@ const ListProductPage = () => {
     isLoading: isMovementLoading,
     getAllMovements,
   } = useMovement();
-  const { watches, isLoading: isWatchLoading, getAllWatches } = useWatch();
+  const { watches, isLoading, getAllWatches } = useWatch();
 
   useEffect(() => {
     getAllBrands();
@@ -70,7 +70,7 @@ const ListProductPage = () => {
         </ProductSidebar>
 
         <div className="w-full">
-          <ProductGrid isLoading={isWatchLoading} products={watches} />
+          <ProductGrid isLoading={isLoading("getAll")} products={watches} />
         </div>
       </div>
     </div>

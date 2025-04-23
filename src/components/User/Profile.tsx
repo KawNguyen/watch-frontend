@@ -261,7 +261,7 @@ const Profile = () => {
                 </div>
                 <div className="flex justify-end">
                   <Button onClick={handleAvatarUrlSubmit} disabled={!avatarUrl}>
-                    Save
+                    Update Picture
                   </Button>
                 </div>
               </div>

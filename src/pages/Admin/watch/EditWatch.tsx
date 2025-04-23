@@ -14,24 +14,27 @@ import { useWatch } from "@/hooks/use-api/useWatch";
 import { useBrand } from "@/hooks/use-api/useBrand";
 import { useMaterial } from "@/hooks/use-api/useMaterial";
 import { useBandMaterial } from "@/hooks/use-api/useBandMaterial";
-import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
-import { ArrowLeft } from "lucide-react";
 import { useMovement } from "@/hooks/use-api/useMovement";
+import { useState, useEffect } from "react";
+import { useNavigate, useParams } from "react-router-dom";
+import { ArrowLeft } from "lucide-react";
 
-const AddWatch = () => {
+const EditWatch = () => {
+  const { id } = useParams();
   const navigate = useNavigate();
-  const { createWatch, isLoading } = useWatch();
+  const { getWatchById, updateWatch, isLoading } = useWatch();
   const { brands, getAllBrands } = useBrand();
   const { materials, getAllMaterials } = useMaterial();
   const { bandMaterials, getAllBandMaterials } = useBandMaterial();
   const { movements, getAllMovements } = useMovement();
-  // Modify the formData state
+  const [imageUrl, setImageUrl] = useState("");
+
+
   const [formData, setFormData] = useState({
     name: "",
     description: "",
     price: 0,
-    gender: "MALE",
+    gender: "",
     brandId: "",
     materialId: "",
     bandMaterialId: "",
@@ -39,44 +42,58 @@ const AddWatch = () => {
     diameter: 0,
     waterResistance: 0,
     warranty: 0,
-    videoUrl: "", // Add video URL instead of stock
+    videoUrl: "",
     images: [] as { url: string }[],
   });
 
+  const fetchData = async () => {
+    const watch = id ? await getWatchById(id) : null;
+    if (watch) {
+      setFormData({
+        name: watch.name,
+        description: watch.description,
+        price: watch.price,
+        gender: watch.gender,
+        brandId: watch.brand?.id || "",
+        materialId: watch.material?.id || "",
+        bandMaterialId: watch.bandMaterial?.id || "",
+        movementId: watch.movement?.id || "",
+        diameter: watch.diameter,
+        waterResistance: watch.waterResistance,
+        warranty: watch.warranty,
+        videoUrl: watch.videoUrl || "",
+        images: watch.images || [],
+      });
+    }
+  };
+  
   useEffect(() => {
     getAllBrands();
     getAllMaterials();
     getAllBandMaterials();
     getAllMovements();
-  }, []);
-
-  // Add after the band material select component
-  <div className="space-y-2">
-    <Label htmlFor="movement">Movement</Label>
-    <Select
-      value={formData.movementId}
-      onValueChange={(value) => setFormData({ ...formData, movementId: value })}
-    >
-      <SelectTrigger>
-        <SelectValue placeholder="Select movement" />
-      </SelectTrigger>
-      <SelectContent>
-        {movements.map((movement: any) => (
-          <SelectItem key={movement.id} value={movement.id}>
-            {movement.name}
-          </SelectItem>
-        ))}
-      </SelectContent>
-    </Select>
-  </div>;
+    fetchData();
+  }, [id]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    await createWatch(formData as WatchData);
-    navigate("/admin/watch/list");
+    if (id) {
+      const formattedData = {
+        ...formData,
+        gender: formData.gender as WatchGender,
+        images: {
+          deleteMany: {},
+          create: formData.images.map(img => ({
+            url: img.url
+          }))
+        }
+      };
+      
+      await updateWatch(id, formattedData as any);
+      navigate("/admin/watch/list");
+    }
   };
 
-  const [imageUrl, setImageUrl] = useState("");
 
   const handleImageUrlAdd = () => {
     if (imageUrl.trim()) {
@@ -95,7 +112,6 @@ const AddWatch = () => {
     });
   };
 
-  // In the form JSX, replace the stock input with video URL
   return (
     <Card>
       <CardHeader>
@@ -107,7 +123,7 @@ const AddWatch = () => {
           >
             <ArrowLeft className="h-4 w-4" />
           </Button>
-          <CardTitle>Add New Watch</CardTitle>
+          <CardTitle>Edit Watch</CardTitle>
         </div>
       </CardHeader>
       <CardContent>
@@ -118,7 +134,9 @@ const AddWatch = () => {
               <Input
                 id="name"
                 value={formData.name}
-                onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                onChange={(e) =>
+                  setFormData({ ...formData, name: e.target.value })
+                }
                 required
               />
             </div>
@@ -129,7 +147,9 @@ const AddWatch = () => {
                 id="price"
                 type="number"
                 value={formData.price}
-                onChange={(e) => setFormData({ ...formData, price: Number(e.target.value) })}
+                onChange={(e) =>
+                  setFormData({ ...formData, price: Number(e.target.value) })
+                }
                 required
               />
             </div>
@@ -140,7 +160,9 @@ const AddWatch = () => {
                 id="videoUrl"
                 type="url"
                 value={formData.videoUrl}
-                onChange={(e) => setFormData({ ...formData, videoUrl: e.target.value })}
+                onChange={(e) =>
+                  setFormData({ ...formData, videoUrl: e.target.value })
+                }
                 placeholder="Enter video URL"
               />
             </div>
@@ -149,7 +171,9 @@ const AddWatch = () => {
               <Label htmlFor="gender">Gender</Label>
               <Select
                 value={formData.gender}
-                onValueChange={(value) => setFormData({ ...formData, gender: value })}
+                onValueChange={(value) =>
+                  setFormData({ ...formData, gender: value })
+                }
               >
                 <SelectTrigger>
                   <SelectValue placeholder="Select gender" />
@@ -163,14 +187,17 @@ const AddWatch = () => {
             </div>
 
             <div className="col-span-full mt-6">
-              <h3 className="text-lg font-medium mb-4">Technical Specifications</h3>
+              <h3 className="text-lg font-medium mb-4">
+                Technical Specifications
+              </h3>
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                {/* Brand Select */}
                 <div className="space-y-2">
                   <Label htmlFor="brand">Brand</Label>
                   <Select
                     value={formData.brandId}
-                    onValueChange={(value) => setFormData({ ...formData, brandId: value })}
+                    onValueChange={(value) =>
+                      setFormData({ ...formData, brandId: value })
+                    }
                   >
                     <SelectTrigger>
                       <SelectValue placeholder="Select brand" />
@@ -185,12 +212,13 @@ const AddWatch = () => {
                   </Select>
                 </div>
 
-                {/* Material Select */}
                 <div className="space-y-2">
                   <Label htmlFor="material">Case Material</Label>
                   <Select
                     value={formData.materialId}
-                    onValueChange={(value) => setFormData({ ...formData, materialId: value })}
+                    onValueChange={(value) =>
+                      setFormData({ ...formData, materialId: value })
+                    }
                   >
                     <SelectTrigger>
                       <SelectValue placeholder="Select material" />
@@ -205,12 +233,13 @@ const AddWatch = () => {
                   </Select>
                 </div>
 
-                {/* Band Material Select */}
                 <div className="space-y-2">
                   <Label htmlFor="bandMaterial">Band Material</Label>
                   <Select
                     value={formData.bandMaterialId}
-                    onValueChange={(value) => setFormData({ ...formData, bandMaterialId: value })}
+                    onValueChange={(value) =>
+                      setFormData({ ...formData, bandMaterialId: value })
+                    }
                   >
                     <SelectTrigger>
                       <SelectValue placeholder="Select band material" />
@@ -225,12 +254,13 @@ const AddWatch = () => {
                   </Select>
                 </div>
 
-                {/* Movement Select */}
                 <div className="space-y-2">
                   <Label htmlFor="movement">Movement</Label>
                   <Select
                     value={formData.movementId}
-                    onValueChange={(value) => setFormData({ ...formData, movementId: value })}
+                    onValueChange={(value) =>
+                      setFormData({ ...formData, movementId: value })
+                    }
                   >
                     <SelectTrigger>
                       <SelectValue placeholder="Select movement" />
@@ -245,38 +275,50 @@ const AddWatch = () => {
                   </Select>
                 </div>
 
-                {/* Diameter Input */}
                 <div className="space-y-2">
                   <Label htmlFor="diameter">Diameter (mm)</Label>
                   <Input
                     id="diameter"
                     type="number"
                     value={formData.diameter}
-                    onChange={(e) => setFormData({ ...formData, diameter: Number(e.target.value) })}
+                    onChange={(e) =>
+                      setFormData({
+                        ...formData,
+                        diameter: Number(e.target.value),
+                      })
+                    }
                     required
                   />
                 </div>
 
-                {/* Water Resistance Input */}
                 <div className="space-y-2">
                   <Label htmlFor="waterResistance">Water Resistance (m)</Label>
                   <Input
                     id="waterResistance"
                     type="number"
                     value={formData.waterResistance}
-                    onChange={(e) => setFormData({ ...formData, waterResistance: Number(e.target.value) })}
+                    onChange={(e) =>
+                      setFormData({
+                        ...formData,
+                        waterResistance: Number(e.target.value),
+                      })
+                    }
                     required
                   />
                 </div>
 
-                {/* Warranty Input */}
                 <div className="space-y-2">
                   <Label htmlFor="warranty">Warranty (months)</Label>
                   <Input
                     id="warranty"
                     type="number"
                     value={formData.warranty}
-                    onChange={(e) => setFormData({ ...formData, warranty: Number(e.target.value) })}
+                    onChange={(e) =>
+                      setFormData({
+                        ...formData,
+                        warranty: Number(e.target.value),
+                      })
+                    }
                     required
                   />
                 </div>
@@ -289,7 +331,9 @@ const AddWatch = () => {
               <Textarea
                 id="description"
                 value={formData.description}
-                onChange={(e) => setFormData({ ...formData, description: e.target.value })}
+                onChange={(e) =>
+                  setFormData({ ...formData, description: e.target.value })
+                }
                 className="min-h-[100px]"
                 required
               />
@@ -339,8 +383,8 @@ const AddWatch = () => {
             >
               Cancel
             </Button>
-            <Button type="submit" disabled={isLoading("create")}>
-              {isLoading("create") ? "Creating..." : "Create Watch"}
+            <Button type="submit" disabled={isLoading("update")}>
+              {isLoading("update") ? "Saving..." : "Save Changes"}
             </Button>
           </div>
         </form>
@@ -349,4 +393,4 @@ const AddWatch = () => {
   );
 };
 
-export default AddWatch;
+export default EditWatch;

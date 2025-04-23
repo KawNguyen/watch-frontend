@@ -27,23 +27,13 @@ import ListProductPage from "./pages/ListProductPage";
 import DetailProduct from "./pages/DetailProduct";
 import CreateOrders from "./pages/Admin/create-orders/CreateOrders";
 import ManageCustomer from "./pages/Admin/customer/ManageCustomer";
-import { useUser } from "./hooks/use-api/useUser";
-import { useEffect, useState } from "react";
+
+import EditWatch from "./pages/Admin/watch/EditWatch";
+import { useAuth } from "./hooks/use-api/useAuth";
 
 const App = () => {
-  const { getUserById } = useUser();
-  const [ user, setUser ] = useState({
-    role: "",
-  });
-  
-  const fetchUser = async () => {
-    const res = await getUserById();
-    setUser(res);
-  };
-
-  useEffect(() => { 
-    fetchUser();
-  }, []);
+  const {getUser} = useAuth();
+  const user = getUser();
   return (
     <Routes>
       <Route path="/" element={<MainLayout />}>
@@ -75,6 +65,7 @@ const App = () => {
         <Route path="/admin/brand/add" element={<AddBrand />} />
         <Route path="/admin/watch/list" element={<ManageWatch />} />
         <Route path="/admin/watch/add" element={<AddWatch />} />
+        <Route path="/admin/watch/edit/:id" element={<EditWatch />} />
         <Route path="/admin/material/list" element={<ManageMaterial />} />
         <Route path="/admin/material/add" element={<AddMaterial />} />
         <Route path="/admin/band-material/list" element={<ManageBandMaterial />} />
