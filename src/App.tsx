@@ -30,9 +30,11 @@ import ManageCustomer from "./pages/Admin/customer/ManageCustomer";
 
 import EditWatch from "./pages/Admin/watch/EditWatch";
 import { useAuth } from "./hooks/use-api/useAuth";
+import ManageStock from "./pages/Admin/stock-entry/ManageStock";
+import AddStock from "./pages/Admin/stock-entry/AddStock";
 
 const App = () => {
-  const {getUser} = useAuth();
+  const { getUser } = useAuth();
   const user = getUser();
   return (
     <Routes>
@@ -68,12 +70,17 @@ const App = () => {
         <Route path="/admin/watch/edit/:id" element={<EditWatch />} />
         <Route path="/admin/material/list" element={<ManageMaterial />} />
         <Route path="/admin/material/add" element={<AddMaterial />} />
-        <Route path="/admin/band-material/list" element={<ManageBandMaterial />} />
+        <Route
+          path="/admin/band-material/list"
+          element={<ManageBandMaterial />}
+        />
         <Route path="/admin/band-material/add" element={<AddBandMaterial />} />
         <Route path="/admin/movement/list" element={<ManageMovement />} />
         <Route path="/admin/movement/add" element={<AddMovement />} />
         <Route path="/admin/createOrders/add" element={<CreateOrders />} />
         <Route path="/admin/userList/list" element={<ManageCustomer />} />
+        <Route path="/admin/stock-entry/list" element={<ManageStock />} />
+        <Route path="/admin/stock-entry/add" element={<AddStock />} />
       </Route>
       <Route path="/*" element={<NotFoundPage />} />
     </Routes>

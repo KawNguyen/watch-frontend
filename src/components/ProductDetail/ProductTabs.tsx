@@ -27,7 +27,7 @@ interface ProductTabsProps {
 }
 export function ProductTabs({ description, specifications }: ProductTabsProps) {
   return (
-    <div className="max-w-4xl mx-auto">
+    <div className="w-full">
       <Tabs defaultValue="specifications" className="w-full">
         <TabsList className="w-full grid grid-cols-2 gap-4">
           <TabsTrigger value="specifications" className="text-base">
@@ -37,13 +37,13 @@ export function ProductTabs({ description, specifications }: ProductTabsProps) {
             Description
           </TabsTrigger>
         </TabsList>
-        <TabsContent value="description" className="mt-6">
-          <div className="bg-white rounded-lg p-6 shadow-sm">
+        <TabsContent value="description">
+          <div className="bg-white rounded-lg p-6 shadow-sm mt-4">
             <p className="text-gray-600 leading-relaxed">{description}</p>
           </div>
         </TabsContent>
-        <TabsContent value="specifications" className="mt-6">
-          <div className="bg-white rounded-lg p-6 shadow-sm">
+        <TabsContent value="specifications">
+          <div className="bg-white rounded-lg p-6 shadow-sm mt-4">
             <div className="grid grid-cols-2 gap-6">
               <div className="font-medium text-gray-900 flex items-center gap-2">
                 <Store className="h-4 w-4" /> Brand

@@ -3,7 +3,6 @@ import {
   LayoutDashboard,
   LogIn,
   LogOut,
-  Search,
   ShoppingBag,
   UserCog,
 } from "lucide-react";
@@ -19,6 +18,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import Image from "./ui/image";
+import { Search } from "./Search";
 
 const Header = () => {
   const { isAuthenticated, logout, getUser } = useAuth();
@@ -46,9 +46,7 @@ const Header = () => {
         </Link>
 
         <div className="flex space-x-4 w-[32%] justify-end items-center">
-          <div>
-            <Search />
-          </div>
+          <Search />
           <div className="cursor-pointer">
             <ShoppingBag onClick={() => navigate("/profile?tab=orders")} />
           </div>

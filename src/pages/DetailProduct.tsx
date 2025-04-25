@@ -2,6 +2,14 @@ import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { useWatch } from "@/hooks/use-api/useWatch";
 import { Skeleton } from "@/components/ui/skeleton";
+import {
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbList,
+  BreadcrumbPage,
+  BreadcrumbSeparator,
+} from "@/components/ui/breadcrumb";
 import { ProductImages } from "@/components/ProductDetail/ProductImages";
 import { ProductInfo } from "@/components/ProductDetail/ProductInfo";
 import { ProductTabs } from "@/components/ProductDetail/ProductTabs";
@@ -48,21 +56,50 @@ const DetailProduct = () => {
     );
   }
   if (!watch) {
-    return <div className="container mx-auto py-10 text-center">Product not found</div>;
+    return (
+      <div className="container mx-auto py-10 text-center">
+        Product not found
+      </div>
+    );
   }
   return (
     <div className="container mx-auto py-24 ">
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-12 p-4">
+      <Breadcrumb className="mb-6">
+        <BreadcrumbList>
+          <BreadcrumbItem>
+            <BreadcrumbLink href="/">Home</BreadcrumbLink>
+          </BreadcrumbItem>
+          <BreadcrumbSeparator />
+          <BreadcrumbItem>
+            <BreadcrumbLink href="/products">Products</BreadcrumbLink>
+          </BreadcrumbItem>
+          <BreadcrumbSeparator />
+          <BreadcrumbItem>
+            <BreadcrumbPage>{watch.name}</BreadcrumbPage>
+          </BreadcrumbItem>
+        </BreadcrumbList>
+      </Breadcrumb>
+
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
         <ProductImages images={watch.images} name={watch.name} />
-        <div className="md:mt-10 ">
+        <div className="flex flex-col h-full">
           <ProductName name={watch.name} />
-          <ProductTabs description={watch.description} specifications={watch} />
-          <ProductInfo watch={watch} quantity={quantity} setQuantity={setQuantity} />
+          <div className="flex-grow">
+            <ProductTabs description={watch.description} specifications={watch} />
+          </div>
+          <ProductInfo
+            watch={watch}
+            quantity={quantity}
+            setQuantity={setQuantity}
+          />
         </div>
       </div>
       <div>
         <ProductFeatures watch={watch} />
-        <RelevantProducts currentProductId={watch.id} brandId={watch.brand?.id} />
+        <RelevantProducts
+          currentProductId={watch.id}
+          brandId={watch.brand?.id}
+        />
       </div>
     </div>
   );

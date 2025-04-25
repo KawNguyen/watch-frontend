@@ -121,8 +121,8 @@ export const useWatch = () => {
     const key = "search";
     startLoading(key);
     try {
-      const data = await watch.search(query);
-      return data;
+      const res = await watch.search(query);
+      return res.data.items;
     } catch (err) {
       setError("Failed to search watches");
       throw err;

@@ -7,6 +7,7 @@ import "swiper/css/effect-fade";
 import { Autoplay, Pagination, EffectFade } from "swiper/modules";
 import { Link } from "react-router-dom";
 import { Button } from "./ui/button";
+import Image from "./ui/image";
 
 const poster = [
   {
@@ -53,7 +54,7 @@ const HomeHero = () => {
       >
         {poster.map((item, index) => (
           <SwiperSlide key={index} className="relative">
-            <img
+            <Image
               src={item.url}
               className={`w-full h-full aspect-auto transition duration-1000 ${
                 activeIndex === index
