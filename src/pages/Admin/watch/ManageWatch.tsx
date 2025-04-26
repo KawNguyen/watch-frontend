@@ -26,6 +26,7 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Plus } from "lucide-react";
 import useDebounce from "@/hooks/useDebounce";
+import CustomPagination from "@/components/Pagination";
 
 const WatchTableSkeleton = () => (
   <Table>
@@ -43,12 +44,24 @@ const WatchTableSkeleton = () => (
     <TableBody>
       {Array.from({ length: 5 }).map((_, index) => (
         <TableRow key={index}>
-          <TableCell><Skeleton className="h-20 w-20" /></TableCell>
-          <TableCell><Skeleton className="h-4 w-[150px]" /></TableCell>
-          <TableCell><Skeleton className="h-4 w-[100px]" /></TableCell>
-          <TableCell><Skeleton className="h-4 w-[80px]" /></TableCell>
-          <TableCell><Skeleton className="h-4 w-[50px]" /></TableCell>
-          <TableCell><Skeleton className="h-4 w-[60px]" /></TableCell>
+          <TableCell>
+            <Skeleton className="h-20 w-20" />
+          </TableCell>
+          <TableCell>
+            <Skeleton className="h-4 w-[150px]" />
+          </TableCell>
+          <TableCell>
+            <Skeleton className="h-4 w-[100px]" />
+          </TableCell>
+          <TableCell>
+            <Skeleton className="h-4 w-[80px]" />
+          </TableCell>
+          <TableCell>
+            <Skeleton className="h-4 w-[50px]" />
+          </TableCell>
+          <TableCell>
+            <Skeleton className="h-4 w-[60px]" />
+          </TableCell>
           <TableCell>
             <div className="flex space-x-2">
               <Skeleton className="h-8 w-16" />
@@ -62,33 +75,38 @@ const WatchTableSkeleton = () => (
 );
 
 const ManageWatch = () => {
+  const [currentPage, setCurrentPage] = useState(1);
   const navigate = useNavigate();
-  const { watches, isLoading, error, getAllWatches, deleteWatch, searchWatches } = useWatch();
+  const {
+    watches,
+    error,
+    totalPages, 
+    isLoading,
+    getAllWatches,
+    deleteWatch,
+    searchWatches,
+  } = useWatch();
   const [searchTerm, setSearchTerm] = useState("");
-  const [results, setResults] = useState([]); // Assuming results is an array of objects with properties like id, name, etc.
-
-  useEffect(() => {
-    getAllWatches();
-  }, []);
+  const [results, setResults] = useState([]);
 
   const handleDelete = async (id: string) => {
     await deleteWatch(id);
   };
 
   const debouncedSearchTerm = useDebounce(searchTerm, 500);
-  
+
   const handleSearch = async () => {
     if (debouncedSearchTerm) {
-      const response = await searchWatches(debouncedSearchTerm);
-      setResults(response.data.items);
-    } else {
-      getAllWatches();
+      const response = await searchWatches(debouncedSearchTerm,currentPage, 10);
+      setResults(response);
+    } else{
+      getAllWatches(currentPage, 10);
     }
   };
 
   useEffect(() => {
     handleSearch();
-  }, [debouncedSearchTerm]);
+  }, [debouncedSearchTerm, currentPage]);
 
   if (error) return <div className="text-red-500">{error}</div>;
 
@@ -107,7 +125,7 @@ const ManageWatch = () => {
               />
               {searchTerm && (
                 <div className="absolute -bottom-6 left-0 text-sm text-gray-500">
-                  Found {results?.length !==0 ? `${results.length}` : 0} result
+                  Found {results?.length !== 0 ? `${results.length}` : 0} result
                 </div>
               )}
             </div>
@@ -153,7 +171,9 @@ const ManageWatch = () => {
                     <div className="flex space-x-2">
                       <Button
                         size="sm"
-                        onClick={() => navigate(`/admin/watch/edit/${watch.id}`)}
+                        onClick={() =>
+                          navigate(`/admin/watch/edit/${watch.id}`)
+                        }
                       >
                         Edit
                       </Button>
@@ -167,8 +187,8 @@ const ManageWatch = () => {
                           <AlertDialogHeader>
                             <AlertDialogTitle>Delete Watch</AlertDialogTitle>
                             <AlertDialogDescription>
-                              Are you sure you want to delete {watch.name}?
-                              This action cannot be undone.
+                              Are you sure you want to delete {watch.name}? This
+                              action cannot be undone.
                             </AlertDialogDescription>
                           </AlertDialogHeader>
                           <AlertDialogFooter>
@@ -188,6 +208,14 @@ const ManageWatch = () => {
             </TableBody>
           </Table>
         )}
+
+        <div className="mt-4">
+          <CustomPagination
+            currentPage={currentPage}
+            totalPages={totalPages}
+            onPageChange={(page) => setCurrentPage(page)}
+          />
+        </div>
       </CardContent>
     </Card>
   );

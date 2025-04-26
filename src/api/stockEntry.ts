@@ -12,9 +12,11 @@ export const stockEntry = {
   },
 
   create: async (stockEntryData: {
-    quantity: number;
-    productId: string;
-    warehouseId: string;
+    items: {
+      watchId: string;
+      quantity: number;
+      price: number;
+    }[];
   }) => {
     const response = await axiosInstance.post(
       `/stock-entries/create`,
@@ -22,6 +24,4 @@ export const stockEntry = {
     );
     return response.data;
   },
-
-  
 };

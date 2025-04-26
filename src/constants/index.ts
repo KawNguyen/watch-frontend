@@ -1,4 +1,4 @@
-import { Circle, Cog, Link, Store, Watch,PackagePlus,Users, Warehouse } from "lucide-react";
+import { Circle, Cog, Link, Store, Watch,PackagePlus,Users, Warehouse, Boxes } from "lucide-react";
 
 export const Routes = [
   { name: "Home", path: "/" },
@@ -45,6 +45,13 @@ export const AdminRoutes = [
     children: [
       { title: "Manage Watches", url: "/admin/watch/list" },
       { title: "Add Watch", url: "/admin/watch/add" },
+    ],
+  },
+  {
+    title: "Quantity",
+    icon: Boxes,
+    children: [
+      { title: "Manage Quantity", url: "/admin/quantity/list" },
     ],
   },
   {

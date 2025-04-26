@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Search, Eye, Plus } from "lucide-react";
 import {
   Dialog,
@@ -25,6 +25,8 @@ import {
 } from "@/components/ui/select";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useNavigate } from "react-router-dom";
+import { useStockEntry } from "@/hooks/use-api/useStockEntry";
+import { formatPrice } from "@/lib/utils";
 
 const formatDate = (dateString: string) => {
   const date = new Date(dateString);
@@ -52,30 +54,12 @@ const ManageStock = () => {
   const [selectedEntry, setSelectedEntry] = useState<any>(null);
   const [showDetails, setShowDetails] = useState(false);
   const navigate = useNavigate();
+  const { stockEntries, getAllStockEntries, isLoading, error } =
+    useStockEntry();
 
-  const stockEntries = [
-    {
-      id: "uuid-1",
-      addedBy: {
-        name: "John Doe",
-      },
-      items: [
-        {
-          productName: "Rolex Submariner",
-          quantity: 2,
-          unitPrice: 10000,
-        },
-        {
-          productName: "Omega Seamaster",
-          quantity: 1,
-          unitPrice: 8000,
-        },
-      ],
-      totalPrice: 28000,
-      createdAt: "2024-01-20T10:00:00Z",
-      updatedAt: "2024-01-20T10:00:00Z",
-    },
-  ];
+  useEffect(() => {
+    getAllStockEntries();
+  }, []);
 
   return (
     <div className="p-6 space-y-6">
@@ -123,42 +107,70 @@ const ManageStock = () => {
             <Table>
               <TableHeader>
                 <TableRow>
-                  <TableHead>Entry ID</TableHead>
-                  <TableHead>Date</TableHead>
-                  <TableHead>Added By</TableHead>
-                  <TableHead className="text-right">Total Price</TableHead>
-                  <TableHead>Last Updated</TableHead>
-                  <TableHead className="w-[10%]">Actions</TableHead>
+                  <TableHead className="w-[15%]">Entry ID</TableHead>
+                  <TableHead className="w-[15%]">Date</TableHead>
+                  <TableHead className="w-[20%]">Added By</TableHead>
+                  <TableHead className="w-[20%]">Total Price</TableHead>
+                  <TableHead className="w-[20%]">Last Updated</TableHead>
+                  <TableHead className="w-[10%] text-center">Actions</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {stockEntries.map((entry) => (
-                  <TableRow key={entry.id}>
-                    <TableCell className="font-medium">{entry.id}</TableCell>
-                    <TableCell>{formatDate(entry.createdAt)}</TableCell>
-                    <TableCell>{entry.addedBy.name}</TableCell>
-                    <TableCell className="text-right font-medium">
-                      ${entry.totalPrice.toLocaleString()}
-                    </TableCell>
-                    <TableCell>{formatDateTime(entry.updatedAt)}</TableCell>
-                    <TableCell>
-                      <div className="flex space-x-2">
-                        <Button
-                          size="sm"
-                          className="h-8 px-3"
-                          variant="outline"
-                          onClick={() => {
-                            setSelectedEntry(entry);
-                            setShowDetails(true);
-                          }}
-                        >
-                          <Eye className="h-4 w-4 mr-2" />
-                          Details
-                        </Button>
+                {isLoading("getAll") ? (
+                  <TableRow>
+                    <TableCell colSpan={6} className="text-center py-8">
+                      <div className="flex justify-center">
+                        <div className="h-10 w-10 border-4 border-zinc-300 border-t-zinc-800 rounded-full animate-spin" />
                       </div>
                     </TableCell>
                   </TableRow>
-                ))}
+                ) : error ? (
+                  <TableRow>
+                    <TableCell
+                      colSpan={6}
+                      className="text-center py-8 text-red-500"
+                    >
+                      {error}
+                    </TableCell>
+                  </TableRow>
+                ) : stockEntries.length === 0 ? (
+                  <TableRow>
+                    <TableCell
+                      colSpan={6}
+                      className="text-center py-8 text-gray-500"
+                    >
+                      No stock entries found
+                    </TableCell>
+                  </TableRow>
+                ) : (
+                  stockEntries.map((entry: any) => (
+                    <TableRow key={entry.id}>
+                      <TableCell className="font-medium">{entry.id}</TableCell>
+                      <TableCell>{formatDate(entry.createdAt)}</TableCell>
+                      <TableCell>{entry.addedBy.name}</TableCell>
+                      <TableCell className="font-medium">
+                        {formatPrice(entry.totalPrice)}
+                      </TableCell>
+                      <TableCell>{formatDateTime(entry.updatedAt)}</TableCell>
+                      <TableCell>
+                        <div className="flex space-x-2">
+                          <Button
+                            size="sm"
+                            className="h-8 px-3"
+                            variant="outline"
+                            onClick={() => {
+                              setSelectedEntry(entry);
+                              setShowDetails(true);
+                            }}
+                          >
+                            <Eye className="h-4 w-4 mr-2" />
+                            Details
+                          </Button>
+                        </div>
+                      </TableCell>
+                    </TableRow>
+                  ))
+                )}
               </TableBody>
             </Table>
           </div>
@@ -189,9 +201,7 @@ const ManageStock = () => {
                     </div>
                     <div>
                       <p className="text-muted-foreground">Total Price</p>
-                      <p className="font-medium">
-                        ${selectedEntry.totalPrice.toLocaleString()}
-                      </p>
+                      <p className="font-medium">${selectedEntry.totalPrice}</p>
                     </div>
                   </div>
 
@@ -201,6 +211,7 @@ const ManageStock = () => {
                       <Table>
                         <TableHeader>
                           <TableRow>
+                            <TableHead>Image</TableHead>
                             <TableHead>Product Name</TableHead>
                             <TableHead className="text-right">
                               Quantity
@@ -215,18 +226,22 @@ const ManageStock = () => {
                           {selectedEntry.items.map(
                             (item: any, index: number) => (
                               <TableRow key={index}>
-                                <TableCell>{item.productName}</TableCell>
+                                <TableCell>
+                                  <img
+                                    src={item.watch?.images[0]?.url}
+                                    alt={item.watch?.name}
+                                    className="w-16 h-16 object-cover rounded-md"
+                                  />
+                                </TableCell>
+                                <TableCell>{item.watch?.name}</TableCell>
                                 <TableCell className="text-right">
                                   {item.quantity}
                                 </TableCell>
                                 <TableCell className="text-right">
-                                  ${item.unitPrice.toLocaleString()}
+                                  {formatPrice(item.price)}
                                 </TableCell>
                                 <TableCell className="text-right">
-                                  $
-                                  {(
-                                    item.quantity * item.unitPrice
-                                  ).toLocaleString()}
+                                  {formatPrice(item.quantity * item.price)}
                                 </TableCell>
                               </TableRow>
                             )

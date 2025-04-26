@@ -1,8 +1,8 @@
 import axiosInstance from "@/config/axiosInstance";
 
 export const watch = {
-  getAll: async () => {
-    const response = await axiosInstance.get(`/watches`);
+  getAll: async (page: number, pageSize: number) => {
+    const response = await axiosInstance.get(`/watches?page=${page}&limit=${pageSize}`);
     return response.data;
   },
 
@@ -60,14 +60,14 @@ export const watch = {
     return response.data;
   },
 
-  search: async (query: string) => {
-    const response = await axiosInstance.get(`/watches/search?name=${query}`);
+  search: async (query: string,page: number, pageSize: number ) => {
+    const response = await axiosInstance.get(`/watches/search?name=${query}&page=${page}&limit=${pageSize}`);
     return response.data;
   },
 
-  getByBrand: async (brandId: string) => {
+  getByBrand: async (brandId: string, page: number, pageSize: number ) => {
     const response = await axiosInstance.get(
-      `/watches/brand/${brandId}`
+      `/watches/brand/${brandId}?page=${page}&limit=${pageSize}`
     );
     return response.data;
   },

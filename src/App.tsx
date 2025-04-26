@@ -32,6 +32,7 @@ import EditWatch from "./pages/Admin/watch/EditWatch";
 import { useAuth } from "./hooks/use-api/useAuth";
 import ManageStock from "./pages/Admin/stock-entry/ManageStock";
 import AddStock from "./pages/Admin/stock-entry/AddStock";
+import ManageQuantity from "./pages/Admin/quantity/ManageQuantity";
 
 const App = () => {
   const { getUser } = useAuth();
@@ -81,6 +82,7 @@ const App = () => {
         <Route path="/admin/userList/list" element={<ManageCustomer />} />
         <Route path="/admin/stock-entry/list" element={<ManageStock />} />
         <Route path="/admin/stock-entry/add" element={<AddStock />} />
+        <Route path="/admin/quantity/list" element={<ManageQuantity />} />
       </Route>
       <Route path="/*" element={<NotFoundPage />} />
     </Routes>

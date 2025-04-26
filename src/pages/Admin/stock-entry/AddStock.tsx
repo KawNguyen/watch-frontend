@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useWatch } from "@/hooks/use-api/useWatch";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -11,27 +12,29 @@ import {
 } from "@/components/ui/select";
 import { Minus, Plus } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import { useStockEntry } from "@/hooks/use-api/useStockEntry";
 
 interface StockItem {
-  productId: string;
+  watchId: string;
   quantity: number;
-  unitPrice: number;
+  price: number;
 }
 
 const AddStock = () => {
   const navigate = useNavigate();
+  const { createStockEntry } = useStockEntry();
   const [items, setItems] = useState<StockItem[]>([
-    { productId: "", quantity: 1, unitPrice: 0 },
+    { watchId: "", quantity: 1, price: 0 },
   ]);
 
-  // Mock data - replace with actual data from your API
-  const products = [
-    { id: "1", name: "Rolex Submariner" },
-    { id: "2", name: "Omega Seamaster" },
-  ];
+  const { watches, getAllWatches } = useWatch();
+
+  useEffect(() => {
+    getAllWatches(1, 100);
+  }, []);
 
   const addItem = () => {
-    setItems([...items, { productId: "", quantity: 1, unitPrice: 0 }]);
+    setItems([...items, { watchId: "", quantity: 1, price: 0 }]);
   };
 
   const removeItem = (index: number) => {
@@ -43,17 +46,35 @@ const AddStock = () => {
   const updateItem = (index: number, field: keyof StockItem, value: any) => {
     const newItems = [...items];
     newItems[index] = { ...newItems[index], [field]: value };
+    if (field === "watchId") {
+      const selectedWatch = watches.find((watch: any) => watch.id === value);
+      if (selectedWatch) {
+        newItems[index].price = (selectedWatch as { price: number }).price;
+      }
+    }
+
     setItems(newItems);
   };
 
   const calculateTotal = () => {
-    return items.reduce((total, item) => total + item.quantity * item.unitPrice, 0);
+    return items.reduce((total, item) => total + item.quantity * item.price, 0);
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Add your API call here
-    console.log("Submitting:", items);
+    try {
+      const validItems = items.filter(
+        (item) => item.watchId && item.quantity > 0
+      );
+      if (validItems.length === 0) {
+        throw new Error("Please add at least one valid item");
+      }
+
+      await createStockEntry({ items });
+      navigate("/admin/stock-entry/list");
+    } catch (error) {
+      console.error("Failed to create stock entry:", error);
+    }
   };
 
   return (
@@ -72,73 +93,108 @@ const AddStock = () => {
         </CardHeader>
         <CardContent className="space-y-6">
           {items.map((item, index) => (
-            <div
-              key={index}
-              className="grid grid-cols-12 gap-4 items-center border-b pb-4"
-            >
-              <div className="col-span-5">
-                <label className="text-sm font-medium mb-2 block">
-                  Product
-                </label>
-                <Select
-                  value={item.productId}
-                  onValueChange={(value) =>
-                    updateItem(index, "productId", value)
-                  }
-                >
-                  <SelectTrigger>
-                    <SelectValue placeholder="Select a product" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {products.map((product) => (
-                      <SelectItem key={product.id} value={product.id}>
-                        {product.name}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
+            <div key={index} className="space-y-4 border-b pb-4">
+              <div className="grid grid-cols-12 gap-4 items-center">
+                <div className="col-span-12">
+                  <label className="text-sm font-medium mb-2 block">
+                    Product
+                  </label>
+                  <Select
+                    value={item.watchId}
+                    onValueChange={(value) =>
+                      updateItem(index, "watchId", value)
+                    }
+                  >
+                    <SelectTrigger>
+                      <SelectValue placeholder="Select a product" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {watches.map((watch: any) => (
+                        <SelectItem key={watch.id} value={watch.id}>
+                          {watch.name}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
               </div>
 
-              <div className="col-span-3">
-                <label className="text-sm font-medium mb-2 block">
-                  Quantity
-                </label>
-                <Input
-                  type="number"
-                  min="1"
-                  value={item.quantity}
-                  onChange={(e) =>
-                    updateItem(index, "quantity", parseInt(e.target.value))
-                  }
-                />
-              </div>
+              {item.watchId && (
+                <>
+                  <div className="flex items-center gap-4 p-3 bg-gray-50 rounded-md">
+                    {watches.map(
+                      (watch: any) =>
+                        watch.id === item.watchId && (
+                          <div
+                            key={watch.id}
+                            className="flex items-center gap-4 w-full"
+                          >
+                            <img
+                              src={watch.images[0].url}
+                              alt={watch.name}
+                              className="w-24 h-24 object-cover rounded-md"
+                            />
+                            <div className="flex-grow">
+                              <h3 className="text-lg font-semibold">
+                                {watch.name}
+                              </h3>
+                              <p className="font-medium">{watch.brand.name}</p>
+                              <p className="text-sm text-gray-600">
+                                ${watch.price}
+                              </p>
+                            </div>
+                          </div>
+                        )
+                    )}
+                  </div>
 
-              <div className="col-span-3">
-                <label className="text-sm font-medium mb-2 block">
-                  Unit Price ($)
-                </label>
-                <Input
-                  type="number"
-                  min="0"
-                  step="0.01"
-                  value={item.unitPrice}
-                  onChange={(e) =>
-                    updateItem(index, "unitPrice", parseFloat(e.target.value))
-                  }
-                />
-              </div>
+                  <div className="grid grid-cols-12 gap-4 items-center mt-4">
+                    <div className="col-span-5">
+                      <label className="text-sm font-medium mb-2 block">
+                        Quantity
+                      </label>
+                      <Input
+                        type="number"
+                        min="1"
+                        value={item.quantity}
+                        onChange={(e) =>
+                          updateItem(
+                            index,
+                            "quantity",
+                            parseInt(e.target.value)
+                          )
+                        }
+                      />
+                    </div>
 
-              <div className="col-span-1 self-end">
-                <Button
-                  type="button"
-                  variant="ghost"
-                  size="icon"
-                  onClick={() => removeItem(index)}
-                  disabled={items.length === 1}
-                >
-                  <Minus className="h-4 w-4" />
-                </Button>
-              </div>
+                    <div className="col-span-5">
+                      <label className="text-sm font-medium mb-2 block">
+                        Unit Price ($)
+                      </label>
+                      <Input
+                        type="number"
+                        min="0"
+                        step="0.01"
+                        value={item.price}
+                        disabled
+                        className="bg-gray-50"
+                      />
+                    </div>
+
+                    <div className="col-span-2 self-end">
+                      <Button
+                        type="button"
+                        variant="ghost"
+                        size="icon"
+                        onClick={() => removeItem(index)}
+                        disabled={items.length === 1}
+                      >
+                        <Minus className="h-4 w-4" />
+                      </Button>
+                    </div>
+                  </div>
+                </>
+              )}
             </div>
           ))}
 
@@ -156,7 +212,7 @@ const AddStock = () => {
             <Button
               type="button"
               variant="outline"
-              onClick={() => navigate("/admin/stock")}
+              onClick={() => navigate("/admin/stock-entry/list")}
             >
               Cancel
             </Button>

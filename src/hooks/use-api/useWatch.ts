@@ -8,13 +8,15 @@ export const useWatch = () => {
   const { startLoading, stopLoading, isLoading } = useLoading();
   const [error, setError] = useState<string | null>(null);
   const [watches, setWatches] = useState([]);
+  const [totalPages, setTotalPages] = useState(1);
 
-  const getAllWatches = async () => {
+  const getAllWatches = async (page: number, limit: number) => {
     const key = "getAll";
     startLoading(key);
     try {
       setError(null);
-      const res = await watch.getAll();
+      const res = await watch.getAll(page, limit);
+      setTotalPages(res.meta.totalPages);
       setWatches(res.data.items);
     } catch (err: any) {
       setError(err.response?.data?.message || "Failed to fetch watches");
@@ -43,7 +45,6 @@ export const useWatch = () => {
     try {
       setError(null);
       const data = await watch.create(watchData);
-      await getAllWatches();
       toast({
         title: "Success",
         description: "Watch created successfully",
@@ -51,7 +52,8 @@ export const useWatch = () => {
       });
       return data;
     } catch (err: any) {
-      const errorMessage = err.response?.data?.message || "Failed to create watch";
+      const errorMessage =
+        err.response?.data?.message || "Failed to create watch";
       setError(errorMessage);
       toast({
         variant: "destructive",
@@ -70,7 +72,6 @@ export const useWatch = () => {
     try {
       setError(null);
       const data = await watch.update(id, watchData);
-      await getAllWatches();
       toast({
         title: "Success",
         description: "Watch updated successfully",
@@ -78,7 +79,8 @@ export const useWatch = () => {
       });
       return data;
     } catch (err: any) {
-      const errorMessage = err.response?.data?.message || "Failed to update watch";
+      const errorMessage =
+        err.response?.data?.message || "Failed to update watch";
       setError(errorMessage);
       toast({
         variant: "destructive",
@@ -97,14 +99,14 @@ export const useWatch = () => {
     try {
       setError(null);
       await watch.delete(id);
-      await getAllWatches();
       toast({
         title: "Success",
         description: "Watch deleted successfully",
         className: "bg-green-500 text-white border-none",
       });
     } catch (err: any) {
-      const errorMessage = err.response?.data?.message || "Failed to delete watch";
+      const errorMessage =
+        err.response?.data?.message || "Failed to delete watch";
       setError(errorMessage);
       toast({
         variant: "destructive",
@@ -117,11 +119,12 @@ export const useWatch = () => {
     }
   };
 
-  const searchWatches = async (query: string) => {
+  const searchWatches = async (query: string, page: number, limit: number) => {
     const key = "search";
     startLoading(key);
     try {
-      const res = await watch.search(query);
+      const res = await watch.search(query, page, limit);
+      setTotalPages(res.meta.totalPages);
       return res.data.items;
     } catch (err) {
       setError("Failed to search watches");
@@ -131,11 +134,16 @@ export const useWatch = () => {
     }
   };
 
-  const getWatchesByBrand = async (brandId: string) => {
+  const getWatchesByBrand = async (
+    brandId: string,
+    page: number,
+    limit: number
+  ) => {
     const key = "getByBrand";
     startLoading(key);
     try {
-      const res = await watch.getByBrand(brandId);
+      const res = await watch.getByBrand(brandId, page, limit);
+      setTotalPages(res.meta.totalPages);
       return res.data.items;
     } catch (err) {
       setError("Failed to get watches by brand");
@@ -148,6 +156,7 @@ export const useWatch = () => {
   return {
     watches,
     error,
+    totalPages,
     isLoading,
     getAllWatches,
     getWatchById,
