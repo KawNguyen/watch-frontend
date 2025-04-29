@@ -1,112 +1,112 @@
-import React, { useState } from 'react'
-import { Card, CardContent } from '@/components/ui/card'
-import { Button } from '@/components/ui/button'
-import { Separator } from '@/components/ui/separator'
-import { ScrollArea } from '@/components/ui/scroll-area'
-import CartCard from '../CartCard'
-import { formatPrice } from '@/lib/utils'
+import { useEffect } from "react";
+import { Card, CardContent } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Separator } from "@/components/ui/separator";
+import { ScrollArea } from "@/components/ui/scroll-area";
+import { formatPrice } from "@/lib/utils";
+import { ShoppingCart } from "lucide-react";
+import UserCard from "./UserCard";
+import ProductCard from "./ProductCard";
+import { useCart } from "@/hooks/use-api/useCart";
+import { Skeleton } from "@/components/ui/skeleton";
 
-export type CartItemType = {
-    id: number
-    title: string
-    description: string
-    image: string
-    price: number
-    quantity: number
-}
+const Cart = () => {
+  const { items, getUserCart, removeFromCart, isLoading, updateQuantity } =
+    useCart();
 
-const initialItems: CartItemType[] = [{
-    id: 1,
-    title: 'Classic Chronograph',
-    description: 'Elegant stainless steel chronograph with leather strap',
-    image:
-        'https://images.unsplash.com/photo-1587836374828-4dbafa94cf0e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80',
-    price: 10,
-    quantity: 1,
-},
-{
-    id: 2,
-    title: 'Smart Watch Pro',
-    description: 'Advanced fitness tracking with OLED display',
-    image:
-        'https://images.unsplash.com/photo-1579586337278-3befd40fd17a?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80',
-    price: 10,
-    quantity: 1,
-},
-{
-    id: 3,
-    title: 'Dive Master 500',
-    description: 'Professional diving watch with 500m water resistance',
-    image:
-        'https://images.unsplash.com/photo-1523170335258-f5ed11844a49?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80',
-    price: 10,
-    quantity: 1,
-},]
 
-const Cart: React.FC = () => {
-    const [cartItems, setCartItems] = useState<CartItemType[]>(initialItems)
+  useEffect(() => {
+    getUserCart();
+  }, []);
 
-    const handleQuantityChange = (id: number, quantity: number) => {
-        setCartItems((prev) =>
-            prev.map((item) =>
-                item.id === id ? { ...item, quantity } : item
-            )
-        )
+  const handleQuantityChange = async (id: string, quantity: number) => {
+    try {
+      await updateQuantity(id, quantity);
+    } catch (error) {
+      console.error("Failed to update quantity:", error);
     }
+  };
 
-    const subtotal = cartItems.reduce(
-        (sum, item) => sum + item.price * item.quantity,
-        0
-    )
-    const shipping = 10.0
-    const total = subtotal + shipping
+  const handleRemove = async (id: string) => {
+    await removeFromCart(id);
+    getUserCart();
+  };
 
-    return (
-        <div className="w-full mx-auto px-4 py-8 sm:px-6">
-            <div className="flex flex-col lg:flex-row gap-8">
-                <div className="flex-1">
-                    <ScrollArea className="h-[calc(100vh-16rem)] pr-4">
-                        <div className="flex flex-col gap-4">
-                            {cartItems.map((item) => (
-                                <CartCard
-                                    key={item.id}
-                                    item={item}
-                                    onQuantityChange={handleQuantityChange}
-                                />
-                            ))}
-                        </div>
-                    </ScrollArea>
-                </div>
+  const subtotal =
+    items?.reduce((sum, item) => sum + item.watch.price * item.quantity, 0) ||
+    0;
+  const shipping = 10.0;
+  const total = subtotal + shipping;
 
-                <Card className="w-full lg:w-80 h-fit">
-                    <CardContent className="p-6">
-                        <h2 className="text-lg font-semibold text-gray-900 mb-4">
-                            Order Summary
-                        </h2>
-                        <div className="space-y-3 text-sm">
-                            <div className="flex justify-between">
-                                <span className="text-gray-600">Subtotal</span>
-                                <span className="text-gray-900">{formatPrice(subtotal)}</span>
-                            </div>
-                            <div className="flex justify-between">
-                                <span className="text-gray-600">Shipping</span>
-                                <span className="text-gray-900">{formatPrice(shipping)}</span>
-                            </div>
-
-                            <Separator className="my-4" />
-
-                            <div className="flex justify-between text-base font-semibold">
-                                <span className="text-gray-900">Total</span>
-                                <span className="text-gray-900">{formatPrice(total)}</span>
-                            </div>
-                        </div>
-
-                        <Button className="w-full mt-6">Checkout</Button>
-                    </CardContent>
-                </Card>
+  return (
+    <UserCard
+      title="Shopping Cart"
+      icon={<ShoppingCart className="h-4 w-4" />}
+      count={items?.length || 0}
+    >
+      <div className="flex flex-col lg:flex-row gap-8">
+        <div className="flex-1">
+          <ScrollArea className="h-[calc(100vh-22rem)] pr-4">
+            <div className="flex flex-col gap-4">
+              {isLoading("getCart") ? (
+                <>
+                  {[1, 2, 3].map((index) => (
+                    <div key={index} className="flex gap-4">
+                      <Skeleton className="h-24 w-24 rounded-lg" />
+                      <div className="flex-1 space-y-2">
+                        <Skeleton className="h-4 w-[200px]" />
+                        <Skeleton className="h-4 w-[150px]" />
+                        <Skeleton className="h-4 w-[100px]" />
+                      </div>
+                    </div>
+                  ))}
+                </>
+              ) : (
+                items.map((item: any) => (
+                  <ProductCard
+                    key={item.id}
+                    {...item.watch}
+                    cartItemId={item.id}
+                    quantity={item.quantity}
+                    type="cart"
+                    onQuantityChange={handleQuantityChange}
+                    onRemove={() => handleRemove(item.id)} 
+                  />
+                ))
+              )}
             </div>
+          </ScrollArea>
         </div>
-    )
-}
 
-export default Cart
+        <Card className="w-full lg:w-80 h-fit">
+          <CardContent className="p-6">
+            <h2 className="text-lg font-semibold text-gray-900 mb-4">
+              Order Summary
+            </h2>
+            <div className="space-y-3 text-sm">
+              <div className="flex justify-between">
+                <span className="text-gray-600">Subtotal</span>
+                <span className="text-gray-900">{formatPrice(subtotal)}</span>
+              </div>
+              <div className="flex justify-between">
+                <span className="text-gray-600">Shipping</span>
+                <span className="text-gray-900">{formatPrice(shipping)}</span>
+              </div>
+
+              <Separator className="my-4" />
+
+              <div className="flex justify-between text-base font-semibold">
+                <span className="text-gray-900">Total</span>
+                <span className="text-gray-900">{formatPrice(total)}</span>
+              </div>
+            </div>
+
+            <Button className="w-full mt-6">Checkout</Button>
+          </CardContent>
+        </Card>
+      </div>
+    </UserCard>
+  );
+};
+
+export default Cart;

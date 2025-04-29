@@ -1,55 +1,50 @@
 import { Link, useSearchParams } from "react-router-dom";
 import { User, ShoppingCart, Heart, Package } from "lucide-react";
+import { cn } from "@/lib/utils";
 
-const navigationItems = [
-  {
-    label: "Profile Information",
-    icon: <User className="w-5 h-5" />,
-    href: "?tab=info",
-    value: "info",
-  },
-  {
-    label: "My Cart",
-    icon: <ShoppingCart className="w-5 h-5" />,
-    href: "?tab=cart",
-    value: "cart",
-  },
-  {
-    label: "My Favorites",
-    icon: <Heart className="w-5 h-5" />,
-    href: "?tab=favorites",
-    value: "favorites",
-  },
-  {
-    label: "My Orders",
-    icon: <Package className="w-5 h-5" />,
-    href: "?tab=orders",
-    value: "orders",
-  },
-];
+interface UserNavigationProps {
+    variant?: 'default' | 'icon';
+}
 
-const UserNavigation = () => {
-  const [searchParams] = useSearchParams();
-  const currentTab = searchParams.get("tab");
+const UserNavigation = ({ variant = 'default' }: UserNavigationProps) => {
+    const [searchParams] = useSearchParams();
+    const currentTab = searchParams.get('tab') || 'info';
 
-  return (
-    <nav className="flex flex-col space-y-1">
-      {navigationItems.map((item) => (
-        <Link
-          key={item.value}
-          to={item.href}
-          className={`flex items-center space-x-3 px-4 py-3 rounded-lg transition-colors ${
-            currentTab === item.value
-              ? "bg-primary text-primary-foreground"
-              : "hover:bg-muted"
-          }`}
-        >
-          {item.icon}
-          <span className="font-medium">{item.label}</span>
-        </Link>
-      ))}
-    </nav>
-  );
+    const navItems = [
+        { icon: <User className="h-5 w-5" />, label: 'Profile', value: 'info' },
+        { icon: <ShoppingCart className="h-5 w-5" />, label: 'Cart', value: 'cart' },
+        { icon: <Heart className="h-5 w-5" />, label: 'Favorites', value: 'favorites' },
+        { icon: <Package className="h-5 w-5" />, label: 'Orders', value: 'orders' },
+    ];
+
+    return (
+        <nav className={cn(
+            "flex gap-2",
+            variant === 'default' 
+                ? "flex-col" 
+                : "flex-row justify-evenly items-center py-4"
+        )}>
+            {navItems.map((item) => (
+                <Link
+                    key={item.value}
+                    to={`/profile?tab=${item.value}`}
+                    className={cn(
+                        "flex items-center transition-colors",
+                        currentTab === item.value 
+                            ? "text-primary" 
+                            : "text-muted-foreground hover:text-primary",
+                        variant === 'default' 
+                            ? "gap-3 px-3 py-2 rounded-md hover:bg-muted" 
+                            : "p-2"
+                    )}
+                    title={variant === 'icon' ? item.label : undefined}
+                >
+                    {item.icon}
+                    {variant === 'default' && <span>{item.label}</span>}
+                </Link>
+            ))}
+        </nav>
+    );
 };
 
 export default UserNavigation;

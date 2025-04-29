@@ -1,59 +1,54 @@
+import { Checkbox } from "@/components/ui/checkbox";
+import { Label } from "../ui/label";
 import { Skeleton } from "@/components/ui/skeleton";
-import {
-  Collapsible,
-  CollapsibleContent,
-  CollapsibleTrigger,
-} from "@/components/ui/collapsible";
-import { ChevronDown } from "lucide-react";
-import { useState } from "react";
+
+const PropsSkeleton = () => (
+  <div className="space-y-2">
+    {[1, 2, 3, 4].map((index) => (
+      <div key={index} className="flex items-center space-x-2">
+        <Skeleton className="h-4 w-4 rounded" />
+        <Skeleton className="h-4 w-24" />
+      </div>
+    ))}
+  </div>
+);
 
 interface PropsSidebarProps {
+  isLoading: boolean;
   items: any[];
   title: string;
-  isLoading?: boolean;
+  onSelect: (value: string) => void;
+  selected: string[];
 }
 
-const PropsSidebar = ({ items, title, isLoading = false }: PropsSidebarProps) => {  
-  const [isOpen, setIsOpen] = useState(false);
-
-  if (isLoading) {
-    return (
-      <div>
-        <Skeleton className="h-7 w-32 mb-4" />
-        <div className="space-y-2">
-          {Array.from({ length: 5 }).map((_, index) => (
-            <Skeleton key={index} className="h-5 w-full" />
-          ))}
-        </div>
-      </div>
-    );
-  }
-
+const PropsSidebar = ({ isLoading, items, title, onSelect, selected }: PropsSidebarProps) => {
   return (
-    <Collapsible open={isOpen} onOpenChange={setIsOpen}>
-      <CollapsibleTrigger className="w-full">
-        <div className="flex items-center justify-between w-full border-l-4 border-black pl-6">
-          <h2 className="text-lg font-bold">{title}</h2>
-          <ChevronDown
-            className={`h-4 w-4 transition-transform ${
-              isOpen ? "transform rotate-180" : ""
-            }`}
-          />
-        </div>
-      </CollapsibleTrigger>
-      <CollapsibleContent className="mt-4">
-        <ul className="space-y-2">
+    <div className="space-y-2">
+      <h3 className="font-semibold">{title}</h3>
+      {isLoading ? (
+        <PropsSkeleton />
+      ) : (
+        <div className="space-y-1">
           {items.map((item) => (
-            <li
-              key={item.id}
-              className="cursor-pointer text-gray-700 hover:text-blue-500 transition-colors"
-            >
-              {item?.name}
-            </li>
+            <div key={item.id} className="flex items-center space-x-2">
+              <Checkbox
+                id={`${title}-${item.id}`}
+                checked={selected.includes(item.name)}
+                onCheckedChange={(checked) => {
+                  onSelect(checked ? item.name : "");
+                }}
+              />
+              <Label
+                htmlFor={`${title}-${item.id}`}
+                className="text-sm leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 cursor-pointer"
+              >
+                {item.name}
+              </Label>
+            </div>
           ))}
-        </ul>
-      </CollapsibleContent>
-    </Collapsible>
+        </div>
+      )}
+    </div>
   );
 };
 

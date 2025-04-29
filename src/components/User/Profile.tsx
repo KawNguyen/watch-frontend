@@ -3,7 +3,6 @@ import { Input } from "../ui/input";
 import { Button } from "@/components/ui/button";
 import { ImageUp, Save } from "lucide-react";
 import { useState } from "react";
-import { useUser } from "@/hooks/use-api/useUser";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import AddressForm from "./AddressForm";
 import {
@@ -18,8 +17,13 @@ import { useEffect } from "react";
 import { toast } from "@/hooks/use-toast";
 import UserInfo from "./UserInfo";
 
-const Profile = () => {
-  const { getUserById, updateUser, isLoading } = useUser();
+interface ProfileProps {
+  getUserById: () => Promise<any>;
+  updateUser: (data: any) => Promise<any>;
+  isLoading: boolean; 
+}
+
+const Profile = ({ getUserById, updateUser, isLoading }: ProfileProps) => {
   const [openGender, setOpenGender] = useState(false);
   const [openPayment, setOpenPayment] = useState(false);
   const [gender, setGender] = useState("");
@@ -99,12 +103,12 @@ const Profile = () => {
         },
       },
     };
-  
+
     try {
       await updateUser(updatedData);
       setIsEditing(false);
       setIsAvatarDialogOpen(false); // Close avatar dialog
-      setFormData(prev => ({
+      setFormData((prev) => ({
         ...prev,
         avatar: avatarUrl || prev.avatar, // Update local avatar state
       }));
@@ -321,9 +325,7 @@ const Profile = () => {
                 </Button>
               </>
             ) : (
-              <Button onClick={() => setIsEditing(true)}>
-                Edit Profile
-              </Button>
+              <Button onClick={() => setIsEditing(true)}>Edit Profile</Button>
             )}
           </div>
         </div>

@@ -3,6 +3,21 @@ import { watch } from "@/api/watch";
 import { useToast } from "../use-toast";
 import { useLoading } from "../use-loading";
 
+type FilterParams = {
+  brand?: string;
+  bandMaterial?: string;
+  movement?: string;
+  material?: string;
+  gender?: string;
+  diameter?: number;
+  waterResistance?: number;
+  warranty?: number;
+  minPrice?: number;
+  maxPrice?: number;
+  page?: number;
+  limit?: number;
+};
+
 export const useWatch = () => {
   const { toast } = useToast();
   const { startLoading, stopLoading, isLoading } = useLoading();
@@ -153,6 +168,41 @@ export const useWatch = () => {
     }
   };
 
+  const getWatchesByMovement = async (
+    movement: string,
+    page: number,
+    limit: number 
+  ) => {
+    const key = "getByMovement";
+    startLoading(key);
+    try {
+      const res = await watch.getByMovement(movement, page, limit);
+      setTotalPages(res.meta.totalPages);
+      return res.data.items; 
+    } catch (err) {
+      setError("Failed to get watches by movement");
+      throw err; 
+    } finally {
+      stopLoading(key);
+    }
+  }
+
+  const getWatchesByFilter = async (filters: FilterParams) => {
+    const key = "getByFilter";
+    startLoading(key);
+    try {
+      setError(null);
+      const res = await watch.getByFilter(filters);
+      setTotalPages(res.meta.totalPages);
+      return res.data.items;
+    } catch (err) {
+      setError("Failed to get filtered watches");
+      throw err;
+    } finally {
+      stopLoading(key);
+    }
+  };
+
   return {
     watches,
     error,
@@ -160,6 +210,8 @@ export const useWatch = () => {
     isLoading,
     getAllWatches,
     getWatchById,
+    getWatchesByMovement,
+    getWatchesByFilter,
     createWatch,
     updateWatch,
     deleteWatch,

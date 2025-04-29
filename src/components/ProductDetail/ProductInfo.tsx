@@ -3,11 +3,19 @@ import { Minus, Plus, Heart } from "lucide-react";
 import { formatPrice } from "@/lib/utils";
 
 interface ProductInfoProps {
-  watch: any;
+  price: number;
   quantity: number;
   setQuantity: (quantity: number) => void;
+  onAddToCart: () => void;
+  onFavorite: () => void;
 }
-export function ProductInfo({ watch, quantity, setQuantity }: ProductInfoProps) {
+export function ProductInfo({
+  price,
+  quantity,
+  setQuantity,
+  onAddToCart,
+  onFavorite,
+}: ProductInfoProps) {
   return (
     <div className="space-y-6 mt-6">
       <div className="flex items-center justify-around">
@@ -32,14 +40,21 @@ export function ProductInfo({ watch, quantity, setQuantity }: ProductInfoProps) 
         </div>
         <div>
           <p className="text-3xl font-semibold text-primary">
-            {formatPrice(watch.price)}
+            {formatPrice(price)}
           </p>
         </div>
       </div>
       <div className="space-y-6">
         <div className="flex items-center gap-4">
-          <Button className="flex-1 h-12 text-base">Add to Cart</Button>
-          <Button variant="outline" size="icon" className="h-12 w-12">
+          <Button onClick={onAddToCart} className="flex-1 h-12 text-base">
+            Add to Cart
+          </Button>
+          <Button
+            variant="outline"
+            size="icon"
+            className="h-12 w-12"
+            onClick={onFavorite}
+          >
             <Heart className="h-5 w-5" />
           </Button>
         </div>

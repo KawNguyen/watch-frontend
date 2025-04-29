@@ -1,61 +1,65 @@
-// Favorites.tsx
-import React, { useState } from 'react'
-import { ScrollArea } from '@/components/ui/scroll-area'
-import { FavoriteCard } from '../FavoriteCard'
+import { ScrollArea } from "@/components/ui/scroll-area";
+import { Heart } from "lucide-react";
+import UserCard from "./UserCard";
+import ProductCard from "./ProductCard";
+import { useFavorite } from "@/hooks/use-api/useFavorite";
+import { useEffect } from "react";
+import { Skeleton } from "@/components/ui/skeleton";
 
-type FavoriteItem = {
-    id: number
-    title: string
-    description: string
-    image: string
-}
+const Favorites = () => {
+  const { favorites, getUserFavorite, removeFromFavorite, isLoading } =
+    useFavorite();
 
-const initialFavorites: FavoriteItem[] = [
-    {
-        id: 1,
-        title: 'Classic Chronograph',
-        description: 'Elegant stainless steel chronograph with leather strap',
-        image:
-            'https://images.unsplash.com/photo-1587836374828-4dbafa94cf0e?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
-    },
-    {
-        id: 2,
-        title: 'Smart Watch Pro',
-        description: 'Advanced fitness tracking with OLED display',
-        image:
-            'https://images.unsplash.com/photo-1579586337278-3befd40fd17a?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
-    },
-    {
-        id: 3,
-        title: 'Dive Master 500',
-        description: 'Professional diving watch with 500m water resistance',
-        image:
-            'https://images.unsplash.com/photo-1523170335258-f5ed11844a49?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
-    },
-]
+  useEffect(() => {
+    getUserFavorite();
+  }, []);
 
-const Favorites: React.FC = () => {
-    const [favorites, setFavorites] = useState<FavoriteItem[]>(initialFavorites)
+  const handleRemoveFromFavorite = (watchId: string) => {
+    removeFromFavorite(watchId);
+    getUserFavorite();
+  };
 
-    const handleRemove = (id: number) => {
-        setFavorites((prev) => prev.filter((item) => item.id !== id))
-    }
-
-    return (
-        <div className="w-full mx-auto px-4 py-8 sm:px-6">
-            <ScrollArea className="h-[calc(100vh-22rem)]">
-                <div className="flex flex-col gap-4">
-                    {favorites.map((item) => (
-                        <FavoriteCard
-                            key={item.id}
-                            item={item}
-                            onRemove={() => handleRemove(item.id)}
-                        />
-                    ))}
+  return (
+    <UserCard
+      title="Favorites"
+      icon={<Heart className="h-4 w-4" />}
+      count={favorites.length}
+    >
+      <ScrollArea className="h-[calc(100vh-22rem)]">
+        <div className="flex flex-col gap-4">
+          {isLoading("getUserFavorite") ? (
+            <>
+              <div className="flex gap-4 items-center">
+                <Skeleton className="h-24 w-24 rounded-lg" />
+                <div className="flex-1 space-y-2">
+                  <Skeleton className="h-4 w-[200px]" />
+                  <Skeleton className="h-4 w-[150px]" />
+                  <Skeleton className="h-4 w-[100px]" />
                 </div>
-            </ScrollArea>
+              </div>
+              <div className="flex gap-4 items-center">
+                <Skeleton className="h-24 w-24 rounded-lg" />
+                <div className="flex-1 space-y-2">
+                  <Skeleton className="h-4 w-[200px]" />
+                  <Skeleton className="h-4 w-[150px]" />
+                  <Skeleton className="h-4 w-[100px]" />
+                </div>
+              </div>
+            </>
+          ) : (
+            favorites.map((item) => (
+              <ProductCard
+                key={item.id}
+                {...item.watch}
+                type="favorite"
+                onRemove={() => handleRemoveFromFavorite(item.watchId)}
+              />
+            ))
+          )}
         </div>
-    )
-}
+      </ScrollArea>
+    </UserCard>
+  );
+};
 
-export default Favorites
+export default Favorites;

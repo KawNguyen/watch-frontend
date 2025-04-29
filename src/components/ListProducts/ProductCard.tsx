@@ -11,8 +11,10 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { useNavigate } from "react-router-dom";
+import { useFavorite } from "@/hooks/use-api/useFavorite";
+import { useCart } from "@/hooks/use-api/useCart";
 
-interface ProductCardProps  {
+interface ProductCardProps {
   id: string;
   name: string;
   price: number;
@@ -20,13 +22,21 @@ interface ProductCardProps  {
 }
 
 const ProductCard = ({ product }: { product: ProductCardProps }) => {
+  const { addToFavorite } = useFavorite();
+  const {addToCart} = useCart();
   const navigate = useNavigate();
+
+  const handleAddToFavorite = async () => {
+    await addToFavorite(product.id);
+  };
+
+
   return (
     <Card
       className="group relative overflow-hidden cursor-pointer hover:shadow-lg transition-shadow"
       onClick={() => navigate(`/product/${product?.id}`)}
     >
-      <div className="relative w-full h-80 overflow-hidden">
+      <div className="relative w-full lg:h-80 overflow-hidden">
         <AspectRatio ratio={1} className="w-full">
           <Image
             src={product.images[0]?.url || "/placeholder.jpg"}
@@ -35,12 +45,20 @@ const ProductCard = ({ product }: { product: ProductCardProps }) => {
           />
         </AspectRatio>
 
-        <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex space-x-2 opacity-0 translate-y-4 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-300">
+        <div className="absolute bottom-4 z-10 left-1/2 -translate-x-1/2 flex space-x-2 opacity-0 translate-y-4 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-300">
           <TooltipProvider>
             <Tooltip>
               <TooltipTrigger asChild>
-                <Button size="icon" variant="secondary" className="hover:bg-black hover:text-white" >
-                  <ShoppingBag className="h-4 w-4"/>
+                <Button
+                  size="icon"
+                  variant="secondary"
+                  className="hover:bg-black hover:text-white"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    addToCart(product.id,1);
+                  }}
+                >
+                  <ShoppingBag className="h-4 w-4" />
                 </Button>
               </TooltipTrigger>
               <TooltipContent>
@@ -50,7 +68,11 @@ const ProductCard = ({ product }: { product: ProductCardProps }) => {
 
             <Tooltip>
               <TooltipTrigger asChild>
-                <Button size="icon" variant="secondary" className="hover:bg-black hover:text-white" onClick={()=> navigate(`/product/${product?.id}`)}>
+                <Button
+                  size="icon"
+                  variant="secondary"
+                  className="hover:bg-black hover:text-white"
+                >
                   <Search className="h-4 w-4" />
                 </Button>
               </TooltipTrigger>
@@ -61,7 +83,15 @@ const ProductCard = ({ product }: { product: ProductCardProps }) => {
 
             <Tooltip>
               <TooltipTrigger asChild>
-                <Button size="icon" variant="secondary" className="hover:bg-black hover:text-white">
+                <Button
+                  size="icon"
+                  variant="secondary"
+                  className="hover:bg-black hover:text-white"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    handleAddToFavorite();
+                  }}
+                >
                   <Heart className="h-4 w-4" />
                 </Button>
               </TooltipTrigger>

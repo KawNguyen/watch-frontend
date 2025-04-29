@@ -16,13 +16,35 @@ import { ProductTabs } from "@/components/ProductDetail/ProductTabs";
 import { ProductName } from "@/components/ProductDetail/ProductName";
 import { ProductFeatures } from "@/components/ProductDetail/ProductFetures";
 import { RelevantProducts } from "@/components/ProductDetail/RelevantProducts";
+import { useCart } from "@/hooks/use-api/useCart";
+import { useFavorite } from "@/hooks/use-api/useFavorite";
 
 const DetailProduct = () => {
   const { id } = useParams();
   const { getWatchById } = useWatch();
+  const { addToCart } = useCart();
+  const { addToFavorite } = useFavorite();
   const [watch, setWatch] = useState<any>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [quantity, setQuantity] = useState(1);
+
+  const handleAddToCart = async () => {
+    if (!watch?.id) return;
+    try {
+      await addToCart(watch.id, quantity);
+    } catch (error) {
+      console.error("Failed to add to cart:", error);
+    }
+  };
+
+  const handleAddToFavorite = async () => {
+    if (!watch?.id) return;
+    try {
+      await addToFavorite(watch.id);
+    } catch (error) {
+      console.error("Failed to add to favorite:", error);
+    }
+  };
 
   const fetchWatch = async () => {
     if (id) {
@@ -63,7 +85,7 @@ const DetailProduct = () => {
     );
   }
   return (
-    <div className="container mx-auto py-24 ">
+    <div className="container mx-auto py-24 px-4 ">
       <Breadcrumb className="mb-6">
         <BreadcrumbList>
           <BreadcrumbItem>
@@ -88,9 +110,11 @@ const DetailProduct = () => {
             <ProductTabs description={watch.description} specifications={watch} />
           </div>
           <ProductInfo
-            watch={watch}
+            price={watch.price}
             quantity={quantity}
             setQuantity={setQuantity}
+            onAddToCart={handleAddToCart}
+            onFavorite={handleAddToFavorite}
           />
         </div>
       </div>

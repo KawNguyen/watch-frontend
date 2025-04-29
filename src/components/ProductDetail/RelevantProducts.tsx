@@ -16,7 +16,7 @@ export const RelevantProducts = ({
 
   const fetchRelevantProducts = async () => {
     try {
-      const products = await getWatchesByBrand(brandId);
+      const products = await getWatchesByBrand(brandId,1,4);
       const filtered = products.filter(
           (product: any) =>
             product.id !== currentProductId && product.brandId === brandId
@@ -39,7 +39,7 @@ export const RelevantProducts = ({
       <h2 className="text-3xl font-bold text-gray-900 mb-8">
         Similar Products
       </h2>
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-6">
         {relevantProducts.map((product: any) => (
           <ProductCard key={product.id} product={product} />
         ))}
