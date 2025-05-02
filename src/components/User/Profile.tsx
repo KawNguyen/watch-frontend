@@ -20,7 +20,7 @@ import UserInfo from "./UserInfo";
 interface ProfileProps {
   getUserById: () => Promise<any>;
   updateUser: (data: any) => Promise<any>;
-  isLoading: boolean; 
+  isLoading: boolean;
 }
 
 const Profile = ({ getUserById, updateUser, isLoading }: ProfileProps) => {
@@ -45,7 +45,6 @@ const Profile = ({ getUserById, updateUser, isLoading }: ProfileProps) => {
     avatar: "",
   });
 
-  // Update fetchUserData
   const fetchUserData = async () => {
     const userData = await getUserById();
     if (userData) {
@@ -73,7 +72,6 @@ const Profile = ({ getUserById, updateUser, isLoading }: ProfileProps) => {
     fetchUserData();
   }, []);
 
-  // Remove handleAvatarUrlSubmit function and modify handleSubmit
   const handleSubmit = async () => {
     const addressData = formData.addresses[0];
     const updatedData = {
@@ -82,7 +80,7 @@ const Profile = ({ getUserById, updateUser, isLoading }: ProfileProps) => {
       phone: formData.phone,
       gender,
       paymentMethod: payment,
-      avatar: avatarUrl || formData.avatar, // Add avatar to update data
+      avatar: avatarUrl || formData.avatar, 
       addresses: {
         upsert: {
           where: { id: addressData?.id || "0" },

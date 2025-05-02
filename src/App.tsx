@@ -33,6 +33,8 @@ import { useAuth } from "./hooks/use-api/useAuth";
 import ManageStock from "./pages/Admin/stock-entry/ManageStock";
 import AddStock from "./pages/Admin/stock-entry/AddStock";
 import ManageQuantity from "./pages/Admin/quantity/ManageQuantity";
+import CheckoutPage from "./pages/CheckoutPage";
+import PaymentSuccess from "./pages/PaymentSuccess";
 
 const App = () => {
   const { getUser } = useAuth();
@@ -49,6 +51,7 @@ const App = () => {
         <Route path="/refund-policy" element={<RefundPolicyPage />} />
         <Route path="/products" element={<ListProductPage />} />
         <Route path="/product/:id" element={<DetailProduct />} />
+        <Route path="/checkout" element={<CheckoutPage />} />
       </Route>
 
       <Route path="/auth" element={<AuthLayout />}>
@@ -84,6 +87,7 @@ const App = () => {
         <Route path="/admin/stock-entry/add" element={<AddStock />} />
         <Route path="/admin/quantity/list" element={<ManageQuantity />} />
       </Route>
+      <Route path="/payment-success" element={<PaymentSuccess/>}/>
       <Route path="/*" element={<NotFoundPage />} />
     </Routes>
   );

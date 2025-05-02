@@ -9,8 +9,10 @@ import UserCard from "./UserCard";
 import ProductCard from "./ProductCard";
 import { useCart } from "@/hooks/use-api/useCart";
 import { Skeleton } from "@/components/ui/skeleton";
+import { useNavigate } from "react-router-dom";
 
 const Cart = () => {
+  const navigate = useNavigate();
   const { items, getUserCart, removeFromCart, isLoading, updateQuantity } =
     useCart();
 
@@ -101,7 +103,13 @@ const Cart = () => {
               </div>
             </div>
 
-            <Button className="w-full mt-6">Checkout</Button>
+            <Button 
+              className="w-full mt-6"
+              onClick={() => navigate("/checkout")}
+              disabled={items.length === 0}
+            >
+              Proceed to Checkout
+            </Button>
           </CardContent>
         </Card>
       </div>
