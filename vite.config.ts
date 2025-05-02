@@ -12,4 +12,16 @@ export default defineConfig({
   optimizeDeps: {
     include: ["react-helmet-async"],
   },
+  build: {
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          react: ["react", "react-dom"],
+          vendor: ["react-router-dom", "react-helmet-async"],
+          // Add more if you notice other large packages
+        },
+      },
+    },
+    chunkSizeWarningLimit: 800, // Optional: increases warning threshold
+  },
 });
