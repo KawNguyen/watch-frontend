@@ -32,6 +32,10 @@ export const useCart = () => {
       if (!userId) throw new Error("User not authenticated");
       const res = await cart.getUserCart(userId);
       await updateCartCount(userId);
+      if (!res.data.item) {
+        setItems([]);
+        return [];
+      }
       setItems(res.data.item.items);
       return res.data.item.items;
     } catch (err: any) {
@@ -39,6 +43,7 @@ export const useCart = () => {
         err.response?.data?.message || err.message || "Failed to fetch cart";
       setError(errorMessage);
       showErrorToast(errorMessage);
+      setItems([]);
     } finally {
       stopLoading(key);
     }
@@ -129,8 +134,7 @@ export const useCart = () => {
       setError(null);
       if (!userId) throw new Error("User not authenticated");
       const res = await cart.updateQuantity(userId, cartItemId, quantity);
-      setItems(res.data.items);
-      await updateCartCount(userId);
+      await getUserCart();      
       toast({
         title: "Success",
         description: "Quantity updated successfully",

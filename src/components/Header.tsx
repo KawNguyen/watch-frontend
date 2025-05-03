@@ -28,7 +28,16 @@ const Header = () => {
   const { isAuthenticated, logout, getUser } = useAuth();
   const user = getUser();
   const navigate = useNavigate();
-  const { cartCount, favoriteCount, fetchCounts } = useGlobalStore();
+  const { cartCount, favoriteCount, fetchCounts, resetCounts } = useGlobalStore();
+
+  useEffect(() => {
+    if (user?.id) {
+      fetchCounts(user?.id);
+    } else {
+      resetCounts();
+    }
+  }, [user?.id]);
+
   const handleCheckSignIn = (redirectTo: string) => {
     if (!isAuthenticated()) {
       navigate("/auth/login");
@@ -41,7 +50,6 @@ const Header = () => {
     if (user?.id) {
       fetchCounts(user?.id);
     }
-    console.log("a");
   }, [user?.id]);
 
   return (

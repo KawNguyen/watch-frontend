@@ -19,12 +19,15 @@ interface ProductCardProps {
   name: string;
   price: number;
   images: { url: string }[];
+  quantities: { quantity: number }[];
 }
 
 const ProductCard = ({ product }: { product: ProductCardProps }) => {
   const { addToFavorite } = useFavorite();
   const { addToCart } = useCart();
   const navigate = useNavigate();
+
+  const isOutOfStock = product.quantities?.[0]?.quantity === 0 || product.quantities.length === 0;
 
   const handleAddToFavorite = async () => {
     await addToFavorite(product.id);
@@ -44,62 +47,70 @@ const ProductCard = ({ product }: { product: ProductCardProps }) => {
           />
         </AspectRatio>
 
-        <div className="absolute bottom-4 z-10 left-1/2 -translate-x-1/2 flex space-x-2 opacity-0 translate-y-4 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-300">
-          <TooltipProvider>
-            <Tooltip>
-              <TooltipTrigger asChild>
-                <Button
-                  size="icon"
-                  variant="secondary"
-                  className="hover:bg-black hover:text-white"
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    addToCart(product.id, 1);
-                  }}
-                >
-                  <ShoppingBag className="h-4 w-4" />
-                </Button>
-              </TooltipTrigger>
-              <TooltipContent>
-                <p>Add to Cart</p>
-              </TooltipContent>
-            </Tooltip>
+        {isOutOfStock && (
+          <div className="absolute inset-0 bg-black/50 flex items-center justify-center text-white text-sm font-bold z-20">
+            Out of Stock
+          </div>
+        )}
 
-            <Tooltip>
-              <TooltipTrigger asChild>
-                <Button
-                  size="icon"
-                  variant="secondary"
-                  className="hover:bg-black hover:text-white"
-                >
-                  <Search className="h-4 w-4" />
-                </Button>
-              </TooltipTrigger>
-              <TooltipContent>
-                <p>Quick View</p>
-              </TooltipContent>
-            </Tooltip>
+        {!isOutOfStock && (
+          <div className="absolute bottom-4 z-10 left-1/2 -translate-x-1/2 flex space-x-2 opacity-0 translate-y-4 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-300">
+            <TooltipProvider>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <Button
+                    size="icon"
+                    variant="secondary"
+                    className="hover:bg-black hover:text-white"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      addToCart(product.id, 1);
+                    }}
+                  >
+                    <ShoppingBag className="h-4 w-4" />
+                  </Button>
+                </TooltipTrigger>
+                <TooltipContent>
+                  <p>Add to Cart</p>
+                </TooltipContent>
+              </Tooltip>
 
-            <Tooltip>
-              <TooltipTrigger asChild>
-                <Button
-                  size="icon"
-                  variant="secondary"
-                  className="hover:bg-black hover:text-white"
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    handleAddToFavorite();
-                  }}
-                >
-                  <Heart className="h-4 w-4" />
-                </Button>
-              </TooltipTrigger>
-              <TooltipContent>
-                <p>Add to Wishlist</p>
-              </TooltipContent>
-            </Tooltip>
-          </TooltipProvider>
-        </div>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <Button
+                    size="icon"
+                    variant="secondary"
+                    className="hover:bg-black hover:text-white"
+                  >
+                    <Search className="h-4 w-4" />
+                  </Button>
+                </TooltipTrigger>
+                <TooltipContent>
+                  <p>Quick View</p>
+                </TooltipContent>
+              </Tooltip>
+
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <Button
+                    size="icon"
+                    variant="secondary"
+                    className="hover:bg-black hover:text-white"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      handleAddToFavorite();
+                    }}
+                  >
+                    <Heart className="h-4 w-4" />
+                  </Button>
+                </TooltipTrigger>
+                <TooltipContent>
+                  <p>Add to Wishlist</p>
+                </TooltipContent>
+              </Tooltip>
+            </TooltipProvider>
+          </div>
+        )}
       </div>
 
       <CardContent className="flex flex-col items-center text-center p-4 h-[120px]">
