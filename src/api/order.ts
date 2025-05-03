@@ -1,9 +1,9 @@
 import axiosInstance from "@/config/axiosInstance";
 
 export const order = {
-  getOrderList: async (userId: string, page: number, limit: number) => {
+  getOrdersByUserId: async (userId: string) => {
     const response = await axiosInstance.get(
-      `/orders/${userId}?page=${page}&limit=${limit}`,
+      `/orders/${userId}`,
     );
     return response.data;
   },

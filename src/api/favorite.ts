@@ -2,7 +2,7 @@ import axiosInstance from "@/config/axiosInstance";
 
 export const favorite = {
   async getUserFavorite(userId: string) {
-    const response = await axiosInstance.get(`/favorites?userId=${userId}`);
+    const response = await axiosInstance.get(`/favorites/${userId}`);
     return response.data;
   },
 

@@ -12,7 +12,7 @@ const Orders = () => {
   const { orders, getOrderList, isLoading } = useOrder();
 
   useEffect(() => {
-    getOrderList(1, 10);
+    getOrderList();
   }, []);
 
   const getStatusColor = (status: string) => {
@@ -102,8 +102,12 @@ const Orders = () => {
               </Card>
             ))
           ) : (
-            <div className="text-center py-10">
-              <p className="text-muted-foreground">No orders found.</p>
+            <div className="flex flex-col items-center justify-center py-10 text-center">
+              <Package className="h-12 w-12 text-muted-foreground mb-4" />
+              <h3 className="font-medium text-lg mb-2">No orders yet</h3>
+              <p className="text-muted-foreground">
+                When you make a purchase, your orders will appear here
+              </p>
             </div>
           )}
         </div>

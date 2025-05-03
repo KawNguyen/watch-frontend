@@ -41,6 +41,7 @@ const Header = () => {
     if (user?.id) {
       fetchCounts(user?.id);
     }
+    console.log("a")
   }, [user?.id]);
 
   return (
@@ -77,7 +78,7 @@ const Header = () => {
               onClick={() => handleCheckSignIn("/profile?tab=favorites")}
               className="h-5 w-5 md:h-6 md:w-6 cursor-pointer"
             />
-            {favoriteCount > 0 && (
+            {favoriteCount >= 0 && (
               <span className="absolute -top-2 -right-2 bg-primary text-white rounded-full w-5 h-5 flex items-center justify-center text-xs">
                 {favoriteCount}
               </span>

@@ -14,8 +14,8 @@ const Favorites = () => {
     getUserFavorite();
   }, []);
 
-  const handleRemoveFromFavorite = (watchId: string) => {
-    removeFromFavorite(watchId);
+  const handleRemoveFromFavorite = async(watchId: string) => {
+    await removeFromFavorite(watchId);
     getUserFavorite();
   };
 
@@ -46,6 +46,14 @@ const Favorites = () => {
                 </div>
               </div>
             </>
+          ) : favorites.length === 0 ? (
+            <div className="flex flex-col items-center justify-center py-10 text-center">
+              <Heart className="h-12 w-12 text-muted-foreground mb-4" />
+              <h3 className="font-medium text-lg mb-2">No favorites yet</h3>
+              <p className="text-muted-foreground">
+                Items you favorite will appear here
+              </p>
+            </div>
           ) : (
             favorites.map((item) => (
               <ProductCard

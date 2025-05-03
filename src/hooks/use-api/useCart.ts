@@ -7,12 +7,12 @@ import { useGlobalStore } from "@/store/useGlobalStore";
 
 export const useCart = () => {
   const { getUser } = useAuth();
-  const userId = getUser()?.id;
   const { toast } = useToast();
   const { startLoading, stopLoading, isLoading } = useLoading();
   const [error, setError] = useState<string | null>(null);
   const [items, setItems] = useState<CartItem[]>([]);
-
+  const userId = getUser()?.id;
+  
   const updateCartCount = useGlobalStore((state) => state.updateCartCount);
 
   const showErrorToast = (message: string) => {
@@ -31,8 +31,8 @@ export const useCart = () => {
       setError(null);
       if (!userId) throw new Error("User not authenticated");
       const res = await cart.getUserCart(userId);
-      setItems(res.data.item.items);
       await updateCartCount(userId);
+      setItems(res.data.item.items);
       return res.data.item.items;
     } catch (err: any) {
       const errorMessage =

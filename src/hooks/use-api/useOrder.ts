@@ -13,12 +13,12 @@ export const useOrder = () => {
   const { getUser } = useAuth();
   const userId = getUser()?.id;
 
-  const getOrderList = async (page: number, limit: number) => {
+  const getOrderList = async () => {
     const key = "getOrderList";
     startLoading(key);
     try {
       setError(null);
-      const res = await order.getOrderList(userId, page, limit);
+      const res = await order.getOrdersByUserId(userId);
       console.log(res.data);
       setOrders(res.data.items);
       return res.data.items;
