@@ -29,7 +29,6 @@ const EditWatch = () => {
   const { movements, getAllMovements } = useMovement();
   const [imageUrl, setImageUrl] = useState("");
 
-
   const [formData, setFormData] = useState({
     name: "",
     description: "",
@@ -66,7 +65,7 @@ const EditWatch = () => {
       });
     }
   };
-  
+
   useEffect(() => {
     getAllBrands();
     getAllMaterials();
@@ -83,17 +82,16 @@ const EditWatch = () => {
         gender: formData.gender as WatchGender,
         images: {
           deleteMany: {},
-          create: formData.images.map(img => ({
-            url: img.url
-          }))
-        }
+          create: formData.images.map((img) => ({
+            url: img.url,
+          })),
+        },
       };
-      
+
       await updateWatch(id, formattedData as any);
       navigate("/admin/watch/list");
     }
   };
-
 
   const handleImageUrlAdd = () => {
     if (imageUrl.trim()) {

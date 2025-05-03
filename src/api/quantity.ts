@@ -1,8 +1,10 @@
 import axiosInstance from "@/config/axiosInstance";
 
-export const getQuantity =  {
+export const getQuantity = {
   getAll: async (page: number, limit: number) => {
-    const response = await axiosInstance.get(`/quantities?page=${page}&limit=${limit}`);
+    const response = await axiosInstance.get(
+      `/quantities?page=${page}&limit=${limit}`,
+    );
     return response.data;
   },
 
@@ -11,9 +13,10 @@ export const getQuantity =  {
     return response.data;
   },
 
-
   search: async (query: string, page: number, limit: number) => {
-    const response = await axiosInstance.get(`/quantities/search?query=${query}&page=${page}&limit=${limit}`);
+    const response = await axiosInstance.get(
+      `/quantities/search?query=${query}&page=${page}&limit=${limit}`,
+    );
     return response.data;
   },
 };

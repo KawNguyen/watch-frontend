@@ -18,8 +18,8 @@ export const useOrder = () => {
     startLoading(key);
     try {
       setError(null);
-      const res = await order.getOrderList(userId ,page, limit);
-      console.log(res.data)
+      const res = await order.getOrderList(userId, page, limit);
+      console.log(res.data);
       setOrders(res.data.items);
       return res.data.items;
     } catch (err: any) {

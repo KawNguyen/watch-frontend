@@ -21,7 +21,7 @@ export const bandMaterial = {
   update: async (id: string, name: string) => {
     const response = await axiosInstance.put(`/band-materials/update/${id}`, {
       name,
-    });  
+    });
     return response.data;
   },
 
@@ -31,7 +31,9 @@ export const bandMaterial = {
   },
 
   search: async (query: string) => {
-    const response = await axiosInstance.get(`/band-materials/search?name=${query}`);
+    const response = await axiosInstance.get(
+      `/band-materials/search?name=${query}`,
+    );
     return response.data;
   },
-}
+};

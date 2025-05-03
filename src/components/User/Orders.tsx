@@ -57,7 +57,7 @@ const Orders = () => {
                       {order.status}
                     </Badge>
                   </div>
-                  
+
                   <div className="space-y-4">
                     {order.items.map((item: any) => (
                       <div key={item.id} className="flex gap-4">
@@ -74,7 +74,9 @@ const Orders = () => {
                             {item.watch.brand.name}
                           </p>
                           <div className="flex justify-between mt-2">
-                            <span className="text-sm">Qty: {item.quantity}</span>
+                            <span className="text-sm">
+                              Qty: {item.quantity}
+                            </span>
                             <span className="font-medium">
                               {formatPrice(item.watch.price * item.quantity)}
                             </span>
@@ -87,10 +89,13 @@ const Orders = () => {
                   <div className="mt-4 pt-4 border-t">
                     <div className="flex justify-between items-center">
                       <p className="font-medium">Total Amount</p>
-                      <p className="font-semibold">{formatPrice(order.totalPrice)}</p>
+                      <p className="font-semibold">
+                        {formatPrice(order.totalPrice)}
+                      </p>
                     </div>
                     <p className="text-sm text-gray-500 mt-2">
-                      Delivered to: {order.address.street}, {order.address.ward}, {order.address.district}, {order.address.city}
+                      Delivered to: {order.address.street}, {order.address.ward}
+                      , {order.address.district}, {order.address.city}
                     </p>
                   </div>
                 </CardContent>

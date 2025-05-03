@@ -118,7 +118,9 @@ const AddWatch = () => {
               <Input
                 id="name"
                 value={formData.name}
-                onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                onChange={(e) =>
+                  setFormData({ ...formData, name: e.target.value })
+                }
                 required
               />
             </div>
@@ -129,7 +131,9 @@ const AddWatch = () => {
                 id="price"
                 type="number"
                 value={formData.price}
-                onChange={(e) => setFormData({ ...formData, price: Number(e.target.value) })}
+                onChange={(e) =>
+                  setFormData({ ...formData, price: Number(e.target.value) })
+                }
                 required
               />
             </div>
@@ -140,7 +144,9 @@ const AddWatch = () => {
                 id="videoUrl"
                 type="url"
                 value={formData.videoUrl}
-                onChange={(e) => setFormData({ ...formData, videoUrl: e.target.value })}
+                onChange={(e) =>
+                  setFormData({ ...formData, videoUrl: e.target.value })
+                }
                 placeholder="Enter video URL"
               />
             </div>
@@ -149,7 +155,9 @@ const AddWatch = () => {
               <Label htmlFor="gender">Gender</Label>
               <Select
                 value={formData.gender}
-                onValueChange={(value) => setFormData({ ...formData, gender: value })}
+                onValueChange={(value) =>
+                  setFormData({ ...formData, gender: value })
+                }
               >
                 <SelectTrigger>
                   <SelectValue placeholder="Select gender" />
@@ -163,14 +171,18 @@ const AddWatch = () => {
             </div>
 
             <div className="col-span-full mt-6">
-              <h3 className="text-lg font-medium mb-4">Technical Specifications</h3>
+              <h3 className="text-lg font-medium mb-4">
+                Technical Specifications
+              </h3>
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                 {/* Brand Select */}
                 <div className="space-y-2">
                   <Label htmlFor="brand">Brand</Label>
                   <Select
                     value={formData.brandId}
-                    onValueChange={(value) => setFormData({ ...formData, brandId: value })}
+                    onValueChange={(value) =>
+                      setFormData({ ...formData, brandId: value })
+                    }
                   >
                     <SelectTrigger>
                       <SelectValue placeholder="Select brand" />
@@ -190,7 +202,9 @@ const AddWatch = () => {
                   <Label htmlFor="material">Case Material</Label>
                   <Select
                     value={formData.materialId}
-                    onValueChange={(value) => setFormData({ ...formData, materialId: value })}
+                    onValueChange={(value) =>
+                      setFormData({ ...formData, materialId: value })
+                    }
                   >
                     <SelectTrigger>
                       <SelectValue placeholder="Select material" />
@@ -210,7 +224,9 @@ const AddWatch = () => {
                   <Label htmlFor="bandMaterial">Band Material</Label>
                   <Select
                     value={formData.bandMaterialId}
-                    onValueChange={(value) => setFormData({ ...formData, bandMaterialId: value })}
+                    onValueChange={(value) =>
+                      setFormData({ ...formData, bandMaterialId: value })
+                    }
                   >
                     <SelectTrigger>
                       <SelectValue placeholder="Select band material" />
@@ -230,7 +246,9 @@ const AddWatch = () => {
                   <Label htmlFor="movement">Movement</Label>
                   <Select
                     value={formData.movementId}
-                    onValueChange={(value) => setFormData({ ...formData, movementId: value })}
+                    onValueChange={(value) =>
+                      setFormData({ ...formData, movementId: value })
+                    }
                   >
                     <SelectTrigger>
                       <SelectValue placeholder="Select movement" />
@@ -252,7 +270,12 @@ const AddWatch = () => {
                     id="diameter"
                     type="number"
                     value={formData.diameter}
-                    onChange={(e) => setFormData({ ...formData, diameter: Number(e.target.value) })}
+                    onChange={(e) =>
+                      setFormData({
+                        ...formData,
+                        diameter: Number(e.target.value),
+                      })
+                    }
                     required
                   />
                 </div>
@@ -264,7 +287,12 @@ const AddWatch = () => {
                     id="waterResistance"
                     type="number"
                     value={formData.waterResistance}
-                    onChange={(e) => setFormData({ ...formData, waterResistance: Number(e.target.value) })}
+                    onChange={(e) =>
+                      setFormData({
+                        ...formData,
+                        waterResistance: Number(e.target.value),
+                      })
+                    }
                     required
                   />
                 </div>
@@ -276,7 +304,12 @@ const AddWatch = () => {
                     id="warranty"
                     type="number"
                     value={formData.warranty}
-                    onChange={(e) => setFormData({ ...formData, warranty: Number(e.target.value) })}
+                    onChange={(e) =>
+                      setFormData({
+                        ...formData,
+                        warranty: Number(e.target.value),
+                      })
+                    }
                     required
                   />
                 </div>
@@ -289,7 +322,9 @@ const AddWatch = () => {
               <Textarea
                 id="description"
                 value={formData.description}
-                onChange={(e) => setFormData({ ...formData, description: e.target.value })}
+                onChange={(e) =>
+                  setFormData({ ...formData, description: e.target.value })
+                }
                 className="min-h-[100px]"
                 required
               />

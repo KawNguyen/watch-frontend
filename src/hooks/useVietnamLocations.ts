@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect } from "react";
 
 interface Location {
   name: string;
@@ -12,32 +12,36 @@ export const useVietnamLocations = () => {
 
   const fetchProvinces = async () => {
     try {
-      const response = await fetch('https://provinces.open-api.vn/api/p/');
+      const response = await fetch("https://provinces.open-api.vn/api/p/");
       const data = await response.json();
       setProvinces(data);
     } catch (error) {
-      console.error('Failed to fetch provinces:', error);
+      console.error("Failed to fetch provinces:", error);
     }
   };
 
   const fetchDistricts = async (provinceCode: number) => {
     try {
-      const response = await fetch(`https://provinces.open-api.vn/api/p/${provinceCode}?depth=2`);
+      const response = await fetch(
+        `https://provinces.open-api.vn/api/p/${provinceCode}?depth=2`,
+      );
       const data = await response.json();
       setDistricts(data.districts || []);
       setWards([]);
     } catch (error) {
-      console.error('Failed to fetch districts:', error);
+      console.error("Failed to fetch districts:", error);
     }
   };
 
   const fetchWards = async (districtCode: number) => {
     try {
-      const response = await fetch(`https://provinces.open-api.vn/api/d/${districtCode}?depth=2`);
+      const response = await fetch(
+        `https://provinces.open-api.vn/api/d/${districtCode}?depth=2`,
+      );
       const data = await response.json();
       setWards(data.wards || []);
     } catch (error) {
-      console.error('Failed to fetch wards:', error);
+      console.error("Failed to fetch wards:", error);
     }
   };
 

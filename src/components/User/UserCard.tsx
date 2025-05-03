@@ -9,7 +9,13 @@ interface UserCardProps {
   children: React.ReactNode;
 }
 
-const UserCard = ({ title, icon, count, className, children }: UserCardProps) => {
+const UserCard = ({
+  title,
+  icon,
+  count,
+  className,
+  children,
+}: UserCardProps) => {
   return (
     <Card className={cn("h-full", className)}>
       <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
@@ -23,9 +29,7 @@ const UserCard = ({ title, icon, count, className, children }: UserCardProps) =>
           {count} items
         </div>
       </CardHeader>
-      <CardContent>
-        {children}
-      </CardContent>
+      <CardContent>{children}</CardContent>
     </Card>
   );
 };

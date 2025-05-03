@@ -11,16 +11,16 @@ export const movement = {
     return response.data;
   },
 
-  create: async (name: string ) => {
+  create: async (name: string) => {
     const response = await axiosInstance.post(`/movements/create`, {
-      name
+      name,
     });
     return response.data;
   },
 
-  update: async (id: string, name: string)=>{
+  update: async (id: string, name: string) => {
     const response = await axiosInstance.put(`/movements/update/${id}`, {
-      name
+      name,
     });
     return response.data;
   },
@@ -33,6 +33,5 @@ export const movement = {
   search: async (query: string) => {
     const response = await axiosInstance.get(`/movements/search?name=${query}`);
     return response.data;
-  }
-  
+  },
 };

@@ -38,7 +38,9 @@ export const useStockEntry = () => {
     }
   };
 
-  const createStockEntry = async (data: { items: { watchId: string; quantity: number; price: number; }[] }) => {
+  const createStockEntry = async (data: {
+    items: { watchId: string; quantity: number; price: number }[];
+  }) => {
     const key = "create";
     startLoading(key);
     try {
@@ -51,7 +53,8 @@ export const useStockEntry = () => {
       });
       return result;
     } catch (err: any) {
-      const errorMessage = err.response?.data?.message || "Failed to create stock entry";
+      const errorMessage =
+        err.response?.data?.message || "Failed to create stock entry";
       setError(errorMessage);
       toast({
         variant: "destructive",
@@ -63,7 +66,6 @@ export const useStockEntry = () => {
       stopLoading(key);
     }
   };
-  
 
   return {
     stockEntries,

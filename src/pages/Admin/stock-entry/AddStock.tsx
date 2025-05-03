@@ -64,7 +64,7 @@ const AddStock = () => {
     e.preventDefault();
     try {
       const validItems = items.filter(
-        (item) => item.watchId && item.quantity > 0
+        (item) => item.watchId && item.quantity > 0,
       );
       if (validItems.length === 0) {
         throw new Error("Please add at least one valid item");
@@ -144,7 +144,7 @@ const AddStock = () => {
                               </p>
                             </div>
                           </div>
-                        )
+                        ),
                     )}
                   </div>
 
@@ -161,7 +161,7 @@ const AddStock = () => {
                           updateItem(
                             index,
                             "quantity",
-                            parseInt(e.target.value)
+                            parseInt(e.target.value),
                           )
                         }
                       />

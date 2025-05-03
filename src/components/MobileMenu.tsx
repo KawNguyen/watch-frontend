@@ -1,9 +1,9 @@
-import { 
-  Sheet, 
-  SheetContent, 
+import {
+  Sheet,
+  SheetContent,
   SheetTrigger,
   SheetTitle,
-  SheetDescription 
+  SheetDescription,
 } from "@/components/ui/sheet";
 import { Menu, LogIn, LogOut, UserCog, LayoutDashboard } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
@@ -11,13 +11,13 @@ import { Routes } from "@/constants";
 import { useAuth } from "@/hooks/use-api/useAuth";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
-    DropdownMenu,
-    DropdownMenuContent,
-    DropdownMenuItem,
-    DropdownMenuLabel,
-    DropdownMenuSeparator,
-    DropdownMenuTrigger,
-  } from "@/components/ui/dropdown-menu";
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 import { SheetClose } from "@/components/ui/sheet";
 
 const MobileMenu = () => {
@@ -40,10 +40,7 @@ const MobileMenu = () => {
             <div className="flex flex-col space-y-4">
               {Routes.map((route) => (
                 <SheetClose asChild key={route.path}>
-                  <Link
-                    to={route.path}
-                    className="text-xl hover:text-zinc-500"
-                  >
+                  <Link to={route.path} className="text-xl hover:text-zinc-500">
                     {route.name}
                   </Link>
                 </SheetClose>
@@ -64,9 +61,11 @@ const MobileMenu = () => {
                   <span className="font-medium">{user?.name}</span>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent>
-                  <DropdownMenuLabel>{user.name}</DropdownMenuLabel>
+                  <DropdownMenuLabel>{user?.name}</DropdownMenuLabel>
                   <DropdownMenuSeparator />
-                  <DropdownMenuItem onClick={() => navigate("/profile?tab=info")}>
+                  <DropdownMenuItem
+                    onClick={() => navigate("/profile?tab=info")}
+                  >
                     <UserCog className="mr-2 h-4 w-4" />
                     Profile
                   </DropdownMenuItem>
@@ -84,8 +83,8 @@ const MobileMenu = () => {
                 </DropdownMenuContent>
               </DropdownMenu>
             ) : (
-              <Link 
-                to="/auth/login" 
+              <Link
+                to="/auth/login"
                 className="flex items-center space-x-2 text-xl hover:text-zinc-500"
               >
                 <LogIn size={20} />

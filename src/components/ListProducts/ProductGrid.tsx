@@ -20,12 +20,12 @@ interface ProductGridProps {
   totalPages: number;
 }
 
-const ProductGrid = ({ 
-  isLoading, 
-  products, 
-  onPageChange, 
+const ProductGrid = ({
+  isLoading,
+  products,
+  onPageChange,
   currentPage,
-  totalPages 
+  totalPages,
 }: ProductGridProps) => {
   return (
     <div className="space-y-8">

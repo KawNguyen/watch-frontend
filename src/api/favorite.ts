@@ -22,7 +22,7 @@ export const favorite = {
           userId,
           watchId,
         },
-      }
+      },
     );
     return response.data;
   },

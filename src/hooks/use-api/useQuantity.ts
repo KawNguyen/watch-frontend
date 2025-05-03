@@ -53,7 +53,7 @@ export const useQuantity = () => {
   const searchQuantities = async (
     query: string,
     page: number,
-    limit: number
+    limit: number,
   ) => {
     const key = "search";
     startLoading(key);

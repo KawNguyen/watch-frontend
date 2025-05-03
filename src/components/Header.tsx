@@ -29,10 +29,17 @@ const Header = () => {
   const user = getUser();
   const navigate = useNavigate();
   const { cartCount, favoriteCount, fetchCounts } = useGlobalStore();
+  const handleCheckSignIn = (redirectTo: string) => {
+    if (!isAuthenticated()) {
+      navigate("/auth/login");
+    } else {
+      navigate(redirectTo);
+    }
+  };
 
   useEffect(() => {
     if (user?.id) {
-      fetchCounts(user.id);
+      fetchCounts(user?.id);
     }
   }, [user?.id]);
 
@@ -54,7 +61,11 @@ const Header = () => {
         <MobileMenu />
 
         <Link to="/" className="flex-shrink-0">
-          <Image src="/Images/logo.png" alt="logo" className="h-16 w-16 md:h-24 md:w-24" />
+          <Image
+            src="/Images/logo.png"
+            alt="logo"
+            className="h-16 w-16 md:h-24 md:w-24"
+          />
         </Link>
 
         <div className="flex items-center space-x-2 md:space-x-4 w-auto md:w-[32%] justify-end">
@@ -62,8 +73,8 @@ const Header = () => {
             <Search />
           </div>
           <div className="hidden md:block relative">
-            <Heart 
-              onClick={() => navigate("/profile?tab=favorites")}
+            <Heart
+              onClick={() => handleCheckSignIn("/profile?tab=favorites")}
               className="h-5 w-5 md:h-6 md:w-6 cursor-pointer"
             />
             {favoriteCount > 0 && (
@@ -73,11 +84,11 @@ const Header = () => {
             )}
           </div>
           <div className="cursor-pointer relative">
-            <ShoppingBag 
-              onClick={() => navigate("/profile?tab=cart")} 
-              className="h-5 w-5 md:h-6 md:w-6" 
+            <ShoppingBag
+              onClick={() => handleCheckSignIn("/profile?tab=cart")}
+              className="h-5 w-5 md:h-6 md:w-6"
             />
-            {cartCount > 0 && (
+            {cartCount >= 0 && (
               <span className="absolute -top-2 -right-2 bg-primary text-white rounded-full w-5 h-5 flex items-center justify-center text-xs">
                 {cartCount}
               </span>
@@ -95,9 +106,11 @@ const Header = () => {
                   </Avatar>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent>
-                  <DropdownMenuLabel>{user.name}</DropdownMenuLabel>
+                  <DropdownMenuLabel>{user?.name}</DropdownMenuLabel>
                   <DropdownMenuSeparator />
-                  <DropdownMenuItem onClick={() => navigate("/profile?tab=info")}>
+                  <DropdownMenuItem
+                    onClick={() => navigate("/profile?tab=info")}
+                  >
                     <UserCog />
                     Profile
                   </DropdownMenuItem>

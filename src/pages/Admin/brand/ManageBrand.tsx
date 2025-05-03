@@ -63,14 +63,8 @@ const BrandTableSkeleton = () => (
 );
 
 const ManageBrand = () => {
-  const {
-    brands,
-    isLoading,
-    getAllBrands,
-    deleteBrand,
-    updateBrand,
-    search,
-  } = useBrand();
+  const { brands, isLoading, getAllBrands, deleteBrand, updateBrand, search } =
+    useBrand();
   const [editingId, setEditingId] = useState<number | null>(null);
   const [editData, setEditData] = useState({ name: "", country: "" });
   const [searchTerm, setSearchTerm] = useState("");

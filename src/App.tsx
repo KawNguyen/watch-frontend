@@ -87,7 +87,7 @@ const App = () => {
         <Route path="/admin/stock-entry/add" element={<AddStock />} />
         <Route path="/admin/quantity/list" element={<ManageQuantity />} />
       </Route>
-      <Route path="/payment-success" element={<PaymentSuccess/>}/>
+      <Route path="/payment-success" element={<PaymentSuccess />} />
       <Route path="/*" element={<NotFoundPage />} />
     </Routes>
   );

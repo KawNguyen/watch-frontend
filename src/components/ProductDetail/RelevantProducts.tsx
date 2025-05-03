@@ -16,10 +16,11 @@ export const RelevantProducts = ({
 
   const fetchRelevantProducts = async () => {
     try {
-      const products = await getWatchesByBrand(brandId,1,4);
-      const filtered = products.filter(
+      const products = await getWatchesByBrand(brandId, 1, 4);
+      const filtered = products
+        .filter(
           (product: any) =>
-            product.id !== currentProductId && product.brandId === brandId
+            product.id !== currentProductId && product.brandId === brandId,
         )
         .slice(0, 4);
       setRelevantProducts(filtered);

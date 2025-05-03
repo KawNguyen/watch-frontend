@@ -107,7 +107,10 @@ const DetailProduct = () => {
         <div className="flex flex-col h-full">
           <ProductName name={watch.name} />
           <div className="flex-grow">
-            <ProductTabs description={watch.description} specifications={watch} />
+            <ProductTabs
+              description={watch.description}
+              specifications={watch}
+            />
           </div>
           <ProductInfo
             price={watch.price}

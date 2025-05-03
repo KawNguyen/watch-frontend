@@ -61,14 +61,14 @@ interface OrderType {
   }[];
 }
 
-interface CartItem  {
+interface CartItem {
   id: string;
   watchId: string;
   quantity: number;
   watch: {
-      title: string;
-      description: string;
-      image: string;
-      price: number;
+    title: string;
+    description: string;
+    image: string;
+    price: number;
   };
 }

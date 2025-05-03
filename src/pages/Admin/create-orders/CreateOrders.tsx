@@ -209,9 +209,7 @@
 // };
 // export default CreateOrders;
 const CreateOrders = () => {
-    return (
-        <div>Coming soon</div>
-    )
-}
+  return <div>Coming soon</div>;
+};
 
-export default CreateOrders
+export default CreateOrders;

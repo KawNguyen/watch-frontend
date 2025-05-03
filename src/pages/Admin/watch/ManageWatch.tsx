@@ -80,7 +80,7 @@ const ManageWatch = () => {
   const {
     watches,
     error,
-    totalPages, 
+    totalPages,
     isLoading,
     getAllWatches,
     deleteWatch,
@@ -97,9 +97,13 @@ const ManageWatch = () => {
 
   const handleSearch = async () => {
     if (debouncedSearchTerm) {
-      const response = await searchWatches(debouncedSearchTerm,currentPage, 10);
+      const response = await searchWatches(
+        debouncedSearchTerm,
+        currentPage,
+        10,
+      );
       setResults(response);
-    } else{
+    } else {
       getAllWatches(currentPage, 10);
     }
   };

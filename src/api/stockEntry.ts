@@ -20,7 +20,7 @@ export const stockEntry = {
   }) => {
     const response = await axiosInstance.post(
       `/stock-entries/create`,
-      stockEntryData
+      stockEntryData,
     );
     return response.data;
   },

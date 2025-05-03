@@ -77,7 +77,9 @@ const UserInfo = ({
           </div>
         </div>
         <div className="space-y-2">
-          <Label className="text-sm text-muted-foreground">Preferred Payment</Label>
+          <Label className="text-sm text-muted-foreground">
+            Preferred Payment
+          </Label>
           <div className="p-2 border rounded-md bg-muted">
             {payment || "Not specified"}
           </div>
@@ -122,7 +124,8 @@ const UserInfo = ({
         <Popover open={openGender} onOpenChange={setOpenGender}>
           <PopoverTrigger asChild>
             <Button variant="outline" className="w-full justify-between">
-              {genders.find((g) => g.value === gender)?.label || "Select gender"}
+              {genders.find((g) => g.value === gender)?.label ||
+                "Select gender"}
               <ChevronsUpDown className="w-4 h-4 opacity-50" />
             </Button>
           </PopoverTrigger>

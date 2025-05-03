@@ -244,7 +244,7 @@ const ManageStock = () => {
                                   {formatPrice(item.quantity * item.price)}
                                 </TableCell>
                               </TableRow>
-                            )
+                            ),
                           )}
                         </TableBody>
                       </Table>

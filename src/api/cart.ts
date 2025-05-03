@@ -23,7 +23,7 @@ export const cart = {
           userId,
           cartItemId,
         },
-      }
+      },
     );
     return response.data;
   },
@@ -36,7 +36,7 @@ export const cart = {
   updateQuantity: async (
     userId: string,
     cartItemId: string,
-    quantity: number
+    quantity: number,
   ) => {
     const response = await axiosInstance.put(
       `/cart/${userId}/update-quantity/${cartItemId}`,
@@ -44,7 +44,7 @@ export const cart = {
         userId,
         cartItemId,
         quantity,
-      }
+      },
     );
     return response.data;
   },

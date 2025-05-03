@@ -13,7 +13,7 @@ export const useFavorite = () => {
   const [favorites, setFavorites] = useState<any[]>([]);
   const userId = getUser()?.id;
   const updatedFavoriteCount = useGlobalStore(
-    (state) => state.updateFavoriteCount
+    (state) => state.updateFavoriteCount,
   );
 
   const getUserFavorite = async () => {
@@ -83,7 +83,7 @@ export const useFavorite = () => {
       return data;
     } catch (err: any) {
       setError(
-        err.response?.data?.message || "Failed to remove from favorites"
+        err.response?.data?.message || "Failed to remove from favorites",
       );
       toast({
         variant: "destructive",

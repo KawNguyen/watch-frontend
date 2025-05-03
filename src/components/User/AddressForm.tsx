@@ -21,22 +21,23 @@ interface AddressFormProps {
   };
   isEditing: boolean;
   onChange: (address: {
-    create?: Omit<AddressFormProps['address'], 'id'>;
-    update?: AddressFormProps['address'];
+    create?: Omit<AddressFormProps["address"], "id">;
+    update?: AddressFormProps["address"];
   }) => void;
 }
 
 const AddressForm = ({ address, isEditing, onChange }: AddressFormProps) => {
-  const { provinces, districts, wards, fetchDistricts, fetchWards } = useVietnamLocations();
+  const { provinces, districts, wards, fetchDistricts, fetchWards } =
+    useVietnamLocations();
 
   useEffect(() => {
     const loadExistingLocation = async () => {
       if (address.city) {
-        const province = provinces.find(p => p.name === address.city);
+        const province = provinces.find((p) => p.name === address.city);
         if (province) {
           await fetchDistricts(province.code);
           if (address.district) {
-            const district = districts.find(d => d.name === address.district);
+            const district = districts.find((d) => d.name === address.district);
             if (district) {
               await fetchWards(district.code);
             }
@@ -51,7 +52,7 @@ const AddressForm = ({ address, isEditing, onChange }: AddressFormProps) => {
   }, [provinces]);
 
   const handleProvinceChange = (value: string) => {
-    const province = provinces.find(p => p.code.toString() === value);
+    const province = provinces.find((p) => p.code.toString() === value);
     if (province) {
       fetchDistricts(province.code);
       const updatedAddress = {
@@ -60,16 +61,15 @@ const AddressForm = ({ address, isEditing, onChange }: AddressFormProps) => {
         district: "",
         ward: "",
       };
-      
-      onChange(address.id 
-        ? { update: updatedAddress }
-        : { create: updatedAddress }
+
+      onChange(
+        address.id ? { update: updatedAddress } : { create: updatedAddress },
       );
     }
   };
 
   const handleDistrictChange = (value: string) => {
-    const district = districts.find(d => d.code.toString() === value);
+    const district = districts.find((d) => d.code.toString() === value);
     if (district) {
       fetchWards(district.code);
       const updatedAddress = {
@@ -77,25 +77,23 @@ const AddressForm = ({ address, isEditing, onChange }: AddressFormProps) => {
         district: district.name,
         ward: "",
       };
-      
-      onChange(address.id 
-        ? { update: updatedAddress }
-        : { create: updatedAddress }
+
+      onChange(
+        address.id ? { update: updatedAddress } : { create: updatedAddress },
       );
     }
   };
 
   const handleWardChange = (value: string) => {
-    const ward = wards.find(w => w.code.toString() === value);
+    const ward = wards.find((w) => w.code.toString() === value);
     if (ward) {
       const updatedAddress = {
         ...address,
         ward: ward.name,
       };
-      
-      onChange(address.id 
-        ? { update: updatedAddress }
-        : { create: updatedAddress }
+
+      onChange(
+        address.id ? { update: updatedAddress } : { create: updatedAddress },
       );
     }
   };
@@ -105,10 +103,9 @@ const AddressForm = ({ address, isEditing, onChange }: AddressFormProps) => {
       ...address,
       street: e.target.value,
     };
-    
-    onChange(address.id 
-      ? { update: updatedAddress }
-      : { create: updatedAddress }
+
+    onChange(
+      address.id ? { update: updatedAddress } : { create: updatedAddress },
     );
   };
 
@@ -125,7 +122,9 @@ const AddressForm = ({ address, isEditing, onChange }: AddressFormProps) => {
         </div>
         <div>
           <Label className="text-sm">District</Label>
-          <div className="p-2 border rounded-md bg-muted">{address.district}</div>
+          <div className="p-2 border rounded-md bg-muted">
+            {address.district}
+          </div>
         </div>
         <div>
           <Label className="text-sm">Ward</Label>
@@ -133,7 +132,9 @@ const AddressForm = ({ address, isEditing, onChange }: AddressFormProps) => {
         </div>
         <div className="md:col-span-2">
           <Label className="text-sm">Country</Label>
-          <div className="p-2 border rounded-md bg-muted">{address.country}</div>
+          <div className="p-2 border rounded-md bg-muted">
+            {address.country}
+          </div>
         </div>
       </div>
     );
@@ -152,9 +153,11 @@ const AddressForm = ({ address, isEditing, onChange }: AddressFormProps) => {
       </div>
       <div>
         <Label className="text-sm">City</Label>
-        <Select 
+        <Select
           onValueChange={handleProvinceChange}
-          value={provinces.find(p => p.name === address.city)?.code.toString()}
+          value={provinces
+            .find((p) => p.name === address.city)
+            ?.code.toString()}
         >
           <SelectTrigger>
             <SelectValue placeholder="Select city">
@@ -172,10 +175,12 @@ const AddressForm = ({ address, isEditing, onChange }: AddressFormProps) => {
       </div>
       <div>
         <Label className="text-sm">District</Label>
-        <Select 
+        <Select
           onValueChange={handleDistrictChange}
           disabled={!districts.length}
-          value={districts.find(d => d.name === address.district)?.code.toString()}
+          value={districts
+            .find((d) => d.name === address.district)
+            ?.code.toString()}
         >
           <SelectTrigger>
             <SelectValue placeholder="Select district">
@@ -193,9 +198,9 @@ const AddressForm = ({ address, isEditing, onChange }: AddressFormProps) => {
       </div>
       <div>
         <Label className="text-sm">Ward</Label>
-        <Select 
+        <Select
           onValueChange={handleWardChange}
-          value={wards.find(w => w.name === address.ward)?.code.toString()}
+          value={wards.find((w) => w.name === address.ward)?.code.toString()}
         >
           <SelectTrigger>
             <SelectValue placeholder="Select ward">
@@ -213,12 +218,7 @@ const AddressForm = ({ address, isEditing, onChange }: AddressFormProps) => {
       </div>
       <div className="md:col-span-2">
         <Label className="text-sm">Country</Label>
-        <Input
-          name="country"
-          value="Vietnam"
-          disabled
-          placeholder="Vietnam"
-        />
+        <Input name="country" value="Vietnam" disabled placeholder="Vietnam" />
       </div>
     </div>
   );

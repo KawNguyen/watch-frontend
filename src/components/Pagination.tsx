@@ -30,17 +30,21 @@ const CustomPagination = ({
     }
 
     pages.push(1);
-    
+
     if (currentPage > 3) {
-      pages.push('ellipsis');
+      pages.push("ellipsis");
     }
 
-    for (let i = Math.max(2, currentPage - 1); i <= Math.min(currentPage + 1, totalPages - 1); i++) {
+    for (
+      let i = Math.max(2, currentPage - 1);
+      i <= Math.min(currentPage + 1, totalPages - 1);
+      i++
+    ) {
       pages.push(i);
     }
 
     if (currentPage < totalPages - 2) {
-      pages.push('ellipsis');
+      pages.push("ellipsis");
     }
 
     if (totalPages > 1) {
@@ -66,7 +70,7 @@ const CustomPagination = ({
 
         {getPageNumbers().map((page, index) => (
           <PaginationItem key={index}>
-            {page === 'ellipsis' ? (
+            {page === "ellipsis" ? (
               <PaginationEllipsis />
             ) : (
               <PaginationLink
@@ -82,7 +86,9 @@ const CustomPagination = ({
         {showControls && (
           <PaginationItem>
             <PaginationNext
-              onClick={() => onPageChange(Math.min(totalPages, currentPage + 1))}
+              onClick={() =>
+                onPageChange(Math.min(totalPages, currentPage + 1))
+              }
               aria-disabled={currentPage === totalPages}
             />
           </PaginationItem>

@@ -1,7 +1,7 @@
-import { CheckCircle, ArrowLeft, ShoppingBag } from "lucide-react"
-import { Button } from "@/components/ui/button"
-import { Link } from "react-router-dom"
-import { Card } from "@/components/ui/card"
+import { CheckCircle, ArrowLeft, ShoppingBag } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Link } from "react-router-dom";
+import { Card } from "@/components/ui/card";
 
 export default function PaymentSuccessPage() {
   return (
@@ -23,11 +23,11 @@ export default function PaymentSuccessPage() {
             <br />
             We truly appreciate your trust in our products.
           </p>
-          
+
           <div className="flex flex-col space-y-3 sm:flex-row sm:space-y-0 sm:space-x-4 w-full">
-            <Button 
-              asChild 
-              size="lg" 
+            <Button
+              asChild
+              size="lg"
               className="bg-gray-900 hover:bg-gray-800 shadow-md"
             >
               <Link to="/profile?tab=orders" className="flex items-center">
@@ -35,10 +35,10 @@ export default function PaymentSuccessPage() {
                 View My Orders
               </Link>
             </Button>
-            <Button 
-              variant="outline" 
-              asChild 
-              size="lg" 
+            <Button
+              variant="outline"
+              asChild
+              size="lg"
               className="border-gray-200 hover:bg-gray-50 shadow-sm"
             >
               <Link to="/" className="flex items-center">
@@ -50,5 +50,5 @@ export default function PaymentSuccessPage() {
         </div>
       </Card>
     </main>
-  )
+  );
 }

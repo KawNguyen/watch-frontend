@@ -1,6 +1,6 @@
-import { create } from 'zustand';
-import { cart } from '@/api/cart';
-import { favorite } from '@/api/favorite';
+import { create } from "zustand";
+import { cart } from "@/api/cart";
+import { favorite } from "@/api/favorite";
 
 interface GlobalStore {
   cartCount: number;
@@ -24,7 +24,7 @@ export const useGlobalStore = create<GlobalStore>((set) => ({
       const cartResponse = await cart.getUserCart(userId);
       set({ cartCount: cartResponse.data.item.items.length });
     } catch (error) {
-      console.error('Failed to update cart count:', error);
+      console.error("Failed to update cart count:", error);
     }
   },
 
@@ -33,7 +33,7 @@ export const useGlobalStore = create<GlobalStore>((set) => ({
       const favoriteResponse = await favorite.getUserFavorite(userId);
       set({ favoriteCount: favoriteResponse.data.items.length });
     } catch (error) {
-      console.error('Failed to update favorite count:', error);
+      console.error("Failed to update favorite count:", error);
     }
   },
 
@@ -41,13 +41,13 @@ export const useGlobalStore = create<GlobalStore>((set) => ({
     try {
       const cartResponse = await cart.getUserCart(userId);
       const favoriteResponse = await favorite.getUserFavorite(userId);
-      
-      set({ 
+
+      set({
         cartCount: cartResponse.data.item.items.length,
-        favoriteCount: favoriteResponse.data.items.length 
+        favoriteCount: favoriteResponse.data.items.length,
       });
     } catch (error) {
-      console.error('Failed to fetch counts:', error);
+      console.error("Failed to fetch counts:", error);
     }
   },
 }));

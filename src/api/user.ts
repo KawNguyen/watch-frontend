@@ -12,7 +12,9 @@ export const user = {
   },
 
   searchUsers: async (searchTerm: string) => {
-    const response = await axiosInstance.get(`/users/search?query=${searchTerm}`);
+    const response = await axiosInstance.get(
+      `/users/search?query=${searchTerm}`,
+    );
     return response.data;
   },
 
@@ -20,4 +22,4 @@ export const user = {
     const response = await axiosInstance.put(`/users/update/${id}`, data);
     return response.data;
   },
-}
+};

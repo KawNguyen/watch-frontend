@@ -16,7 +16,6 @@ const Cart = () => {
   const { items, getUserCart, removeFromCart, isLoading, updateQuantity } =
     useCart();
 
-
   useEffect(() => {
     getUserCart();
   }, []);
@@ -72,7 +71,7 @@ const Cart = () => {
                     quantity={item.quantity}
                     type="cart"
                     onQuantityChange={handleQuantityChange}
-                    onRemove={() => handleRemove(item.id)} 
+                    onRemove={() => handleRemove(item.id)}
                   />
                 ))
               )}
@@ -103,7 +102,7 @@ const Cart = () => {
               </div>
             </div>
 
-            <Button 
+            <Button
               className="w-full mt-6"
               onClick={() => navigate("/checkout")}
               disabled={items.length === 0}

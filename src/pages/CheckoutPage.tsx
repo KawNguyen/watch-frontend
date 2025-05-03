@@ -36,21 +36,22 @@ const CheckoutPage = () => {
     name: "",
     email: "",
     phone: "",
-    addresses: [{
-      id: "",
-      street: "",
-      district: "",
-      ward: "",
-      city: "",
-      country: "",
-    }],
+    addresses: [
+      {
+        id: "",
+        street: "",
+        district: "",
+        ward: "",
+        city: "",
+        country: "",
+      },
+    ],
   });
-
 
   useEffect(() => {
     getUserCart();
     getUserById();
-  }, []); 
+  }, []);
 
   useEffect(() => {
     if (userData) {
@@ -58,19 +59,23 @@ const CheckoutPage = () => {
         name: userData.name || "",
         email: userData.email || "",
         phone: userData.phone || "",
-        addresses: userData.addresses || [{
-          id: "",
-          street: "",
-          district: "",
-          ward: "",
-          city: "",
-          country: "",
-        }],
+        addresses: userData.addresses || [
+          {
+            id: "",
+            street: "",
+            district: "",
+            ward: "",
+            city: "",
+            country: "",
+          },
+        ],
       });
     }
   }, [userData]);
 
-  const subtotal = items?.reduce((sum, item) => sum + item.watch.price * item.quantity, 0) || 0;
+  const subtotal =
+    items?.reduce((sum, item) => sum + item.watch.price * item.quantity, 0) ||
+    0;
   const shipping = 10.0;
   const total = subtotal + shipping;
 
@@ -79,7 +84,7 @@ const CheckoutPage = () => {
       if (!userData.addresses[0]?.id) {
         throw new Error("Please select a shipping address");
       }
-      console.log(userData.addresses[0]?.id)
+      console.log(userData.addresses[0]?.id);
       const orderResponse = await createOrder(userData.addresses[0]?.id);
       if (orderResponse) {
         navigate("/payment-success");
@@ -131,7 +136,9 @@ const CheckoutPage = () => {
 
           <Card>
             <CardContent className="p-6">
-              <h2 className="text-2xl font-semibold mb-6">Shipping Information</h2>
+              <h2 className="text-2xl font-semibold mb-6">
+                Shipping Information
+              </h2>
               <form onSubmit={onSubmit} className="space-y-4">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div className="space-y-2">

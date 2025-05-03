@@ -10,7 +10,11 @@ interface ProductSidebarProps {
   onApplyFilter?: (value: number) => void;
 }
 
-const ProductSidebar = ({ children, onClearFilter, onApplyFilter }: ProductSidebarProps) => {
+const ProductSidebar = ({
+  children,
+  onClearFilter,
+  onApplyFilter,
+}: ProductSidebarProps) => {
   const [priceValue, setPriceValue] = useState(5000);
 
   const handlePriceChange = (newValue: number[]) => {
@@ -40,7 +44,9 @@ const ProductSidebar = ({ children, onClearFilter, onApplyFilter }: ProductSideb
             onValueChange={handlePriceChange}
             className="w-full"
           />
-          <p className="text-sm mt-2">Price: ${100} - ${priceValue}</p>
+          <p className="text-sm mt-2">
+            Price: ${100} - ${priceValue}
+          </p>
         </div>
 
         <div className="pt-4 flex flex-col gap-2">
@@ -57,6 +63,5 @@ const ProductSidebar = ({ children, onClearFilter, onApplyFilter }: ProductSideb
     </ScrollArea>
   );
 };
-
 
 export default ProductSidebar;

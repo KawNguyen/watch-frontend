@@ -15,7 +15,7 @@ const AddBrand = () => {
     country: "",
     logo: "",
     logoFile: null as File | null,
-    isUrl: false
+    isUrl: false,
   });
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -36,7 +36,7 @@ const AddBrand = () => {
           ...formData,
           logoFile: file,
           logo: URL.createObjectURL(file),
-          isUrl: false
+          isUrl: false,
         });
       }
     } else if (e.target.name === "logo") {
@@ -44,7 +44,7 @@ const AddBrand = () => {
         ...formData,
         logo: e.target.value,
         logoFile: null,
-        isUrl: true
+        isUrl: true,
       });
     } else {
       setFormData({
@@ -106,11 +106,7 @@ const AddBrand = () => {
                 onChange={handleChange}
               />
               <div className="- my-2 text-sm text-gray-500">Or</div>
-              <Input
-                type="file"
-                accept="image/*"
-                onChange={handleChange}
-              />
+              <Input type="file" accept="image/*" onChange={handleChange} />
             </div>
           </div>
 

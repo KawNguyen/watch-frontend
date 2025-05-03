@@ -80,7 +80,7 @@ const Profile = ({ getUserById, updateUser, isLoading }: ProfileProps) => {
       phone: formData.phone,
       gender,
       paymentMethod: payment,
-      avatar: avatarUrl || formData.avatar, 
+      avatar: avatarUrl || formData.avatar,
       addresses: {
         upsert: {
           where: { id: addressData?.id || "0" },

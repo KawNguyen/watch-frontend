@@ -8,7 +8,7 @@ import {
   Users,
   Droplets,
   Shield,
-  Cog
+  Cog,
 } from "lucide-react";
 
 interface ProductTabsProps {
@@ -52,19 +52,27 @@ export function ProductTabs({ description, specifications }: ProductTabsProps) {
               <div className="font-medium text-gray-900 flex items-center gap-2">
                 <Globe className="h-4 w-4" /> Country
               </div>
-              <div className="text-gray-600">{specifications.brand?.country}</div>
+              <div className="text-gray-600">
+                {specifications.brand?.country}
+              </div>
               <div className="font-medium text-gray-900 flex items-center gap-2">
                 <Cog className="h-4 w-4" /> Movement
               </div>
-              <div className="text-gray-600">{specifications.movement?.name}</div>
+              <div className="text-gray-600">
+                {specifications.movement?.name}
+              </div>
               <div className="font-medium text-gray-900 flex items-center gap-2">
                 <Circle className="h-4 w-4" /> Case Material
               </div>
-              <div className="text-gray-600">{specifications.material?.name}</div>
+              <div className="text-gray-600">
+                {specifications.material?.name}
+              </div>
               <div className="font-medium text-gray-900 flex items-center gap-2">
                 <Link className="h-4 w-4" /> Band Material
               </div>
-              <div className="text-gray-600">{specifications.bandMaterial?.name}</div>
+              <div className="text-gray-600">
+                {specifications.bandMaterial?.name}
+              </div>
               <div className="font-medium text-gray-900 flex items-center gap-2">
                 <Ruler className="h-4 w-4" /> Case Diameter
               </div>
@@ -76,11 +84,15 @@ export function ProductTabs({ description, specifications }: ProductTabsProps) {
               <div className="font-medium text-gray-900 flex items-center gap-2">
                 <Droplets className="h-4 w-4" /> Water Resistance
               </div>
-              <div className="text-gray-600">{specifications.waterResistance}m</div>
+              <div className="text-gray-600">
+                {specifications.waterResistance}m
+              </div>
               <div className="font-medium text-gray-900 flex items-center gap-2">
                 <Shield className="h-4 w-4" /> Warranty
               </div>
-              <div className="text-gray-600">{specifications.warranty} months</div>
+              <div className="text-gray-600">
+                {specifications.warranty} months
+              </div>
             </div>
           </div>
         </TabsContent>

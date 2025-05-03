@@ -5,7 +5,6 @@ import ProductSidebar from "@/components/ListProducts/ProductSidebar";
 import PropsSidebar from "@/components/ListProducts/PropsSidebar";
 import { Button } from "@/components/ui/button";
 import { Filter } from "lucide-react";
-// Add these new imports
 import {
   Sheet,
   SheetContent,
@@ -30,6 +29,7 @@ const genders = [
 ];
 
 const ListProductPage = () => {
+  const [isOpen, setIsOpen] = useState(false);
   const isDesktop = useMediaQuery("(min-width: 1024px)");
   const [searchParams, setSearchParams] = useSearchParams();
   const { brands, isLoading: isBrandLoading, getAllBrands } = useBrand();
@@ -114,6 +114,7 @@ const ListProductPage = () => {
       maxPrice: prev.maxPrice,
       page: 1,
     }));
+    setIsOpen(false);
   };
 
   const handleClearFilters = () => {
@@ -138,12 +139,14 @@ const ListProductPage = () => {
   };
 
   return (
-    <div className="w-full min-h-screen bg-gray-50">
-      <HeroBanner
-        title="Explore Our Collection"
-        description="Discover the latest watches and styles."
-        imageUrl="https://luxatch-store-newdemo.myshopify.com/cdn/shop/files/breadcumb.jpg"
-      />
+    <div className="mt-12 w-full min-h-screen bg-gray-50">
+      {isDesktop && (
+        <HeroBanner
+          title="Explore Our Collection"
+          description="Discover the latest watches and styles."
+          imageUrl="https://luxatch-store-newdemo.myshopify.com/cdn/shop/files/breadcumb.jpg"
+        />
+      )}
 
       <div className="container px-4 py-8 mx-auto">
         <div className="lg:flex gap-8">
@@ -193,8 +196,8 @@ const ListProductPage = () => {
               </ProductSidebar>
             </div>
           ) : (
-            <div className="lg:hidden mb-4">
-              <Sheet>
+            <div className="mb-4">
+              <Sheet open={isOpen} onOpenChange={setIsOpen}>
                 <SheetTrigger asChild>
                   <Button variant="outline" className="w-full">
                     <Filter className="mr-2 h-4 w-4" />

@@ -23,13 +23,12 @@ interface ProductCardProps {
 
 const ProductCard = ({ product }: { product: ProductCardProps }) => {
   const { addToFavorite } = useFavorite();
-  const {addToCart} = useCart();
+  const { addToCart } = useCart();
   const navigate = useNavigate();
 
   const handleAddToFavorite = async () => {
     await addToFavorite(product.id);
   };
-
 
   return (
     <Card
@@ -55,7 +54,7 @@ const ProductCard = ({ product }: { product: ProductCardProps }) => {
                   className="hover:bg-black hover:text-white"
                   onClick={(e) => {
                     e.stopPropagation();
-                    addToCart(product.id,1);
+                    addToCart(product.id, 1);
                   }}
                 >
                   <ShoppingBag className="h-4 w-4" />
@@ -104,7 +103,7 @@ const ProductCard = ({ product }: { product: ProductCardProps }) => {
       </div>
 
       <CardContent className="flex flex-col items-center text-center p-4 h-[120px]">
-        <h3 className="text-base font-semibold line-clamp-2 mb-2">
+        <h3 className="text-sm lg:text-base font-semibold line-clamp-2 mb-2">
           {product.name}
         </h3>
         <p className="text-primary font-bold text-lg text-red-500">

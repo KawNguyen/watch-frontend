@@ -71,9 +71,9 @@ const ManageQuantity = () => {
       const results = await searchQuantities(
         debouncedSearchTerm,
         currentPage,
-        10
+        10,
       );
-      console.log(results)
+      console.log(results);
       setSearchResults(results || []);
     } else {
       setSearchResults([]);

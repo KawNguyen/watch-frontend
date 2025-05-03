@@ -48,7 +48,8 @@ export const useMovement = () => {
       });
       return data;
     } catch (err: any) {
-      const errorMessage = err.response?.data?.message || "Failed to create movement";
+      const errorMessage =
+        err.response?.data?.message || "Failed to create movement";
       setError(errorMessage);
       toast({
         variant: "destructive",
@@ -74,7 +75,8 @@ export const useMovement = () => {
       });
       return data;
     } catch (err: any) {
-      const errorMessage = err.response?.data?.message || "Failed to update movement";
+      const errorMessage =
+        err.response?.data?.message || "Failed to update movement";
       setError(errorMessage);
       toast({
         variant: "destructive",
@@ -99,7 +101,8 @@ export const useMovement = () => {
         className: "bg-green-500 text-white border-none",
       });
     } catch (err: any) {
-      const errorMessage = err.response?.data?.message || "Failed to delete movement";
+      const errorMessage =
+        err.response?.data?.message || "Failed to delete movement";
       setError(errorMessage);
       toast({
         variant: "destructive",

@@ -13,7 +13,6 @@ import { NavUser } from "./nav-user";
 import { useAuth } from "@/hooks/use-api/useAuth";
 import { useUser } from "@/hooks/use-api/useUser";
 
-
 const teams = [
   {
     name: "Acme Inc",

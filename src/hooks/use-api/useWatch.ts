@@ -152,7 +152,7 @@ export const useWatch = () => {
   const getWatchesByBrand = async (
     brandId: string,
     page: number,
-    limit: number
+    limit: number,
   ) => {
     const key = "getByBrand";
     startLoading(key);
@@ -171,21 +171,21 @@ export const useWatch = () => {
   const getWatchesByMovement = async (
     movement: string,
     page: number,
-    limit: number 
+    limit: number,
   ) => {
     const key = "getByMovement";
     startLoading(key);
     try {
       const res = await watch.getByMovement(movement, page, limit);
       setTotalPages(res.meta.totalPages);
-      return res.data.items; 
+      return res.data.items;
     } catch (err) {
       setError("Failed to get watches by movement");
-      throw err; 
+      throw err;
     } finally {
       stopLoading(key);
     }
-  }
+  };
 
   const getWatchesByFilter = async (filters: FilterParams) => {
     const key = "getByFilter";

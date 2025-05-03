@@ -39,10 +39,18 @@ const CustomerTableSkeleton = () => (
     <TableBody>
       {Array.from({ length: 5 }).map((_, index) => (
         <TableRow key={index}>
-          <TableCell><Skeleton className="h-8 w-[150px]" /></TableCell>
-          <TableCell><Skeleton className="h-8 w-[200px]" /></TableCell>
-          <TableCell><Skeleton className="h-8 w-[120px]" /></TableCell>
-          <TableCell><Skeleton className="h-8 w-[200px]" /></TableCell>
+          <TableCell>
+            <Skeleton className="h-8 w-[150px]" />
+          </TableCell>
+          <TableCell>
+            <Skeleton className="h-8 w-[200px]" />
+          </TableCell>
+          <TableCell>
+            <Skeleton className="h-8 w-[120px]" />
+          </TableCell>
+          <TableCell>
+            <Skeleton className="h-8 w-[200px]" />
+          </TableCell>
           <TableCell>
             <div className="flex space-x-2">
               <Skeleton className="h-8 w-16" />
@@ -59,7 +67,7 @@ const ManageCustomer = () => {
   const { users, isLoading, error, getAllUsers, searchUsers } = useUser();
   const [searchTerm, setSearchTerm] = useState("");
   const [results, setResults] = useState<any[]>([]);
-  
+
   const debouncedSearchTerm = useDebounce(searchTerm, 300);
 
   useEffect(() => {
@@ -141,7 +149,10 @@ const ManageCustomer = () => {
           <TableBody>
             {(searchTerm ? results : users)?.length === 0 ? (
               <TableRow>
-                <TableCell colSpan={5} className="text-center py-10 text-muted-foreground">
+                <TableCell
+                  colSpan={5}
+                  className="text-center py-10 text-muted-foreground"
+                >
                   No customers found
                 </TableCell>
               </TableRow>
@@ -157,7 +168,9 @@ const ManageCustomer = () => {
                       <Button
                         size="sm"
                         className="h-8 px-3"
-                        onClick={() => {/* Handle view details */}}
+                        onClick={() => {
+                          /* Handle view details */
+                        }}
                       >
                         View
                       </Button>

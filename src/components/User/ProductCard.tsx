@@ -18,7 +18,7 @@ type BaseProduct = {
   images: [
     {
       url: string;
-    }
+    },
   ];
   price?: number;
 };
@@ -100,7 +100,7 @@ const ProductCard = (props: ProductCardProps) => {
                     if (props.quantity > 1) {
                       props.onQuantityChange?.(
                         props.cartItemId,
-                        props.quantity - 1
+                        props.quantity - 1,
                       );
                     }
                   }}
@@ -118,7 +118,7 @@ const ProductCard = (props: ProductCardProps) => {
                     e.stopPropagation();
                     props.onQuantityChange?.(
                       props.cartItemId,
-                      props.quantity + 1
+                      props.quantity + 1,
                     );
                   }}
                 >

@@ -21,7 +21,13 @@ interface PropsSidebarProps {
   selected: string[];
 }
 
-const PropsSidebar = ({ isLoading, items, title, onSelect, selected }: PropsSidebarProps) => {
+const PropsSidebar = ({
+  isLoading,
+  items,
+  title,
+  onSelect,
+  selected,
+}: PropsSidebarProps) => {
   return (
     <div className="space-y-2">
       <h3 className="font-semibold">{title}</h3>
