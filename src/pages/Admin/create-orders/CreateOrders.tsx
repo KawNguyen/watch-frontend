@@ -4,6 +4,8 @@
 // import { Card, CardContent } from "@/components/ui/card";
 // import { Textarea } from "@/components/ui/textarea";
 
+import ComingSoon from "@/components/ComingSoon";
+
 // interface CustomerInfo {
 //     name: string;
 //     email: string;
@@ -209,7 +211,7 @@
 // };
 // export default CreateOrders;
 const CreateOrders = () => {
-  return <div>Coming soon</div>;
+  return <ComingSoon/>;
 };
 
 export default CreateOrders;
