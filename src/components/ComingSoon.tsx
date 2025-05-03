@@ -20,11 +20,9 @@ const ComingSoon = () => {
           <p className="text-sm text-muted-foreground">
             This page is under construction and will be available soon.
           </p>
-          
+
           <Button asChild>
-            <Link to="/">
-              Return to Home
-            </Link>
+            <Link to="/">Return to Home</Link>
           </Button>
         </div>
       </div>

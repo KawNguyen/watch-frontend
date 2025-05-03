@@ -2,9 +2,7 @@ import axiosInstance from "@/config/axiosInstance";
 
 export const order = {
   getOrdersByUserId: async (userId: string) => {
-    const response = await axiosInstance.get(
-      `/orders/${userId}`,
-    );
+    const response = await axiosInstance.get(`/orders/${userId}`);
     return response.data;
   },
 

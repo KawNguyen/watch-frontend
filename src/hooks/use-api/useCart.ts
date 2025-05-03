@@ -12,7 +12,7 @@ export const useCart = () => {
   const [error, setError] = useState<string | null>(null);
   const [items, setItems] = useState<CartItem[]>([]);
   const userId = getUser()?.id;
-  
+
   const updateCartCount = useGlobalStore((state) => state.updateCartCount);
 
   const showErrorToast = (message: string) => {

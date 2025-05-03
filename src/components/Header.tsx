@@ -41,7 +41,7 @@ const Header = () => {
     if (user?.id) {
       fetchCounts(user?.id);
     }
-    console.log("a")
+    console.log("a");
   }, [user?.id]);
 
   return (

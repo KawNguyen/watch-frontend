@@ -211,7 +211,7 @@ import ComingSoon from "@/components/ComingSoon";
 // };
 // export default CreateOrders;
 const CreateOrders = () => {
-  return <ComingSoon/>;
+  return <ComingSoon />;
 };
 
 export default CreateOrders;

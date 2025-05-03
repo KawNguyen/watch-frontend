@@ -65,7 +65,9 @@ const Cart = () => {
               ) : items.length === 0 ? (
                 <div className="flex flex-col items-center justify-center py-10 text-center">
                   <ShoppingCart className="h-12 w-12 text-muted-foreground mb-4" />
-                  <h3 className="font-medium text-lg mb-2">Your cart is empty</h3>
+                  <h3 className="font-medium text-lg mb-2">
+                    Your cart is empty
+                  </h3>
                   <p className="text-muted-foreground">
                     Add items to your cart to start shopping
                   </p>

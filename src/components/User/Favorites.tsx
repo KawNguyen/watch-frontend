@@ -14,7 +14,7 @@ const Favorites = () => {
     getUserFavorite();
   }, []);
 
-  const handleRemoveFromFavorite = async(watchId: string) => {
+  const handleRemoveFromFavorite = async (watchId: string) => {
     await removeFromFavorite(watchId);
     getUserFavorite();
   };
