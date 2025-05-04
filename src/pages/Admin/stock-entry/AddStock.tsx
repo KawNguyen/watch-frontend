@@ -1,16 +1,10 @@
 import { useState, useEffect } from "react";
 import { useWatch } from "@/hooks/use-api/useWatch";
+import useDebounce from "@/hooks/useDebounce";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import { Minus, Plus } from "lucide-react";
+import { Minus, Plus, Loader2 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { useStockEntry } from "@/hooks/use-api/useStockEntry";
 
@@ -26,12 +20,19 @@ const AddStock = () => {
   const [items, setItems] = useState<StockItem[]>([
     { watchId: "", quantity: 1, price: 0 },
   ]);
-
-  const { watches, getAllWatches } = useWatch();
+  const [search, setSearch] = useState("");
+  const debouncedSearch = useDebounce(search, 500);
+  const { searchWatches, isLoading } = useWatch();
+  const [watches, setWatches] = useState([]);
+  const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
 
   useEffect(() => {
-    getAllWatches(1, 100);
-  }, []);
+    const fetchWatches = async () => {
+      const results = await searchWatches(debouncedSearch, 1, 100);
+      setWatches(results || []);
+    };
+    fetchWatches();
+  }, [debouncedSearch]);
 
   const addItem = () => {
     setItems([...items, { watchId: "", quantity: 1, price: 0 }]);
@@ -52,7 +53,6 @@ const AddStock = () => {
         newItems[index].price = (selectedWatch as { price: number }).price;
       }
     }
-
     setItems(newItems);
   };
 
@@ -69,7 +69,6 @@ const AddStock = () => {
       if (validItems.length === 0) {
         throw new Error("Please add at least one valid item");
       }
-
       await createStockEntry({ items });
       navigate("/admin/stock-entry/list");
     } catch (error) {
@@ -99,23 +98,54 @@ const AddStock = () => {
                   <label className="text-sm font-medium mb-2 block">
                     Product
                   </label>
-                  <Select
-                    value={item.watchId}
-                    onValueChange={(value) =>
-                      updateItem(index, "watchId", value)
-                    }
-                  >
-                    <SelectTrigger>
-                      <SelectValue placeholder="Select a product" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      {watches.map((watch: any) => (
-                        <SelectItem key={watch.id} value={watch.id}>
-                          {watch.name}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
+                  <Input
+                    type="text"
+                    placeholder="Search products..."
+                    value={search}
+                    onChange={(e) => {
+                      setSearch(e.target.value);
+                      setSelectedIndex(index);
+                    }}
+                    className="mb-2"
+                  />
+                  {selectedIndex === index && (
+                    <div className="max-h-60 overflow-y-auto border rounded-md">
+                      {isLoading("search") ? (
+                        <div className="flex items-center justify-center p-4">
+                          <Loader2 className="h-6 w-6 animate-spin text-gray-500" />
+                        </div>
+                      ) : watches.length > 0 ? (
+                        watches.map((watch: any) => (
+                          <div
+                            key={watch.id}
+                            className={`flex items-center gap-4 p-3 cursor-pointer hover:bg-gray-50 ${
+                              item.watchId === watch.id ? "bg-gray-100" : ""
+                            }`}
+                            onClick={() => {
+                              updateItem(index, "watchId", watch.id);
+                              setSelectedIndex(null); // hide list
+                            }}
+                          >
+                            <img
+                              src={watch.images[0]?.url}
+                              alt={watch.name}
+                              className="w-12 h-12 object-cover rounded-md"
+                            />
+                            <div>
+                              <h3 className="font-medium">{watch.name}</h3>
+                              <p className="text-sm text-gray-600">
+                                {watch.brand.name} - ${watch.price}
+                              </p>
+                            </div>
+                          </div>
+                        ))
+                      ) : (
+                        <div className="text-center p-4 text-gray-500">
+                          No products found
+                        </div>
+                      )}
+                    </div>
+                  )}
                 </div>
               </div>
 
