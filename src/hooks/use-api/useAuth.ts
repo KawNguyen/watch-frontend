@@ -30,8 +30,7 @@ export const useAuth = () => {
         credentials.email,
         credentials.password
       );
-      localStorage.setItem("token", response.token);
-      localStorage.setItem("user", JSON.stringify(response.user));
+      localStorage.setItem("userId", response.user.id);
       toast({
         title: "Success",
         description: "Registration successful! Welcome aboard.",
@@ -65,8 +64,7 @@ export const useAuth = () => {
         credentials.email,
         credentials.password
       );
-      localStorage.setItem("token", response.token);
-      localStorage.setItem("user", JSON.stringify(response.user));
+      localStorage.setItem("userId", response.user.id);
       // toast({
       //   title: "Success",
       //   description: "Welcome back!",
@@ -125,9 +123,13 @@ export const useAuth = () => {
     try {
       setIsLoading(true);
       setError(null);
-      const response = await authAPI.verifyOTP(getUser()?.id, otp);
+      const userId = localStorage.getItem("userId");
+      if (!userId) throw new Error("Missing userId for OTP verification");
+
+      const response = await authAPI.verifyOTP(userId, otp);
       localStorage.setItem("token", response.token);
       localStorage.setItem("user", JSON.stringify(response.user));
+      localStorage.removeItem("userId");
       toast({
         title: "Success",
         description: "OTP verification successful!",

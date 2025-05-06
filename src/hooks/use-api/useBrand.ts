@@ -40,6 +40,11 @@ export const useBrand = () => {
       setIsLoading(true);
       setError(null);
       const data = await brand.create(name, country, logo);
+  
+      if (!data || data.status >= 400) {
+        throw new Error(data.message || "Failed to create brand");
+      }
+  
       await getAllBrands();
       toast({
         title: "Success",
@@ -49,7 +54,7 @@ export const useBrand = () => {
       return data;
     } catch (err: any) {
       const errorMessage =
-        err.response?.data?.message || "Failed to create brand";
+        err.response?.data?.message || err.message || "Failed to create brand";
       setError(errorMessage);
       toast({
         variant: "destructive",
@@ -61,6 +66,7 @@ export const useBrand = () => {
       setIsLoading(false);
     }
   };
+  
 
   const updateBrand = async (id: number, name: string, country: string) => {
     try {
