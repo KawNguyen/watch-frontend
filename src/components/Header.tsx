@@ -28,7 +28,8 @@ const Header = () => {
   const { isAuthenticated, logout, getUser } = useAuth();
   const user = getUser();
   const navigate = useNavigate();
-  const { cartCount, favoriteCount, fetchCounts, resetCounts } = useGlobalStore();
+  const { cartCount, favoriteCount, fetchCounts, resetCounts } =
+    useGlobalStore();
 
   useEffect(() => {
     if (user?.id) {

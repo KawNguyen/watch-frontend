@@ -18,6 +18,14 @@ export const authAPI = {
     return response.data;
   },
 
+  verifyOTP: async (userId: string, otp: string) => {
+    const response = await axiosInstance.post(`/auth/verify-otp`, {
+      userId,
+      otp,
+    });
+    return response.data;
+  },
+
   logout: async () => {
     const response = await axiosInstance.post(`/auth/logout`);
     return response.data;

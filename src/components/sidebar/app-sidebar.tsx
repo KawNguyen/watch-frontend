@@ -36,7 +36,7 @@ export function AppSidebar() {
   const { userData } = useUser();
 
   return (
-    <Sidebar>
+    <Sidebar collapsible="icon">
       <SidebarHeader>
         <TeamSwitcher teams={teams} />
       </SidebarHeader>

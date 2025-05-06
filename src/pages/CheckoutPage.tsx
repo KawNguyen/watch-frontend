@@ -84,7 +84,6 @@ const CheckoutPage = () => {
       if (!userData.addresses[0]?.id) {
         throw new Error("Please select a shipping address");
       }
-      console.log(userData.addresses[0]?.id);
       const orderResponse = await createOrder(userData.addresses[0]?.id);
       if (orderResponse) {
         navigate("/payment-success");

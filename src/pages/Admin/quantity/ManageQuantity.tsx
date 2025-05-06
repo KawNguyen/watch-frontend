@@ -73,7 +73,6 @@ const ManageQuantity = () => {
         currentPage,
         10,
       );
-      console.log(results);
       setSearchResults(results || []);
     } else {
       setSearchResults([]);

@@ -73,7 +73,6 @@ const ListProductPage = () => {
   useEffect(() => {
     const fetchWatches = async () => {
       const data = await getWatchesByFilter(filters);
-      console.log(data)
       setWatches(data);
     };
     fetchWatches();

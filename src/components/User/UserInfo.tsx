@@ -68,7 +68,9 @@ const UserInfo = ({
         </div>
         <div className="space-y-2">
           <Label className="text-sm text-muted-foreground">Phone Number</Label>
-          <div className="p-2 border rounded-md bg-muted">{formData.phone}</div>
+          <div className="p-2 border rounded-md bg-muted">
+            {formData.phone || "Not specified"}
+          </div>
         </div>
         <div className="space-y-2">
           <Label className="text-sm text-muted-foreground">Gender</Label>

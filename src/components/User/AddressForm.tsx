@@ -114,26 +114,32 @@ const AddressForm = ({ address, isEditing, onChange }: AddressFormProps) => {
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div>
           <Label className="text-sm">Street</Label>
-          <div className="p-2 border rounded-md bg-muted">{address.street}</div>
+          <div className="p-2 border rounded-md bg-muted">
+            {address.street || "Not specified"}
+          </div>
         </div>
         <div>
           <Label className="text-sm">City</Label>
-          <div className="p-2 border rounded-md bg-muted">{address.city}</div>
+          <div className="p-2 border rounded-md bg-muted">
+            {address.city || "Not specified"}
+          </div>
         </div>
         <div>
           <Label className="text-sm">District</Label>
           <div className="p-2 border rounded-md bg-muted">
-            {address.district}
+            {address.district || "Not specified"}
           </div>
         </div>
         <div>
           <Label className="text-sm">Ward</Label>
-          <div className="p-2 border rounded-md bg-muted">{address.ward}</div>
+          <div className="p-2 border rounded-md bg-muted">
+            {address.ward || "Not specified"}
+          </div>
         </div>
         <div className="md:col-span-2">
           <Label className="text-sm">Country</Label>
           <div className="p-2 border rounded-md bg-muted">
-            {address.country}
+            {address.country || "Not specified"}
           </div>
         </div>
       </div>

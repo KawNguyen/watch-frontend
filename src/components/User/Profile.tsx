@@ -105,12 +105,12 @@ const Profile = ({ getUserById, updateUser, isLoading }: ProfileProps) => {
     try {
       await updateUser(updatedData);
       setIsEditing(false);
-      setIsAvatarDialogOpen(false); // Close avatar dialog
+      setIsAvatarDialogOpen(false); 
       setFormData((prev) => ({
         ...prev,
-        avatar: avatarUrl || prev.avatar, // Update local avatar state
+        avatar: avatarUrl || prev.avatar,
       }));
-      setAvatarUrl(""); // Reset avatar URL input
+      setAvatarUrl("");
       toast({
         title: "Success",
         description: "Profile updated successfully",

@@ -28,7 +28,7 @@ export const useAuth = () => {
       const response = await authAPI.register(
         credentials.name,
         credentials.email,
-        credentials.password,
+        credentials.password
       );
       localStorage.setItem("token", response.token);
       localStorage.setItem("user", JSON.stringify(response.user));
@@ -37,7 +37,7 @@ export const useAuth = () => {
         description: "Registration successful! Welcome aboard.",
         className: "bg-green-500 text-white border-none",
       });
-      navigate("/");
+      navigate("/auth/verify-otp");
     } catch (err: any) {
       let errorMessage = "An error occurred during registration";
       if (err.response) {
@@ -63,16 +63,16 @@ export const useAuth = () => {
       setError(null);
       const response = await authAPI.login(
         credentials.email,
-        credentials.password,
+        credentials.password
       );
       localStorage.setItem("token", response.token);
       localStorage.setItem("user", JSON.stringify(response.user));
-      toast({
-        title: "Success",
-        description: "Welcome back!",
-        className: "bg-green-500 text-white border-none",
-      });
-      navigate("/");
+      // toast({
+      //   title: "Success",
+      //   description: "Welcome back!",
+      //   className: "bg-green-500 text-white border-none",
+      // });
+      navigate("/auth/verify-otp");
     } catch (err: any) {
       let errorMessage = "An error occurred during login";
       if (err.response) {
@@ -121,10 +121,45 @@ export const useAuth = () => {
     }
   };
 
+  const verifyOTP = async (otp: string) => {
+    try {
+      setIsLoading(true);
+      setError(null);
+      const response = await authAPI.verifyOTP(getUser()?.id, otp);
+      localStorage.setItem("token", response.token);
+      localStorage.setItem("user", JSON.stringify(response.user));
+      toast({
+        title: "Success",
+        description: "OTP verification successful!",
+        className: "bg-green-500 text-white border-none",
+      });
+      navigate("/");
+      return response;
+    } catch (err: any) {
+      let errorMessage = "An error occurred during OTP verification";
+      if (err.response) {
+        errorMessage = err.response.data?.message || "Invalid OTP";
+      } else if (err.request) {
+        errorMessage = "Unable to reach the server";
+      }
+      setError(errorMessage);
+      toast({
+        variant: "destructive",
+        title: "Error",
+        description: errorMessage,
+        className: "bg-red-500 text-white border-none",
+      });
+      throw err;
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   return {
     register,
     login,
     logout,
+    verifyOTP,
     isAuthenticated,
     getUser,
     isLoading,

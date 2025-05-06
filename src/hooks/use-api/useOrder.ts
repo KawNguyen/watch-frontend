@@ -19,7 +19,6 @@ export const useOrder = () => {
     try {
       setError(null);
       const res = await order.getOrdersByUserId(userId);
-      console.log(res.data);
       setOrders(res.data.items);
       return res.data.items;
     } catch (err: any) {

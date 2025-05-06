@@ -35,6 +35,7 @@ import AddStock from "./pages/Admin/stock-entry/AddStock";
 import ManageQuantity from "./pages/Admin/quantity/ManageQuantity";
 import CheckoutPage from "./pages/CheckoutPage";
 import PaymentSuccess from "./pages/PaymentSuccess";
+import VerifyOTP from "./pages/Auth/VerifyOTP";
 
 const App = () => {
   const { getUser } = useAuth();
@@ -56,6 +57,7 @@ const App = () => {
 
       <Route path="/auth" element={<AuthLayout />}>
         <Route path="login" element={<LoginPage />} />
+        <Route path="verify-otp" element={<VerifyOTP />} />
         <Route path="register" element={<RegisterPage />} />
       </Route>
 
