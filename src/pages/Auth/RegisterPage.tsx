@@ -13,12 +13,15 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
+import ReCAPTCHA from "react-google-recaptcha";
+import { RECAPTCHA_KEY } from "@/config/captcha";
 
 interface RegisterFormInputs {
   username: string;
   email: string;
   password: string;
   confirmPassword: string;
+  captchaToken: string;
 }
 
 const RegisterPage = () => {
@@ -29,16 +32,24 @@ const RegisterPage = () => {
       email: "",
       password: "",
       confirmPassword: "",
+      captchaToken: "",
     },
   });
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [recaptchaToken, setRecaptchaToken] = useState<string | null>(null);
 
   const onSubmit = async (data: RegisterFormInputs) => {
+    if (!recaptchaToken) {
+      alert("Please complete the reCAPTCHA");
+      return;
+    }
+
     await register({
       name: data.username,
       email: data.email,
       password: data.password,
+      recaptchaToken, 
     });
   };
 
@@ -202,6 +213,11 @@ const RegisterPage = () => {
                   <FormMessage />
                 </FormItem>
               )}
+            />
+
+            <ReCAPTCHA
+              sitekey={RECAPTCHA_KEY}
+              onChange={(token) => setRecaptchaToken(token)}
             />
 
             <Button type="submit" className="w-full" disabled={isLoading}>

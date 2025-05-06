@@ -1,11 +1,12 @@
 import axiosInstance from "@/config/axiosInstance";
 
 export const authAPI = {
-  register: async (name: string, email: string, password: string) => {
+  register: async (name: string, email: string, password: string, captchaToken: string) => {
     const response = await axiosInstance.post(`/auth/register`, {
       name,
       email,
       password,
+      captchaToken // Include recaptchaToken in the request payload
     });
     return response.data;
   },

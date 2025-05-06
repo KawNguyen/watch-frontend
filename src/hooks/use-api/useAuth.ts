@@ -13,6 +13,7 @@ interface RegisterCredentials {
   name: string;
   email: string;
   password: string;
+  recaptchaToken: string; // Add recaptchaToken to the interface
 }
 
 export const useAuth = () => {
@@ -28,7 +29,8 @@ export const useAuth = () => {
       const response = await authAPI.register(
         credentials.name,
         credentials.email,
-        credentials.password
+        credentials.password,
+        credentials.recaptchaToken // Pass recaptchaToken to the API
       );
       localStorage.setItem("userId", response.user.id);
       toast({
