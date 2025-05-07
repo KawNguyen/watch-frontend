@@ -14,12 +14,13 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 
+interface Option {
+  value: string;
+  label: string;
+}
+
 interface UserInfoProps {
-  formData: {
-    name: string;
-    email: string;
-    phone: string;
-  };
+  formData: { name: string; email: string; phone: string };
   gender: string;
   payment: string;
   isEditing: boolean;
@@ -32,12 +33,12 @@ interface UserInfoProps {
   handleInputChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
-const genders = [
+const genders: Option[] = [
   { value: "MALE", label: "Male" },
   { value: "FEMALE", label: "Female" },
 ];
 
-const payments = [
+const payments: Option[] = [
   { value: "COD", label: "COD" },
   { value: "MOMO", label: "MOMO" },
 ];
@@ -55,133 +56,98 @@ const UserInfo = ({
   setPayment,
   handleInputChange,
 }: UserInfoProps) => {
+  const renderInput = (
+    label: string,
+    name: keyof typeof formData,
+    type: string = "text",
+    disabled = false
+  ) => (
+    <div className="space-y-2">
+      <Label className={isEditing ? "" : "text-sm text-muted-foreground"}>
+        {label}
+      </Label>
+      <Input
+        name={name}
+        type={type}
+        value={formData[name]}
+        onChange={handleInputChange}
+        placeholder={`Enter your ${label.toLowerCase()}`}
+        className={disabled ? "p-2 border rounded-md bg-muted" : ""}
+        disabled={disabled}
+      />
+    </div>
+  );
+
+  const renderReadonlyInput = (label: string, value: string) => (
+    <div className="space-y-2">
+      <Label className="text-sm text-muted-foreground">{label}</Label>
+      <Input
+        value={value || "Not specified"}
+        className="p-2 border rounded-md bg-muted"
+        disabled
+      />
+    </div>
+  );
+
+  const renderSelectPopover = (
+    label: string,
+    value: string,
+    options: Option[],
+    open: boolean,
+    setOpen: (v: boolean) => void,
+    setValue: (v: string) => void
+  ) => (
+    <div className="space-y-2">
+      <Label>{label}</Label>
+      <Popover open={open} onOpenChange={setOpen}>
+        <PopoverTrigger asChild>
+          <Button variant="outline" className="w-full justify-between">
+            {options.find((o) => o.value === value)?.label || `Select ${label.toLowerCase()}`}
+            <ChevronsUpDown className="w-4 h-4 opacity-50" />
+          </Button>
+        </PopoverTrigger>
+        <PopoverContent className="w-full p-0">
+          <Command>
+            <CommandList>
+              <CommandGroup>
+                {options.map((item) => (
+                  <CommandItem
+                    key={item.value}
+                    onSelect={() => {
+                      setValue(item.value);
+                      setOpen(false);
+                    }}
+                  >
+                    {item.label}
+                  </CommandItem>
+                ))}
+              </CommandGroup>
+            </CommandList>
+          </Command>
+        </PopoverContent>
+      </Popover>
+    </div>
+  );
+
   if (!isEditing) {
     return (
       <>
-        <div className="space-y-2">
-          <Label className="text-sm text-muted-foreground">Full Name</Label>
-          <div className="p-2 border rounded-md bg-muted">{formData.name}</div>
-        </div>
-        <div className="space-y-2">
-          <Label className="text-sm text-muted-foreground">Email</Label>
-          <div className="p-2 border rounded-md bg-muted">{formData.email}</div>
-        </div>
-        <div className="space-y-2">
-          <Label className="text-sm text-muted-foreground">Phone Number</Label>
-          <div className="p-2 border rounded-md bg-muted">
-            {formData.phone || "Not specified"}
-          </div>
-        </div>
-        <div className="space-y-2">
-          <Label className="text-sm text-muted-foreground">Gender</Label>
-          <div className="p-2 border rounded-md bg-muted">
-            {genders.find((g) => g.value === gender)?.label || "Not specified"}
-          </div>
-        </div>
-        <div className="space-y-2">
-          <Label className="text-sm text-muted-foreground">
-            Preferred Payment
-          </Label>
-          <div className="p-2 border rounded-md bg-muted">
-            {payment || "Not specified"}
-          </div>
-        </div>
+        {renderInput("Full Name", "name", "text", true)}
+        {renderInput("Email", "email", "email", true)}
+        {renderInput("Phone Number", "phone", "tel", true)}
+        {renderReadonlyInput("Gender", genders.find((g) => g.value === gender)?.label || "")}
+        {renderReadonlyInput("Preferred Payment", payment)}
       </>
     );
   }
 
   return (
     <>
-      <div className="space-y-2">
-        <Label>Full Name</Label>
-        <Input
-          name="name"
-          value={formData.name}
-          onChange={handleInputChange}
-          placeholder="Enter your full name"
-        />
-      </div>
-      <div className="space-y-2">
-        <Label>Email</Label>
-        <Input
-          name="email"
-          type="email"
-          value={formData.email}
-          onChange={handleInputChange}
-          placeholder="Enter your email"
-        />
-      </div>
-      <div className="space-y-2">
-        <Label>Phone Number</Label>
-        <Input
-          name="phone"
-          type="tel"
-          value={formData.phone}
-          onChange={handleInputChange}
-          placeholder="Enter your phone number"
-        />
-      </div>
-      <div className="space-y-2">
-        <Label>Gender</Label>
-        <Popover open={openGender} onOpenChange={setOpenGender}>
-          <PopoverTrigger asChild>
-            <Button variant="outline" className="w-full justify-between">
-              {genders.find((g) => g.value === gender)?.label ||
-                "Select gender"}
-              <ChevronsUpDown className="w-4 h-4 opacity-50" />
-            </Button>
-          </PopoverTrigger>
-          <PopoverContent className="w-full p-0">
-            <Command>
-              <CommandList>
-                <CommandGroup>
-                  {genders.map((item) => (
-                    <CommandItem
-                      key={item.value}
-                      onSelect={() => {
-                        setGender(item.value);
-                        setOpenGender(false);
-                      }}
-                    >
-                      {item.label}
-                    </CommandItem>
-                  ))}
-                </CommandGroup>
-              </CommandList>
-            </Command>
-          </PopoverContent>
-        </Popover>
-      </div>
-      <div className="space-y-2">
-        <Label>Preferred Payment</Label>
-        <Popover open={openPayment} onOpenChange={setOpenPayment}>
-          <PopoverTrigger asChild>
-            <Button variant="outline" className="w-full justify-between">
-              {payment || "Select payment method"}
-              <ChevronsUpDown className="w-4 h-4 opacity-50" />
-            </Button>
-          </PopoverTrigger>
-          <PopoverContent className="w-full p-0">
-            <Command>
-              <CommandList>
-                <CommandGroup>
-                  {payments.map((item) => (
-                    <CommandItem
-                      key={item.value}
-                      onSelect={() => {
-                        setPayment(item.label);
-                        setOpenPayment(false);
-                      }}
-                    >
-                      {item.label}
-                    </CommandItem>
-                  ))}
-                </CommandGroup>
-              </CommandList>
-            </Command>
-          </PopoverContent>
-        </Popover>
-      </div>
+      {renderInput("Full Name", "name")}
+      {renderInput("Email", "email", "email", true)}
+      {renderInput("Phone Number", "phone", "tel")}
+      {renderSelectPopover("Gender", gender, genders, openGender, setOpenGender, setGender)}
+      {renderSelectPopover("Preferred Payment", payment, payments, openPayment, setOpenPayment, setPayment)}
     </>
   );
 };

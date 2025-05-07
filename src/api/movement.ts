@@ -1,37 +1,17 @@
-import axiosInstance from "@/config/axiosInstance";
+import requestAPI from "@/lib/requestAPI";
 
 export const movement = {
-  getAll: async () => {
-    const response = await axiosInstance.get(`/movements`);
-    return response?.data;
-  },
+  getAll: () => requestAPI("get", "/movements"),
 
-  getById: async (id: string) => {
-    const response = await axiosInstance.get(`/movements/${id}`);
-    return response.data;
-  },
+  getById: (id: string) => requestAPI("get", `/movements/${id}`),
 
-  create: async (name: string) => {
-    const response = await axiosInstance.post(`/movements/create`, {
-      name,
-    });
-    return response.data;
-  },
+  create: (name: string) => requestAPI("post", "/movements/create", { name }),
 
-  update: async (id: string, name: string) => {
-    const response = await axiosInstance.put(`/movements/update/${id}`, {
-      name,
-    });
-    return response.data;
-  },
+  update: (id: string, name: string) =>
+    requestAPI("put", `/movements/update/${id}`, { name }),
 
-  delete: async (id: string) => {
-    const response = await axiosInstance.delete(`/movements/delete/${id}`);
-    return response.data;
-  },
+  delete: (id: string) => requestAPI("delete", `/movements/delete/${id}`),
 
-  search: async (query: string) => {
-    const response = await axiosInstance.get(`/movements/search?name=${query}`);
-    return response.data;
-  },
+  search: (query: string) =>
+    requestAPI("get", `/movements/search?name=${encodeURIComponent(query)}`),
 };

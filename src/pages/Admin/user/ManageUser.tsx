@@ -10,17 +10,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Skeleton } from "@/components/ui/skeleton";
-// import {
-//   AlertDialog,
-//   AlertDialogAction,
-//   AlertDialogCancel,
-//   AlertDialogContent,
-//   AlertDialogDescription,
-//   AlertDialogFooter,
-//   AlertDialogHeader,
-//   AlertDialogTitle,
-//   AlertDialogTrigger,
-// } from "@/components/ui/alert-dialog";
+
 import useDebounce from "@/hooks/useDebounce";
 import { useState, useEffect } from "react";
 import { useUser } from "@/hooks/use-api/useUser";
@@ -32,7 +22,7 @@ const CustomerTableSkeleton = () => (
         <TableHead className="w-[20%]">Name</TableHead>
         <TableHead className="w-[25%]">Email</TableHead>
         <TableHead className="w-[20%]">Phone</TableHead>
-        <TableHead className="w-[25%]">Address</TableHead>
+        <TableHead className="w-[25%]">Role</TableHead>
         <TableHead className="w-[10%]">Actions</TableHead>
       </TableRow>
     </TableHeader>
@@ -63,7 +53,7 @@ const CustomerTableSkeleton = () => (
   </Table>
 );
 
-const ManageCustomer = () => {
+const ManageUser = () => {
   const { users, isLoading, error, getAllUsers, searchUsers } = useUser();
   const [searchTerm, setSearchTerm] = useState("");
   const [results, setResults] = useState<any[]>([]);
@@ -93,12 +83,12 @@ const ManageCustomer = () => {
     handleSearch();
   }, [debouncedSearchTerm]);
 
-  if (isLoading) {
+  if (isLoading("getAllUsers")) {
     return (
       <Card>
         <CardHeader>
           <div className="flex items-center justify-between">
-            <CardTitle>Customer Management</CardTitle>
+            <CardTitle>User Management</CardTitle>
             <div className="flex space-x-2">
               <Skeleton className="h-10 w-[300px]" />
             </div>
@@ -117,7 +107,7 @@ const ManageCustomer = () => {
     <Card>
       <CardHeader>
         <div className="flex items-center justify-between">
-          <CardTitle>Customer Management</CardTitle>
+          <CardTitle>User Management</CardTitle>
           <div className="flex space-x-2">
             <div className="relative">
               <Input
@@ -142,7 +132,7 @@ const ManageCustomer = () => {
               <TableHead className="w-[20%]">Name</TableHead>
               <TableHead className="w-[25%]">Email</TableHead>
               <TableHead className="w-[20%]">Phone</TableHead>
-              <TableHead className="w-[25%]">Address</TableHead>
+              <TableHead className="w-[25%]">Role</TableHead>
               <TableHead className="w-[10%]">Actions</TableHead>
             </TableRow>
           </TableHeader>
@@ -162,7 +152,7 @@ const ManageCustomer = () => {
                   <TableCell>{user.name}</TableCell>
                   <TableCell>{user.email}</TableCell>
                   <TableCell>{user.phone}</TableCell>
-                  <TableCell>{user.address}</TableCell>
+                  <TableCell>{user.role}</TableCell>
                   <TableCell>
                     <div className="flex space-x-2">
                       <Button
@@ -186,4 +176,4 @@ const ManageCustomer = () => {
   );
 };
 
-export default ManageCustomer;
+export default ManageUser;

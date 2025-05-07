@@ -26,8 +26,6 @@ import AddMovement from "./pages/Admin/movement/AddMovement";
 import ListProductPage from "./pages/ListProductPage";
 import DetailProduct from "./pages/DetailProduct";
 import CreateOrders from "./pages/Admin/create-orders/CreateOrders";
-import ManageCustomer from "./pages/Admin/customer/ManageCustomer";
-
 import EditWatch from "./pages/Admin/watch/EditWatch";
 import { useAuth } from "./hooks/use-api/useAuth";
 import ManageStock from "./pages/Admin/stock-entry/ManageStock";
@@ -36,6 +34,7 @@ import ManageQuantity from "./pages/Admin/quantity/ManageQuantity";
 import CheckoutPage from "./pages/CheckoutPage";
 import PaymentSuccess from "./pages/PaymentSuccess";
 import VerifyOTP from "./pages/Auth/VerifyOTP";
+import ManageUser from "./pages/Admin/user/ManageUser";
 
 const App = () => {
   const { getUser } = useAuth();
@@ -69,25 +68,22 @@ const App = () => {
           </ProtectedRoute>
         }
       >
-        <Route index path="/admin/brand/list" element={<ManageBrand />} />
-        <Route path="/admin/brand/add" element={<AddBrand />} />
-        <Route path="/admin/watch/list" element={<ManageWatch />} />
-        <Route path="/admin/watch/add" element={<AddWatch />} />
-        <Route path="/admin/watch/edit/:id" element={<EditWatch />} />
-        <Route path="/admin/material/list" element={<ManageMaterial />} />
-        <Route path="/admin/material/add" element={<AddMaterial />} />
-        <Route
-          path="/admin/band-material/list"
-          element={<ManageBandMaterial />}
-        />
-        <Route path="/admin/band-material/add" element={<AddBandMaterial />} />
-        <Route path="/admin/movement/list" element={<ManageMovement />} />
-        <Route path="/admin/movement/add" element={<AddMovement />} />
-        <Route path="/admin/createOrders/add" element={<CreateOrders />} />
-        <Route path="/admin/userList/list" element={<ManageCustomer />} />
-        <Route path="/admin/stock-entry/list" element={<ManageStock />} />
-        <Route path="/admin/stock-entry/add" element={<AddStock />} />
-        <Route path="/admin/quantity/list" element={<ManageQuantity />} />
+        <Route index path="brand/list" element={<ManageBrand />} />
+        <Route path="brand/add" element={<AddBrand />} />
+        <Route path="watch/list" element={<ManageWatch />} />
+        <Route path="watch/add" element={<AddWatch />} />
+        <Route path="watch/edit/:id" element={<EditWatch />} />
+        <Route path="material/list" element={<ManageMaterial />} />
+        <Route path="material/add" element={<AddMaterial />} />
+        <Route path="band-material/list" element={<ManageBandMaterial />} />
+        <Route path="band-material/add" element={<AddBandMaterial />} />
+        <Route path="movement/list" element={<ManageMovement />} />
+        <Route path="movement/add" element={<AddMovement />} />
+        <Route path="create-orders/add" element={<CreateOrders />} />
+        <Route path="user/list" element={<ManageUser />} />
+        <Route path="stock-entry/list" element={<ManageStock />} />
+        <Route path="stock-entry/add" element={<AddStock />} />
+        <Route path="quantity/list" element={<ManageQuantity />} />
       </Route>
       <Route path="/payment-success" element={<PaymentSuccess />} />
       <Route path="/*" element={<NotFoundPage />} />

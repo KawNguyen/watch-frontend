@@ -1,16 +1,17 @@
 import { useState } from "react";
 import { bandMaterial } from "@/api/bandMaterial";
 import { useToast } from "../use-toast";
+import { useLoading } from "../use-loading";
 
 export const useBandMaterial = () => {
   const { toast } = useToast();
-  const [isLoading, setIsLoading] = useState(false);
+  const { startLoading, stopLoading, isLoading } = useLoading();
   const [error, setError] = useState<string | null>(null);
   const [bandMaterials, setBandMaterials] = useState([]);
 
   const getAllBandMaterials = async () => {
     try {
-      setIsLoading(true);
+      startLoading("getAllBandMaterials");
       setError(null);
       const res = await bandMaterial.getAll();
       setBandMaterials(res.data.items);
@@ -18,26 +19,26 @@ export const useBandMaterial = () => {
     } catch (err: any) {
       setError(err.response?.data?.message || "Failed to fetch band materials");
     } finally {
-      setIsLoading(false);
+      stopLoading("getAllBandMaterials");
     }
   };
 
   const getBandMaterialById = async (id: string) => {
     try {
-      setIsLoading(true);
+      startLoading("getBandMaterialById");
       setError(null);
       const data = await bandMaterial.getById(id);
       return data;
     } catch (err: any) {
       setError(err.response?.data?.message || "Failed to fetch band material");
     } finally {
-      setIsLoading(false);
+      stopLoading("getBandMaterialById");
     }
   };
 
   const createBandMaterial = async (name: string) => {
     try {
-      setIsLoading(true);
+      startLoading("createBandMaterial");
       setError(null);
       const data = await bandMaterial.create(name);
       await getAllBandMaterials();
@@ -58,13 +59,13 @@ export const useBandMaterial = () => {
         className: "bg-red-500 text-white border-none",
       });
     } finally {
-      setIsLoading(false);
+      stopLoading("createBandMaterial");
     }
   };
 
   const updateBandMaterial = async (id: string, name: string) => {
     try {
-      setIsLoading(true);
+      startLoading("updateBandMaterial");
       setError(null);
       const data = await bandMaterial.update(id, name);
       await getAllBandMaterials();
@@ -85,13 +86,13 @@ export const useBandMaterial = () => {
         className: "bg-red-500 text-white border-none",
       });
     } finally {
-      setIsLoading(false);
+      stopLoading("updateBandMaterial");
     }
   };
 
   const deleteBandMaterial = async (id: string) => {
     try {
-      setIsLoading(true);
+      startLoading("deleteBandMaterial");
       setError(null);
       await bandMaterial.delete(id);
       await getAllBandMaterials();
@@ -111,7 +112,7 @@ export const useBandMaterial = () => {
         className: "bg-red-500 text-white border-none",
       });
     } finally {
-      setIsLoading(false);
+      stopLoading("deleteBandMaterial");
     }
   };
 

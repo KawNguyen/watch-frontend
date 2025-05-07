@@ -1,40 +1,18 @@
-import axiosInstance from "@/config/axiosInstance";
+import requestAPI from "@/lib/requestAPI";
 
 export const brand = {
-  getAll: async () => {
-    const response = await axiosInstance.get(`/brands`);
-    return response?.data;
-  },
+  getAll: () => requestAPI("get", "/brands"),
 
-  getById: async (id: number) => {
-    const response = await axiosInstance.get(`/brands/${id}`);
-    return response.data;
-  },
+  getById: (id: number) => requestAPI("get", `/brands/${id}`),
 
-  create: async (name: string, country: string, logo: string) => {
-    const response = await axiosInstance.post(`/brands/create`, {
-      name,
-      country,
-      logo,
-    });
-    return response.data;
-  },
+  create: (name: string, country: string, logo: string) =>
+    requestAPI("post", "/brands/create", { name, country, logo }),
 
-  update: async (id: number, name: string, country: string) => {
-    const response = await axiosInstance.put(`/brands/update/${id}`, {
-      name,
-      country,
-    });
-    return response.data;
-  },
+  update: (id: number, name: string, country: string) =>
+    requestAPI("put", `/brands/update/${id}`, { name, country }),
 
-  delete: async (id: number) => {
-    const response = await axiosInstance.delete(`/brands/delete/${id}`);
-    return response.data;
-  },
+  delete: (id: number) => requestAPI("delete", `/brands/delete/${id}`),
 
-  search: async (query: string) => {
-    const response = await axiosInstance.get(`/brands/search?name=${query}`);
-    return response.data;
-  },
+  search: (query: string) =>
+    requestAPI("get", `/brands/search?name=${encodeURIComponent(query)}`),
 };

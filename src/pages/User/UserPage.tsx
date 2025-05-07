@@ -29,7 +29,8 @@ const UserPage = () => {
                   <Profile
                     getUserById={getUserById}
                     updateUser={updateUser}
-                    isLoading={isLoading}
+                    isLoadingGetUser={isLoading("getUserById")}
+                    isLoadingUpdateUser={isLoading("updateUser")}
                   />
                 )}
                 {tab === "cart" && <Cart />}

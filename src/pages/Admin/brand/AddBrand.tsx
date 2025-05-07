@@ -121,8 +121,8 @@ const AddBrand = () => {
           )}
 
           <div className="flex gap-4">
-            <Button type="submit" disabled={isLoading} className="w-full">
-              {isLoading ? "Creating..." : "Create Brand"}
+            <Button type="submit" disabled={isLoading("createBrand")} className="w-full">
+              {isLoading("createBrand") ? "Creating..." : "Create Brand"}
             </Button>
             <Button
               type="button"

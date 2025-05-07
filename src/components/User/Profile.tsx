@@ -20,10 +20,16 @@ import UserInfo from "./UserInfo";
 interface ProfileProps {
   getUserById: () => Promise<any>;
   updateUser: (data: any) => Promise<any>;
-  isLoading: boolean;
+  isLoadingGetUser?: boolean;
+  isLoadingUpdateUser?: boolean;
 }
 
-const Profile = ({ getUserById, updateUser, isLoading }: ProfileProps) => {
+const Profile = ({
+  getUserById,
+  updateUser,
+  isLoadingGetUser,
+  isLoadingUpdateUser,
+}: ProfileProps) => {
   const [openGender, setOpenGender] = useState(false);
   const [openPayment, setOpenPayment] = useState(false);
   const [gender, setGender] = useState("");
@@ -105,7 +111,7 @@ const Profile = ({ getUserById, updateUser, isLoading }: ProfileProps) => {
     try {
       await updateUser(updatedData);
       setIsEditing(false);
-      setIsAvatarDialogOpen(false); 
+      setIsAvatarDialogOpen(false);
       setFormData((prev) => ({
         ...prev,
         avatar: avatarUrl || prev.avatar,
@@ -172,7 +178,7 @@ const Profile = ({ getUserById, updateUser, isLoading }: ProfileProps) => {
     }
   };
 
-  if (isLoading) {
+  if (isLoadingGetUser) {
     return (
       <div className="p-6">
         <div className="flex flex-col lg:flex-row gap-8">
@@ -313,13 +319,13 @@ const Profile = ({ getUserById, updateUser, isLoading }: ProfileProps) => {
                   onClick={() => {
                     setIsEditing(false);
                   }}
-                  disabled={isLoading}
+                  disabled={isLoadingUpdateUser}
                 >
                   Cancel
                 </Button>
-                <Button onClick={handleSubmit} disabled={isLoading}>
+                <Button onClick={handleSubmit} disabled={isLoadingUpdateUser}>
                   <Save className="w-4 h-4 mr-2" />
-                  {isLoading ? "Saving..." : "Save Changes"}
+                  {isLoadingUpdateUser ? "Saving..." : "Save Changes"}
                 </Button>
               </>
             ) : (

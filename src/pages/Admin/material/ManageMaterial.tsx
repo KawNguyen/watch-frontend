@@ -24,7 +24,7 @@ import {
 import { useMaterial } from "@/hooks/use-api/useMaterial";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Plus } from "lucide-react";
+import { Edit, Plus, Trash2 } from "lucide-react";
 
 const MaterialTableSkeleton = () => (
   <Table>
@@ -86,7 +86,7 @@ const ManageMaterial = () => {
     await deleteMaterial(id);
   };
 
-  if (isLoading)
+  if (isLoading("getAllMaterials"))
     return (
       <Card>
         <CardHeader>
@@ -169,17 +169,18 @@ const ManageMaterial = () => {
                           size="sm"
                           className="h-8 px-3"
                           onClick={() => handleEdit(material)}
+                          variant="ghost"
                         >
-                          Edit
+                          <Edit />
                         </Button>
                         <AlertDialog>
                           <AlertDialogTrigger asChild>
                             <Button
                               size="sm"
                               className="h-8 px-3"
-                              variant="destructive"
+                              variant="ghost"
                             >
-                              Delete
+                              <Trash2 className="text-red-600" />
                             </Button>
                           </AlertDialogTrigger>
                           <AlertDialogContent>

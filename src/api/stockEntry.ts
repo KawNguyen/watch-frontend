@@ -17,6 +17,7 @@ export const stockEntry = {
       quantity: number;
       price: number;
     }[];
+    addedById: string;
   }) => {
     const response = await axiosInstance.post(
       `/stock-entries/create`,

@@ -1,39 +1,21 @@
-import axiosInstance from "@/config/axiosInstance";
+import requestAPI from "@/lib/requestAPI";
 
 export const bandMaterial = {
-  getAll: async () => {
-    const response = await axiosInstance.get(`/band-materials`);
-    return response?.data;
-  },
+  getAll: () => requestAPI("get", "/band-materials"),
 
-  getById: async (id: string) => {
-    const response = await axiosInstance.get(`/band-materials/${id}`);
-    return response.data;
-  },
+  getById: (id: string) => requestAPI("get", `/band-materials/${id}`),
 
-  create: async (name: string) => {
-    const response = await axiosInstance.post(`/band-materials/create`, {
-      name,
-    });
-    return response.data;
-  },
+  create: (name: string) =>
+    requestAPI("post", "/band-materials/create", { name }),
 
-  update: async (id: string, name: string) => {
-    const response = await axiosInstance.put(`/band-materials/update/${id}`, {
-      name,
-    });
-    return response.data;
-  },
+  update: (id: string, name: string) =>
+    requestAPI("put", `/band-materials/update/${id}`, { name }),
 
-  delete: async (id: string) => {
-    const response = await axiosInstance.delete(`/band-materials/delete/${id}`);
-    return response.data;
-  },
+  delete: (id: string) => requestAPI("delete", `/band-materials/delete/${id}`),
 
-  search: async (query: string) => {
-    const response = await axiosInstance.get(
-      `/band-materials/search?name=${query}`,
-    );
-    return response.data;
-  },
+  search: (query: string) =>
+    requestAPI(
+      "get",
+      `/band-materials/search?name=${encodeURIComponent(query)}`
+    ),
 };

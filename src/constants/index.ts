@@ -73,11 +73,11 @@ export const AdminRoutes = [
   {
     title: "Create Orders",
     icon: PackagePlus,
-    children: [{ title: "Add Orders", url: "/admin/createOrders/add" }],
+    children: [{ title: "Add Orders", url: "/admin/create-orders/add" }],
   },
   {
-    title: "Customer",
+    title: "User",
     icon: Users,
-    children: [{ title: "Manage", url: "/admin/userList/list" }],
+    children: [{ title: "Manage", url: "/admin/user/list" }],
   },
 ];

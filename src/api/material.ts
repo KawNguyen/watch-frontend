@@ -1,37 +1,17 @@
-import axiosInstance from "@/config/axiosInstance";
+import requestAPI from "@/lib/requestAPI";
 
 export const material = {
-  getAll: async () => {
-    const response = await axiosInstance.get(`/materials`);
-    return response?.data;
-  },
+  getAll: () => requestAPI("get", "/materials"),
 
-  getById: async (id: string) => {
-    const response = await axiosInstance.get(`/materials/${id}`);
-    return response.data;
-  },
+  getById: (id: string) => requestAPI("get", `/materials/${id}`),
 
-  create: async (name: string) => {
-    const response = await axiosInstance.post(`/materials/create`, {
-      name,
-    });
-    return response.data;
-  },
+  create: (name: string) => requestAPI("post", "/materials/create", { name }),
 
-  update: async (id: string, name: string) => {
-    const response = await axiosInstance.put(`/materials/update/${id}`, {
-      name,
-    });
-    return response.data;
-  },
+  update: (id: string, name: string) =>
+    requestAPI("put", `/materials/update/${id}`, { name }),
 
-  delete: async (id: string) => {
-    const response = await axiosInstance.delete(`/materials/delete/${id}`);
-    return response.data;
-  },
+  delete: (id: string) => requestAPI("delete", `/materials/delete/${id}`),
 
-  search: async (query: string) => {
-    const response = await axiosInstance.get(`/materials/search?name=${query}`);
-    return response.data;
-  },
+  search: (query: string) =>
+    requestAPI("get", `/materials/search?name=${encodeURIComponent(query)}`),
 };

@@ -40,12 +40,14 @@ export const useStockEntry = () => {
 
   const createStockEntry = async (data: {
     items: { watchId: string; quantity: number; price: number }[];
+    addedById?: string;
   }) => {
     const key = "create";
     startLoading(key);
     try {
       setError(null);
-      const result = await stockEntry.create(data); // Gửi mảng items
+      const user = JSON.parse(localStorage.getItem("user") || "{}");
+      const result = await stockEntry.create({ ...data, addedById: user.id });
       toast({
         title: "Success",
         description: "Stock entry created successfully",

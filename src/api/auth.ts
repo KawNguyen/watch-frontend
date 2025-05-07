@@ -1,34 +1,14 @@
-import axiosInstance from "@/config/axiosInstance";
+import requestAPI from "@/lib/requestAPI";
 
 export const authAPI = {
-  register: async (name: string, email: string, password: string, captchaToken: string) => {
-    const response = await axiosInstance.post(`/auth/register`, {
-      name,
-      email,
-      password,
-      captchaToken // Include recaptchaToken in the request payload
-    });
-    return response.data;
-  },
+  register: (name: string, email: string, password: string, captchaToken: string) =>
+    requestAPI("post", "/auth/register", { name, email, password, captchaToken }),
 
-  login: async (email: string, password: string) => {
-    const response = await axiosInstance.post(`/auth/login`, {
-      email,
-      password,
-    });
-    return response.data;
-  },
+  login: (email: string, password: string) =>
+    requestAPI("post", "/auth/login", { email, password }),
 
-  verifyOTP: async (userId: string, otp: string) => {
-    const response = await axiosInstance.post(`/auth/verify-otp`, {
-      userId,
-      otp,
-    });
-    return response.data;
-  },
+  verifyOTP: (userId: string, otp: string) =>
+    requestAPI("post", "/auth/verify-otp", { userId, otp }),
 
-  logout: async () => {
-    const response = await axiosInstance.post(`/auth/logout`);
-    return response.data;
-  },
+  logout: () => requestAPI("post", "/auth/logout"),
 };

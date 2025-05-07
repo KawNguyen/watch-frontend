@@ -1,4 +1,4 @@
-import axiosInstance from "@/config/axiosInstance";
+import requestAPI from "@/lib/requestAPI";
 
 type FilterParams = {
   brand?: string;
@@ -15,114 +15,52 @@ type FilterParams = {
   limit?: number;
 };
 
+type WatchData = {
+  name: string;
+  description: string;
+  price: number;
+  gender: "MEN" | "WOMEN" | "UNISEX";
+  brandId: string;
+  materialId: string;
+  bandMaterialId: string;
+  movementId: string;
+  diameter: number;
+  waterResistance: number;
+  warranty: number;
+  videoUrl: string;
+  images: { url: string }[];
+};
+
 export const watch = {
-  getAll: async (page: number, pageSize: number) => {
-    const response = await axiosInstance.get(
-      `/watches?page=${page}&limit=${pageSize}`,
-    );
-    return response.data;
-  },
+  getAll: (page: number, pageSize: number) =>
+    requestAPI("get", `/watches?page=${page}&limit=${pageSize}`),
 
-  getById: async (id: string) => {
-    const response = await axiosInstance.get(`/watches/${id}`);
-    return response.data;
-  },
+  getById: (id: string) =>
+    requestAPI("get", `/watches/${id}`),
 
-  create: async (watchData: {
-    name: string;
-    description: string;
-    price: number;
-    gender: "MEN" | "WOMEN" | "UNISEX";
-    brandId: string;
-    materialId: string;
-    bandMaterialId: string;
-    movementId: string;
-    diameter: number;
-    waterResistance: number;
-    warranty: number;
-    videoUrl: string;
-    images: { url: string }[];
-  }) => {
-    const response = await axiosInstance.post(`/watches/create`, watchData);
-    return response.data;
-  },
+  create: (watchData: WatchData) =>
+    requestAPI("post", "/watches/create", watchData),
 
-  update: async (
-    id: string,
-    watchData: {
-      name: string;
-      description: string;
-      price: number;
-      gender: "MEN" | "WOMEN" | "UNISEX";
-      brandId: string;
-      materialId: string;
-      bandMaterialId: string;
-      movementId: string;
-      diameter: number;
-      waterResistance: number;
-      warranty: number;
-      videoUrl: string;
-      images: { url: string }[];
-    },
-  ) => {
-    const response = await axiosInstance.put(
-      `/watches/update/${id}`,
-      watchData,
-    );
-    return response.data;
-  },
+  update: (id: string, watchData: WatchData) =>
+    requestAPI("put", `/watches/update/${id}`, watchData),
 
-  delete: async (id: string) => {
-    const response = await axiosInstance.delete(`/watches/delete/${id}`);
-    return response.data;
-  },
+  delete: (id: string) =>
+    requestAPI("delete", `/watches/delete/${id}`),
 
-  search: async (query: string, page: number, pageSize: number) => {
-    const response = await axiosInstance.get(
-      `/watches/search?name=${query}&page=${page}&limit=${pageSize}`,
-    );
-    return response.data;
-  },
+  search: (query: string, page: number, pageSize: number) =>
+    requestAPI("get", `/watches/search?name=${encodeURIComponent(query)}&page=${page}&limit=${pageSize}`),
 
-  getByBrand: async (brandId: string, page: number, pageSize: number) => {
-    const response = await axiosInstance.get(
-      `/watches/brand/${brandId}?page=${page}&limit=${pageSize}`,
-    );
-    return response.data;
-  },
+  getByBrand: (brandId: string, page: number, pageSize: number) =>
+    requestAPI("get", `/watches/brand/${brandId}?page=${page}&limit=${pageSize}`),
 
-  getByMovement: async (movement: string, page: number, pageSize: number) => {
-    const response = await axiosInstance.get(
-      `/watches/movement/${movement}?page=${page}&limit=${pageSize}`,
-    );
-    return response.data;
-  },
+  getByMovement: (movement: string, page: number, pageSize: number) =>
+    requestAPI("get", `/watches/movement/${movement}?page=${page}&limit=${pageSize}`),
 
-  getByFilter: async (filters: FilterParams) => {
+  getByFilter: (filters: FilterParams) => {
     const queryParams = new URLSearchParams();
-
-    if (filters.brand) queryParams.append("brand", filters.brand);
-    if (filters.bandMaterial)
-      queryParams.append("bandMaterial", filters.bandMaterial);
-    if (filters.movement) queryParams.append("movement", filters.movement);
-    if (filters.material) queryParams.append("material", filters.material);
-    if (filters.gender) queryParams.append("gender", filters.gender);
-    if (filters.diameter)
-      queryParams.append("diameter", filters.diameter.toString());
-    if (filters.waterResistance)
-      queryParams.append("waterResistance", filters.waterResistance.toString());
-    if (filters.warranty)
-      queryParams.append("warranty", filters.warranty.toString());
-    if (filters.minPrice)
-      queryParams.append("minPrice", filters.minPrice.toString());
-    if (filters.maxPrice)
-      queryParams.append("maxPrice", filters.maxPrice.toString());
-    if (filters.page) queryParams.append("page", filters.page.toString());
-    if (filters.limit) queryParams.append("limit", filters.limit.toString());
-
-    const response = await axiosInstance.get(
-      `/watches/filter?${queryParams.toString()}`,
-    );
-    return response.data;
+    Object.entries(filters).forEach(([key, value]) => {
+      if (value !== undefined) queryParams.append(key, String(value));
+    });
+    return requestAPI("get", `/watches/filter?${queryParams.toString()}`);
   },
 };

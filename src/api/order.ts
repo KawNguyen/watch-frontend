@@ -1,21 +1,12 @@
-import axiosInstance from "@/config/axiosInstance";
+import requestAPI from "@/lib/requestAPI";
 
 export const order = {
-  getOrdersByUserId: async (userId: string) => {
-    const response = await axiosInstance.get(`/orders/${userId}`);
-    return response.data;
-  },
+  getOrdersByUserId: (userId: string) =>
+    requestAPI("get", `/orders/${userId}`),
 
-  getOrderById: async (userId: string) => {
-    const response = await axiosInstance.get(`/orders/${userId}`);
-    return response.data;
-  },
+  getOrderById: (userId: string) =>
+    requestAPI("get", `/orders/${userId}`),
 
-  createOrder: async (userId: string, addressId: string) => {
-    const response = await axiosInstance.post(`/orders/create`, {
-      userId,
-      addressId,
-    });
-    return response.data;
-  },
+  createOrder: (userId: string, addressId: string) =>
+    requestAPI("post", `/orders/create`, { userId, addressId }),
 };

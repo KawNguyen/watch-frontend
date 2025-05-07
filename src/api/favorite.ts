@@ -1,29 +1,15 @@
-import axiosInstance from "@/config/axiosInstance";
+import requestAPI from "@/lib/requestAPI";
 
 export const favorite = {
-  async getUserFavorite(userId: string) {
-    const response = await axiosInstance.get(`/favorites/${userId}`);
-    return response.data;
-  },
+  getUserFavorite: (userId: string) =>
+    requestAPI("get", `/favorites/${userId}`),
 
-  async addToFavorite(userId: string, watchId: string) {
-    const response = await axiosInstance.post("/favorites/add", {
+  addToFavorite: (userId: string, watchId: string) =>
+    requestAPI("post", "/favorites/add", { userId, watchId }),
+
+  removeFromFavorite: (userId: string, watchId: string) =>
+    requestAPI("delete", `/favorites/${userId}/remove/${watchId}`, {
       userId,
       watchId,
-    });
-    return response.data;
-  },
-
-  async removeFromFavorite(userId: string, watchId: string) {
-    const response = await axiosInstance.delete(
-      `/favorites/${userId}/remove/${watchId}`,
-      {
-        data: {
-          userId,
-          watchId,
-        },
-      },
-    );
-    return response.data;
-  },
+    }),
 };

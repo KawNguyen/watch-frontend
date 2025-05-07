@@ -3,19 +3,6 @@ import { useNavigate } from "react-router-dom";
 import { authAPI } from "@/api/auth";
 import { useToast } from "../use-toast";
 
-interface LoginCredentials {
-  email: string;
-  password: string;
-  remember: boolean;
-}
-
-interface RegisterCredentials {
-  name: string;
-  email: string;
-  password: string;
-  recaptchaToken: string; // Add recaptchaToken to the interface
-}
-
 export const useAuth = () => {
   const { toast } = useToast();
   const navigate = useNavigate();
@@ -30,7 +17,7 @@ export const useAuth = () => {
         credentials.name,
         credentials.email,
         credentials.password,
-        credentials.recaptchaToken // Pass recaptchaToken to the API
+        credentials.recaptchaToken
       );
       localStorage.setItem("userId", response.user.id);
       toast({
@@ -129,7 +116,7 @@ export const useAuth = () => {
       if (!userId) throw new Error("Missing userId for OTP verification");
 
       const response = await authAPI.verifyOTP(userId, otp);
-      localStorage.setItem("token", response.token);
+      localStorage.setItem("token", response.accessToken);
       localStorage.setItem("user", JSON.stringify(response.user));
       localStorage.removeItem("userId");
       toast({

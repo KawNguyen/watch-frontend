@@ -72,3 +72,16 @@ interface CartItem {
     price: number;
   };
 }
+
+interface LoginCredentials {
+  email: string;
+  password: string;
+  remember: boolean;
+}
+
+interface RegisterCredentials {
+  name: string;
+  email: string;
+  password: string;
+  recaptchaToken: string; 
+}

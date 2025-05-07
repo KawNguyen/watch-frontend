@@ -1,16 +1,17 @@
 import { useState } from "react";
 import { movement } from "@/api/movement";
 import { useToast } from "../use-toast";
+import { useLoading } from "../use-loading";
 
 export const useMovement = () => {
   const { toast } = useToast();
-  const [isLoading, setIsLoading] = useState(false);
+  const { startLoading, stopLoading, isLoading } = useLoading();
   const [error, setError] = useState<string | null>(null);
   const [movements, setMovements] = useState([]);
 
   const getAllMovements = async () => {
     try {
-      setIsLoading(true);
+      startLoading("getAllMovements");
       setError(null);
       const res = await movement.getAll();
       setMovements(res.data.items);
@@ -18,26 +19,26 @@ export const useMovement = () => {
     } catch (err: any) {
       setError(err.response?.data?.message || "Failed to fetch movements");
     } finally {
-      setIsLoading(false);
+      stopLoading("getAllMovements");
     }
   };
 
   const getMovementById = async (id: string) => {
     try {
-      setIsLoading(true);
+      startLoading("getMovementById");
       setError(null);
       const data = await movement.getById(id);
       return data;
     } catch (err: any) {
       setError(err.response?.data?.message || "Failed to fetch movement");
     } finally {
-      setIsLoading(false);
+      stopLoading("getMovementById");
     }
   };
 
   const createMovement = async (name: string) => {
     try {
-      setIsLoading(true);
+      startLoading("createMovement");
       setError(null);
       const data = await movement.create(name);
       await getAllMovements();
@@ -58,13 +59,13 @@ export const useMovement = () => {
         className: "bg-red-500 text-white border-none",
       });
     } finally {
-      setIsLoading(false);
+      stopLoading("createMovement");
     }
   };
 
   const updateMovement = async (id: string, name: string) => {
     try {
-      setIsLoading(true);
+      startLoading("updateMovement");
       setError(null);
       const data = await movement.update(id, name);
       await getAllMovements();
@@ -85,13 +86,13 @@ export const useMovement = () => {
         className: "bg-red-500 text-white border-none",
       });
     } finally {
-      setIsLoading(false);
+      stopLoading("updateMovement");
     }
   };
 
   const deleteMovement = async (id: string) => {
     try {
-      setIsLoading(true);
+      startLoading("deleteMovement");
       setError(null);
       await movement.delete(id);
       await getAllMovements();
@@ -111,14 +112,14 @@ export const useMovement = () => {
         className: "bg-red-500 text-white border-none",
       });
     } finally {
-      setIsLoading(false);
+      stopLoading("deleteMovement");
     }
   };
 
   return {
     movements,
-    isLoading,
     error,
+    isLoading,
     getAllMovements,
     getMovementById,
     createMovement,

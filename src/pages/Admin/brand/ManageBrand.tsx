@@ -24,43 +24,9 @@ import {
 } from "@/components/ui/alert-dialog";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useNavigate } from "react-router-dom";
-import { Plus } from "lucide-react";
+import { Edit, Plus, Trash2 } from "lucide-react";
 import useDebounce from "@/hooks/useDebounce";
 import Image from "@/components/ui/image";
-
-const BrandTableSkeleton = () => (
-  <Table>
-    <TableHeader>
-      <TableRow>
-        <TableHead className="w-[10%]">Logo</TableHead>
-        <TableHead className="w-[40%]">Brand Name</TableHead>
-        <TableHead className="w-[40%]">Country</TableHead>
-        <TableHead className="w-[10%]">Actions</TableHead>
-      </TableRow>
-    </TableHeader>
-    <TableBody>
-      {Array.from({ length: 5 }).map((_, index) => (
-        <TableRow key={index}>
-          <TableCell>
-            <Skeleton className="h-16 w-16" />
-          </TableCell>
-          <TableCell>
-            <Skeleton className="h-8 w-[250px]" />
-          </TableCell>
-          <TableCell>
-            <Skeleton className="h-8 w-[200px]" />
-          </TableCell>
-          <TableCell>
-            <div className="flex space-x-2">
-              <Skeleton className="h-8 w-16" />
-              <Skeleton className="h-8 w-16" />
-            </div>
-          </TableCell>
-        </TableRow>
-      ))}
-    </TableBody>
-  </Table>
-);
 
 const ManageBrand = () => {
   const { brands, isLoading, getAllBrands, deleteBrand, updateBrand, search } =
@@ -68,7 +34,7 @@ const ManageBrand = () => {
   const [editingId, setEditingId] = useState<number | null>(null);
   const [editData, setEditData] = useState({ name: "", country: "" });
   const [searchTerm, setSearchTerm] = useState("");
-  const [results, setResults] = useState([]);
+  const [results, setResults] = useState<any[]>([]);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -80,9 +46,7 @@ const ManageBrand = () => {
   const handleSearch = async () => {
     if (debouncedSearchTerm) {
       const response = await search(debouncedSearchTerm);
-      setResults(response);
-    } else {
-      getAllBrands();
+      setResults(response || []);
     }
   };
 
@@ -108,23 +72,6 @@ const ManageBrand = () => {
   const handleDelete = async (id: number) => {
     await deleteBrand(id);
   };
-
-  if (isLoading)
-    return (
-      <Card>
-        <CardHeader>
-          <div className="flex items-center justify-between">
-            <CardTitle>Brand Management</CardTitle>
-            <div className="flex space-x-2">
-              <Skeleton className="h-10 w-[300px]" />
-            </div>
-          </div>
-        </CardHeader>
-        <CardContent>
-          <BrandTableSkeleton />
-        </CardContent>
-      </Card>
-    );
 
   return (
     <Card>
@@ -163,7 +110,27 @@ const ManageBrand = () => {
             </TableRow>
           </TableHeader>
           <TableBody>
-            {(searchTerm ? results : brands)?.length === 0 ? (
+            {isLoading("getAllBrands") ? (
+              Array.from({ length: 5 }).map((_, index) => (
+                <TableRow key={index}>
+                  <TableCell>
+                    <Skeleton className="h-16 w-16" />
+                  </TableCell>
+                  <TableCell>
+                    <Skeleton className="h-8 w-[250px]" />
+                  </TableCell>
+                  <TableCell>
+                    <Skeleton className="h-8 w-[200px]" />
+                  </TableCell>
+                  <TableCell>
+                    <div className="flex space-x-2">
+                      <Skeleton className="h-8 w-16" />
+                      <Skeleton className="h-8 w-16" />
+                    </div>
+                  </TableCell>
+                </TableRow>
+              ))
+            ) : (searchTerm ? results : brands)?.length === 0 ? (
               <TableRow>
                 <TableCell
                   colSpan={4}
@@ -234,17 +201,18 @@ const ManageBrand = () => {
                             size="sm"
                             className="h-8 px-3"
                             onClick={() => handleEdit(brand)}
+                            variant="ghost"
                           >
-                            Edit
+                            <Edit />
                           </Button>
                           <AlertDialog>
                             <AlertDialogTrigger asChild>
                               <Button
                                 size="sm"
                                 className="h-8 px-3"
-                                variant="destructive"
+                                variant="ghost"
                               >
-                                Delete
+                                <Trash2 className="text-red-600" />
                               </Button>
                             </AlertDialogTrigger>
                             <AlertDialogContent>

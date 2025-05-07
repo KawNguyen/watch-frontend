@@ -1,22 +1,15 @@
-import axiosInstance from "@/config/axiosInstance";
+import requestAPI from "@/lib/requestAPI";
 
 export const getQuantity = {
-  getAll: async (page: number, limit: number) => {
-    const response = await axiosInstance.get(
-      `/quantities?page=${page}&limit=${limit}`,
-    );
-    return response.data;
-  },
+  getAll: (page: number, limit: number) =>
+    requestAPI("get", `/quantities?page=${page}&limit=${limit}`),
 
-  getById: async (id: string) => {
-    const response = await axiosInstance.get(`/quantities/${id}`);
-    return response.data;
-  },
+  getById: (id: string) =>
+    requestAPI("get", `/quantities/${id}`),
 
-  search: async (query: string, page: number, limit: number) => {
-    const response = await axiosInstance.get(
-      `/quantities/search?query=${query}&page=${page}&limit=${limit}`,
-    );
-    return response.data;
-  },
+  search: (query: string, page: number, limit: number) =>
+    requestAPI(
+      "get",
+      `/quantities/search?query=${encodeURIComponent(query)}&page=${page}&limit=${limit}`,
+    ),
 };

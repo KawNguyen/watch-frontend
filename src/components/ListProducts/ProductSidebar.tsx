@@ -32,7 +32,7 @@ const ProductSidebar = ({
 
   return (
     <ScrollArea className="h-full w-60">
-      <div className="py-6 space-y-6">
+      <div className="space-y-4">
         {children}
         <div>
           <h2 className="text-lg font-bold mb-4">Price Range</h2>

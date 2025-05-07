@@ -12,6 +12,7 @@ import { AudioWaveform, Command, GalleryVerticalEnd } from "lucide-react";
 import { NavUser } from "./nav-user";
 import { useAuth } from "@/hooks/use-api/useAuth";
 import { useUser } from "@/hooks/use-api/useUser";
+import { useEffect } from "react";
 
 const teams = [
   {
@@ -33,7 +34,10 @@ const teams = [
 
 export function AppSidebar() {
   const { logout } = useAuth();
-  const { userData } = useUser();
+  const { userData,getUserById } = useUser();
+  useEffect(() => {
+    getUserById()
+  }, [])
 
   return (
     <Sidebar collapsible="icon">

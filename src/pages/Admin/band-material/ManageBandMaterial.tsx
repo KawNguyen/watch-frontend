@@ -24,7 +24,7 @@ import {
 import { useBandMaterial } from "@/hooks/use-api/useBandMaterial";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Plus } from "lucide-react";
+import { Edit, Plus, Trash2 } from "lucide-react";
 
 const BandMaterialTableSkeleton = () => (
   <Table>
@@ -86,7 +86,7 @@ const ManageBandMaterial = () => {
     await deleteBandMaterial(id);
   };
 
-  if (isLoading)
+  if (isLoading("getAllBandMaterials"))
     return (
       <Card>
         <CardHeader>
@@ -172,17 +172,18 @@ const ManageBandMaterial = () => {
                           size="sm"
                           className="h-8 px-3"
                           onClick={() => handleEdit(bandMaterial)}
+                          variant="ghost"
                         >
-                          Edit
+                          <Edit />
                         </Button>
                         <AlertDialog>
                           <AlertDialogTrigger asChild>
                             <Button
                               size="sm"
                               className="h-8 px-3"
-                              variant="destructive"
+                              variant="ghost"
                             >
-                              Delete
+                              <Trash2 className="text-red-600" />
                             </Button>
                           </AlertDialogTrigger>
                           <AlertDialogContent>

@@ -1,25 +1,13 @@
-import axiosInstance from "@/config/axiosInstance";
+import requestAPI from "@/lib/requestAPI";
 
 export const user = {
-  getAll: async () => {
-    const response = await axiosInstance.get(`/users`);
-    return response.data;
-  },
+  getAll: () => requestAPI("get", "/users"),
 
-  getById: async (id: string) => {
-    const response = await axiosInstance.get(`/users/${id}`);
-    return response.data;
-  },
+  getById: (id: string) => requestAPI("get", `/users/${id}`),
 
-  searchUsers: async (searchTerm: string) => {
-    const response = await axiosInstance.get(
-      `/users/search?query=${searchTerm}`,
-    );
-    return response.data;
-  },
+  searchUsers: (searchTerm: string) =>
+    requestAPI("get", `/users/search?query=${encodeURIComponent(searchTerm)}`),
 
-  updateUser: async (id: string, data: any) => {
-    const response = await axiosInstance.put(`/users/update/${id}`, data);
-    return response.data;
-  },
+  updateUser: (id: string, data: any) =>
+    requestAPI("put", `/users/update/${id}`, data),
 };

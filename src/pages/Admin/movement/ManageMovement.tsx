@@ -23,7 +23,7 @@ import {
 import { useMovement } from "@/hooks/use-api/useMovement";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { Plus } from "lucide-react";
+import { Edit, Plus, Trash2 } from "lucide-react";
 import { Skeleton } from "@/components/ui/skeleton";
 
 const MovementTableSkeleton = () => (
@@ -87,7 +87,7 @@ const ManageMovement = () => {
     getAllMovements();
   }, []);
 
-  if (isLoading)
+  if (isLoading("getAllMovements"))
     return (
       <Card>
         <CardHeader>
@@ -170,18 +170,19 @@ const ManageMovement = () => {
                         <Button
                           size="sm"
                           className="h-8 px-3"
+                          variant="ghost"
                           onClick={() => handleEdit(movement)}
                         >
-                          Edit
+                          <Edit />
                         </Button>
                         <AlertDialog>
                           <AlertDialogTrigger asChild>
                             <Button
                               size="sm"
                               className="h-8 px-3"
-                              variant="destructive"
+                              variant="ghost"
                             >
-                              Delete
+                              <Trash2 className="text-red-600" />
                             </Button>
                           </AlertDialogTrigger>
                           <AlertDialogContent>

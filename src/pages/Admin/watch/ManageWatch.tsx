@@ -24,7 +24,7 @@ import {
 import { useWatch } from "@/hooks/use-api/useWatch";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Plus } from "lucide-react";
+import { Edit, Plus, Trash2 } from "lucide-react";
 import useDebounce from "@/hooks/useDebounce";
 import CustomPagination from "@/components/Pagination";
 
@@ -91,6 +91,7 @@ const ManageWatch = () => {
 
   const handleDelete = async (id: string) => {
     await deleteWatch(id);
+    getAllWatches(currentPage, 10);
   };
 
   const debouncedSearchTerm = useDebounce(searchTerm, 500);
@@ -100,7 +101,7 @@ const ManageWatch = () => {
       const response = await searchWatches(
         debouncedSearchTerm,
         currentPage,
-        10,
+        10
       );
       setResults(response);
     } else {
@@ -178,13 +179,14 @@ const ManageWatch = () => {
                         onClick={() =>
                           navigate(`/admin/watch/edit/${watch.id}`)
                         }
+                        variant="ghost"
                       >
-                        Edit
+                        <Edit />
                       </Button>
                       <AlertDialog>
                         <AlertDialogTrigger asChild>
-                          <Button size="sm" variant="destructive">
-                            Delete
+                          <Button size="sm" variant="ghost">
+                            <Trash2 className="text-red-600"/>
                           </Button>
                         </AlertDialogTrigger>
                         <AlertDialogContent>

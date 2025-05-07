@@ -108,7 +108,7 @@ const Header = () => {
             {isAuthenticated() ? (
               <DropdownMenu>
                 <DropdownMenuTrigger className="flex items-center space-x-2 outline-none">
-                  <Avatar className="h-10 w-10">
+                  <Avatar>
                     <AvatarImage src={user?.avatar} />
                     <AvatarFallback>
                       {user?.name?.charAt(0).toUpperCase()}
