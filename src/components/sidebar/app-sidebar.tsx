@@ -11,8 +11,6 @@ import { TeamSwitcher } from "./team-switcher";
 import { AudioWaveform, Command, GalleryVerticalEnd } from "lucide-react";
 import { NavUser } from "./nav-user";
 import { useAuth } from "@/hooks/use-api/useAuth";
-import { useUser } from "@/hooks/use-api/useUser";
-import { useEffect } from "react";
 
 const teams = [
   {
@@ -34,10 +32,7 @@ const teams = [
 
 export function AppSidebar() {
   const { logout } = useAuth();
-  const { userData,getUserById } = useUser();
-  useEffect(() => {
-    getUserById()
-  }, [])
+  const { getUser } = useAuth();
 
   return (
     <Sidebar collapsible="icon">
@@ -50,7 +45,7 @@ export function AppSidebar() {
         </SidebarGroupContent>
       </SidebarContent>
       <SidebarFooter>
-        <NavUser user={userData} logout={logout} />
+        <NavUser user={getUser()} logout={logout} />
       </SidebarFooter>
     </Sidebar>
   );
