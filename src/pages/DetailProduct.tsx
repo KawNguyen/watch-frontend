@@ -1,6 +1,4 @@
-import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
-import { useWatch } from "@/hooks/use-api/useWatch";
 import { Skeleton } from "@/components/ui/skeleton";
 import {
   Breadcrumb,
@@ -16,52 +14,19 @@ import { ProductTabs } from "@/components/ProductDetail/ProductTabs";
 import { ProductName } from "@/components/ProductDetail/ProductName";
 import { ProductFeatures } from "@/components/ProductDetail/ProductFetures";
 import { RelevantProducts } from "@/components/ProductDetail/RelevantProducts";
-import { useCart } from "@/hooks/use-api/useCart";
-import { useFavorite } from "@/hooks/use-api/useFavorite";
+
+import { useCartContext } from "@/context/CartContext";
+import { useFavoriteContext } from "@/context/FavoriteContext";
+import { useWatchById } from "@/hooks/use-api-query/useWatch";
 
 const DetailProduct = () => {
   const { id } = useParams();
-  const { getWatchById } = useWatch();
-  const { addToCart } = useCart();
-  const { addToFavorite } = useFavorite();
-  const [watch, setWatch] = useState<any>(null);
-  const [isLoading, setIsLoading] = useState(true);
-  const [quantity, setQuantity] = useState(1);
+  const { addToCart, isLoadingAddingToCart } = useCartContext();
+  const { addToFavorite, isLoadingAddToFavorite } = useFavoriteContext();
+  const { data: watchData, isLoading } = useWatchById(id ?? "");
 
-  const handleAddToCart = async () => {
-    if (!watch?.id) return;
-    try {
-      await addToCart(watch.id, quantity);
-    } catch (error) {
-      console.error("Failed to add to cart:", error);
-    }
-  };
-
-  const handleAddToFavorite = async () => {
-    if (!watch?.id) return;
-    try {
-      await addToFavorite(watch.id);
-    } catch (error) {
-      console.error("Failed to add to favorite:", error);
-    }
-  };
-
-  const fetchWatch = async () => {
-    if (id) {
-      try {
-        const data = await getWatchById(id);
-        setWatch(data);
-      } catch (error) {
-        console.error("Failed to fetch watch:", error);
-      } finally {
-        setIsLoading(false);
-      }
-    }
-  };
-
-  useEffect(() => {
-    fetchWatch();
-  }, [id]);
+  const watch = watchData?.data?.item;
+  console.log(watch);
 
   if (isLoading) {
     return (
@@ -113,11 +78,13 @@ const DetailProduct = () => {
             />
           </div>
           <ProductInfo
+            watchId={watch.id}
+            stock={watch.quantities}
             price={watch.price}
-            quantity={quantity}
-            setQuantity={setQuantity}
-            onAddToCart={handleAddToCart}
-            onFavorite={handleAddToFavorite}
+            onAddToCart={addToCart}
+            onFavorite={addToFavorite}
+            isLoadingAddingToCart={isLoadingAddingToCart}
+            isLoadingAddingToFavorite={isLoadingAddToFavorite}
           />
         </div>
       </div>

@@ -1,9 +1,7 @@
-import { useEffect } from "react";
 import { Routes } from "@/constants";
-import { useGlobalStore } from "@/store/useGlobalStore";
 import {
+  ChartNoAxesGantt,
   Heart,
-  LayoutDashboard,
   LogIn,
   LogOut,
   ShoppingBag,
@@ -23,21 +21,26 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import Image from "./ui/image";
 import { Search } from "./Search";
 import MobileMenu from "./MobileMenu";
+import { useCartContext } from "@/context/CartContext";
+import { useFavoriteContext } from "@/context/FavoriteContext";
 
 const Header = () => {
   const { isAuthenticated, logout, getUser } = useAuth();
   const user = getUser();
   const navigate = useNavigate();
-  const { cartCount, favoriteCount, fetchCounts, resetCounts } =
-    useGlobalStore();
+  // const { cartCount, favoriteCount, fetchCounts, resetCounts } =
+  //   useGlobalStore();
 
-  useEffect(() => {
-    if (user?.id) {
-      fetchCounts(user?.id);
-    } else {
-      resetCounts();
-    }
-  }, [user?.id]);
+  // useEffect(() => {
+  //   if (user?.id) {
+  //     fetchCounts(user?.id);
+  //   } else {
+  //     resetCounts();
+  //   }
+  // }, [user?.id]);
+
+  const { cartCount } = useCartContext();
+  const { favoriteCount } = useFavoriteContext();
 
   const handleCheckSignIn = (redirectTo: string) => {
     if (!isAuthenticated()) {
@@ -46,12 +49,6 @@ const Header = () => {
       navigate(redirectTo);
     }
   };
-
-  useEffect(() => {
-    if (user?.id) {
-      fetchCounts(user?.id);
-    }
-  }, [user?.id]);
 
   return (
     <header className="fixed top-0 bg-white h-20 w-full z-50">
@@ -109,7 +106,7 @@ const Header = () => {
               <DropdownMenu>
                 <DropdownMenuTrigger className="flex items-center space-x-2 outline-none">
                   <Avatar>
-                    <AvatarImage src={user?.avatar} />
+                    <AvatarImage src={user?.avatar} className="object-cover" />
                     <AvatarFallback>
                       {user?.name?.charAt(0).toUpperCase()}
                     </AvatarFallback>
@@ -125,9 +122,11 @@ const Header = () => {
                     Profile
                   </DropdownMenuItem>
                   {user?.role === "ADMIN" && (
-                    <DropdownMenuItem onClick={() => navigate("/admin")}>
-                      <LayoutDashboard />
-                      Dashboard
+                    <DropdownMenuItem
+                      onClick={() => navigate("/admin/dashboard")}
+                    >
+                      <ChartNoAxesGantt />
+                      Admin
                     </DropdownMenuItem>
                   )}
                   <DropdownMenuSeparator />

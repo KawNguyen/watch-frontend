@@ -10,7 +10,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { useWatch } from "@/hooks/use-api/useWatch";
 import { useBrand } from "@/hooks/use-api/useBrand";
 import { useMaterial } from "@/hooks/use-api/useMaterial";
 import { useBandMaterial } from "@/hooks/use-api/useBandMaterial";
@@ -18,15 +17,15 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { ArrowLeft } from "lucide-react";
 import { useMovement } from "@/hooks/use-api/useMovement";
+import { useAddWatch } from "@/hooks/use-api-query/useWatch";
 
 const AddWatch = () => {
   const navigate = useNavigate();
-  const { createWatch, isLoading } = useWatch();
+  const { mutate: addWatch, isLoading } = useAddWatch();
   const { brands, getAllBrands } = useBrand();
   const { materials, getAllMaterials } = useMaterial();
   const { bandMaterials, getAllBandMaterials } = useBandMaterial();
   const { movements, getAllMovements } = useMovement();
-  // Modify the formData state
   const [formData, setFormData] = useState({
     name: "",
     description: "",
@@ -39,7 +38,7 @@ const AddWatch = () => {
     diameter: 0,
     waterResistance: 0,
     warranty: 0,
-    videoUrl: "", // Add video URL instead of stock
+    videoUrl: "",
     images: [] as { url: string }[],
   });
 
@@ -50,29 +49,9 @@ const AddWatch = () => {
     getAllMovements();
   }, []);
 
-  // Add after the band material select component
-  <div className="space-y-2">
-    <Label htmlFor="movement">Movement</Label>
-    <Select
-      value={formData.movementId}
-      onValueChange={(value) => setFormData({ ...formData, movementId: value })}
-    >
-      <SelectTrigger>
-        <SelectValue placeholder="Select movement" />
-      </SelectTrigger>
-      <SelectContent>
-        {movements.map((movement: any) => (
-          <SelectItem key={movement.id} value={movement.id}>
-            {movement.name}
-          </SelectItem>
-        ))}
-      </SelectContent>
-    </Select>
-  </div>;
-
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    await createWatch(formData as WatchData);
+    await addWatch(formData as WatchData);
     navigate("/admin/watch/list");
   };
 
@@ -95,7 +74,6 @@ const AddWatch = () => {
     });
   };
 
-  // In the form JSX, replace the stock input with video URL
   return (
     <Card>
       <CardHeader>
@@ -175,7 +153,6 @@ const AddWatch = () => {
                 Technical Specifications
               </h3>
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                {/* Brand Select */}
                 <div className="space-y-2">
                   <Label htmlFor="brand">Brand</Label>
                   <Select
@@ -197,7 +174,6 @@ const AddWatch = () => {
                   </Select>
                 </div>
 
-                {/* Material Select */}
                 <div className="space-y-2">
                   <Label htmlFor="material">Case Material</Label>
                   <Select
@@ -219,7 +195,6 @@ const AddWatch = () => {
                   </Select>
                 </div>
 
-                {/* Band Material Select */}
                 <div className="space-y-2">
                   <Label htmlFor="bandMaterial">Band Material</Label>
                   <Select
@@ -241,7 +216,6 @@ const AddWatch = () => {
                   </Select>
                 </div>
 
-                {/* Movement Select */}
                 <div className="space-y-2">
                   <Label htmlFor="movement">Movement</Label>
                   <Select
@@ -263,7 +237,6 @@ const AddWatch = () => {
                   </Select>
                 </div>
 
-                {/* Diameter Input */}
                 <div className="space-y-2">
                   <Label htmlFor="diameter">Diameter (mm)</Label>
                   <Input
@@ -280,7 +253,6 @@ const AddWatch = () => {
                   />
                 </div>
 
-                {/* Water Resistance Input */}
                 <div className="space-y-2">
                   <Label htmlFor="waterResistance">Water Resistance (m)</Label>
                   <Input
@@ -297,7 +269,6 @@ const AddWatch = () => {
                   />
                 </div>
 
-                {/* Warranty Input */}
                 <div className="space-y-2">
                   <Label htmlFor="warranty">Warranty (months)</Label>
                   <Input
@@ -316,7 +287,6 @@ const AddWatch = () => {
               </div>
             </div>
 
-            {/* Description */}
             <div className="col-span-full space-y-2">
               <Label htmlFor="description">Description</Label>
               <Textarea
@@ -330,7 +300,6 @@ const AddWatch = () => {
               />
             </div>
 
-            {/* Images Section */}
             <div className="col-span-full space-y-4">
               <Label>Images</Label>
               <div className="flex gap-2">
@@ -374,8 +343,8 @@ const AddWatch = () => {
             >
               Cancel
             </Button>
-            <Button type="submit" disabled={isLoading("create")}>
-              {isLoading("create") ? "Creating..." : "Create Watch"}
+            <Button type="submit" disabled={isLoading}>
+              {isLoading ? "Creating..." : "Create Watch"}
             </Button>
           </div>
         </form>

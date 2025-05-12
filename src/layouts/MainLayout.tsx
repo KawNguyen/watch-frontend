@@ -1,12 +1,12 @@
 import Footer from "@/components/Footer";
 import Header from "../components/Header";
 import { Outlet } from "react-router-dom";
-import { Toaster } from "@/components/ui/toaster";
+import { Toaster } from "sonner";
 
 const MainLayout = () => {
   return (
     <main>
-      <Toaster />
+      <Toaster position="top-right" />
       <Header />
       <Outlet />
       <Footer />

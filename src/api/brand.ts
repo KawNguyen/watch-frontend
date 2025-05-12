@@ -1,18 +1,18 @@
-import requestAPI from "@/lib/requestAPI";
+import makeApiRequest from "@/lib/call-api";
 
 export const brand = {
-  getAll: () => requestAPI("get", "/brands"),
+  getAll: () => makeApiRequest("get", "/brands"),
 
-  getById: (id: number) => requestAPI("get", `/brands/${id}`),
+  getById: (id: number) => makeApiRequest("get", `/brands/${id}`),
 
   create: (name: string, country: string, logo: string) =>
-    requestAPI("post", "/brands/create", { name, country, logo }),
+    makeApiRequest("post", "/brands/create", { name, country, logo }),
 
   update: (id: number, name: string, country: string) =>
-    requestAPI("put", `/brands/update/${id}`, { name, country }),
+    makeApiRequest("put", `/brands/update/${id}`, { name, country }),
 
-  delete: (id: number) => requestAPI("delete", `/brands/delete/${id}`),
+  delete: (id: number) => makeApiRequest("delete", `/brands/delete/${id}`),
 
   search: (query: string) =>
-    requestAPI("get", `/brands/search?name=${encodeURIComponent(query)}`),
+    makeApiRequest("get", `/brands/search?name=${encodeURIComponent(query)}`),
 };

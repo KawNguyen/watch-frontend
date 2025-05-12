@@ -6,7 +6,7 @@ import {
   CardHeader,
 } from "@/components/ui/card";
 import { formatPrice } from "@/lib/utils";
-import { ChevronRight, Minus, Plus, Trash2 } from "lucide-react";
+import { ChevronRight, Loader2, Minus, Plus, Trash2 } from "lucide-react";
 import { Separator } from "../ui/separator";
 import Image from "../ui/image";
 import { useNavigate } from "react-router-dom";
@@ -18,7 +18,7 @@ type BaseProduct = {
   images: [
     {
       url: string;
-    },
+    }
   ];
   price?: number;
 };
@@ -27,13 +27,19 @@ type CartProduct = BaseProduct & {
   cartItemId: string;
   quantity: number;
   type: "cart";
-  onQuantityChange?: (id: string, quantity: number) => void;
+  onQuantityChange?: (variables: {
+    cartItemId: string;
+    quantity: number;
+  }) => void;
   onRemove?: () => void;
+  isLoadingUpdateQuantity?: boolean;
+  isLoadingRemovingFromCart?: boolean;
 };
 
 type FavoriteProduct = BaseProduct & {
   type: "favorite";
   onRemove?: () => void;
+  isLoadingRemovingFromFavorite?: boolean;
 };
 
 type OrderProduct = BaseProduct & {
@@ -98,12 +104,13 @@ const ProductCard = (props: ProductCardProps) => {
                   onClick={(e) => {
                     e.stopPropagation();
                     if (props.quantity > 1) {
-                      props.onQuantityChange?.(
-                        props.cartItemId,
-                        props.quantity - 1,
-                      );
+                      props.onQuantityChange?.({
+                        cartItemId: props.cartItemId,
+                        quantity: props.quantity - 1,
+                      });
                     }
                   }}
+                  disabled={props.isLoadingUpdateQuantity}
                 >
                   <Minus className="w-4 h-4" />
                 </Button>
@@ -116,11 +123,12 @@ const ProductCard = (props: ProductCardProps) => {
                   className="hover:bg-gray-100"
                   onClick={(e) => {
                     e.stopPropagation();
-                    props.onQuantityChange?.(
-                      props.cartItemId,
-                      props.quantity + 1,
-                    );
+                    props.onQuantityChange?.({
+                      cartItemId: props.cartItemId,
+                      quantity: props.quantity + 1,
+                    });
                   }}
+                  disabled={props.isLoadingUpdateQuantity}
                 >
                   <Plus className="w-4 h-4" />
                 </Button>
@@ -138,6 +146,7 @@ const ProductCard = (props: ProductCardProps) => {
                     e.stopPropagation();
                     props.onRemove?.();
                   }}
+                  disabled={props.isLoadingRemovingFromCart}
                 >
                   <Trash2 className="w-5 h-5" />
                 </Button>
@@ -158,8 +167,15 @@ const ProductCard = (props: ProductCardProps) => {
                   e.stopPropagation();
                   props.onRemove?.();
                 }}
+                disabled={props.isLoadingRemovingFromFavorite}
               >
-                <Trash2 className="w-5 h-5" />
+                {props.isLoadingRemovingFromFavorite ? (
+                  <div>
+                    <Loader2 className="animate-spin" />
+                  </div>
+                ) : (
+                  <Trash2 className="w-5 h-5" />
+                )}
               </Button>
             </CardFooter>
           )}

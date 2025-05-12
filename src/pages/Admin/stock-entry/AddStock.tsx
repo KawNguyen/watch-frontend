@@ -1,5 +1,4 @@
-import { useState, useEffect } from "react";
-import { useWatch } from "@/hooks/use-api/useWatch";
+import { useState } from "react";
 import useDebounce from "@/hooks/useDebounce";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -7,6 +6,7 @@ import { Input } from "@/components/ui/input";
 import { Minus, Plus, Loader2 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { useStockEntry } from "@/hooks/use-api/useStockEntry";
+import { useSearchWatch } from "@/hooks/use-api-query/useWatch";
 
 interface StockItem {
   watchId: string;
@@ -22,17 +22,9 @@ const AddStock = () => {
   ]);
   const [search, setSearch] = useState("");
   const debouncedSearch = useDebounce(search, 500);
-  const { searchWatches, isLoading } = useWatch();
-  const [watches, setWatches] = useState([]);
   const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
-
-  useEffect(() => {
-    const fetchWatches = async () => {
-      const results = await searchWatches(debouncedSearch, 1, 100);
-      setWatches(results || []);
-    };
-    fetchWatches();
-  }, [debouncedSearch]);
+  const { data: searchWatches, isLoading } = useSearchWatch(debouncedSearch);
+  const watches = searchWatches?.data?.items || [];
 
   const addItem = () => {
     setItems([...items, { watchId: "", quantity: 1, price: 0 }]);
@@ -64,7 +56,7 @@ const AddStock = () => {
     e.preventDefault();
     try {
       const validItems = items.filter(
-        (item) => item.watchId && item.quantity > 0,
+        (item) => item.watchId && item.quantity > 0
       );
       if (validItems.length === 0) {
         throw new Error("Please add at least one valid item");
@@ -110,7 +102,7 @@ const AddStock = () => {
                   />
                   {selectedIndex === index && (
                     <div className="max-h-60 overflow-y-auto border rounded-md">
-                      {isLoading("search") ? (
+                      {isLoading ? (
                         <div className="flex items-center justify-center p-4">
                           <Loader2 className="h-6 w-6 animate-spin text-gray-500" />
                         </div>
@@ -174,7 +166,7 @@ const AddStock = () => {
                               </p>
                             </div>
                           </div>
-                        ),
+                        )
                     )}
                   </div>
 
@@ -191,7 +183,7 @@ const AddStock = () => {
                           updateItem(
                             index,
                             "quantity",
-                            parseInt(e.target.value),
+                            parseInt(e.target.value)
                           )
                         }
                       />

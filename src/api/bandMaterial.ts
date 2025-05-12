@@ -1,20 +1,20 @@
-import requestAPI from "@/lib/requestAPI";
+import makeApiRequest from "@/lib/call-api";
 
 export const bandMaterial = {
-  getAll: () => requestAPI("get", "/band-materials"),
+  getAll: () => makeApiRequest("get", "/band-materials"),
 
-  getById: (id: string) => requestAPI("get", `/band-materials/${id}`),
+  getById: (id: string) => makeApiRequest("get", `/band-materials/${id}`),
 
   create: (name: string) =>
-    requestAPI("post", "/band-materials/create", { name }),
+    makeApiRequest("post", "/band-materials/create", { name }),
 
   update: (id: string, name: string) =>
-    requestAPI("put", `/band-materials/update/${id}`, { name }),
+    makeApiRequest("put", `/band-materials/update/${id}`, { name }),
 
-  delete: (id: string) => requestAPI("delete", `/band-materials/delete/${id}`),
+  delete: (id: string) => makeApiRequest("delete", `/band-materials/delete/${id}`),
 
   search: (query: string) =>
-    requestAPI(
+    makeApiRequest(
       "get",
       `/band-materials/search?name=${encodeURIComponent(query)}`
     ),

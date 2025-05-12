@@ -1,21 +1,21 @@
-import requestAPI from "@/lib/requestAPI";
+import makeApiRequest from "@/lib/call-api";
 
 export const cart = {
-  getUserCart: (userId: string) => requestAPI("get", `/cart/${userId}`),
+  getUserCart: (userId: string) => makeApiRequest("get", `/cart/${userId}`),
 
   addToCart: (userId: string, watchId: string, quantity: number) =>
-    requestAPI("post", "/cart/add", { userId, watchId, quantity }),
+    makeApiRequest("post", "/cart/add", { userId, watchId, quantity }),
 
   removeItemFromCart: (userId: string, cartItemId: string) =>
-    requestAPI("delete", `/cart/${userId}/remove/${cartItemId}`, {
+    makeApiRequest("delete", `/cart/${userId}/remove/${cartItemId}`, {
       userId,
       cartItemId,
     }),
 
-  clearCart: () => requestAPI("delete", "/cart/clear"),
+  clearCart: () => makeApiRequest("delete", "/cart/clear"),
 
   updateQuantity: (userId: string, cartItemId: string, quantity: number) =>
-    requestAPI("put", `/cart/${userId}/update-quantity/${cartItemId}`, {
+    makeApiRequest("put", `/cart/${userId}/update-quantity/${cartItemId}`, {
       userId,
       cartItemId,
       quantity,

@@ -13,8 +13,8 @@ import {
 } from "@/components/ui/sheet";
 import { Button } from "@/components/ui/button";
 import Image from "@/components/ui/image";
-import { useWatch } from "@/hooks/use-api/useWatch";
 import useDebounce from "@/hooks/useDebounce";
+import { useSearchWatch } from "@/hooks/use-api-query/useWatch";
 
 const categories = [
   {
@@ -48,9 +48,7 @@ const highlightKeywords = [
 
 export function Search() {
   const [open, setOpen] = useState(false);
-  const { searchWatches, isLoading } = useWatch();
   const [search, setSearch] = useState("");
-  const [searchResults, setSearchResults] = useState([]);
   const debouncedSearch = useDebounce(search, 500);
   const navigate = useNavigate();
   const [recentSearches, setRecentSearches] = useState<string[]>([]);
@@ -64,7 +62,7 @@ export function Search() {
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
-      const isMac = navigator.platform.toUpperCase().includes("MAC");
+      const isMac = navigator.userAgent.toLowerCase().includes("mac");
       const isCmdK =
         (isMac && e.metaKey && e.key === "k") ||
         (!isMac && e.ctrlKey && e.key === "k");
@@ -88,18 +86,8 @@ export function Search() {
     localStorage.setItem("recentSearches", JSON.stringify(updated));
   };
 
-  const fetchResults = async () => {
-    if (debouncedSearch.trim()) {
-      const results = await searchWatches(debouncedSearch, 1, 10);
-      setSearchResults(results);
-    } else {
-      setSearchResults([]);
-    }
-  };
-
-  useEffect(() => {
-    fetchResults();
-  }, [debouncedSearch]);
+  const { data: results, isLoading } = useSearchWatch(debouncedSearch, open);
+  const items = results?.data?.items || [];
 
   const handleKeywordClick = (keyword: string) => {
     setSearch(keyword);
@@ -147,19 +135,19 @@ export function Search() {
           </SheetHeader>
 
           <div className="mt-8 h-[calc(85vh-200px)] overflow-y-auto pr-2">
-            {isLoading("search") && (
+            {isLoading && (
               <div className="flex justify-center mt-12">
                 <div className="h-10 w-10 border-4 border-zinc-300 border-t-zinc-800 rounded-full animate-spin" />
               </div>
             )}
 
-            {!isLoading("search") && searchResults.length > 0 && (
+            {!isLoading && search && items.length > 0 && (
               <div className="mt-6">
                 <h3 className="text-sm font-semibold text-zinc-500 mb-4">
                   Search Results
                 </h3>
                 <div className="grid gap-4">
-                  {searchResults.map((watch: any) => (
+                  {items.map((watch: any) => (
                     <Button
                       key={watch.id}
                       variant="ghost"
@@ -217,7 +205,7 @@ export function Search() {
               </div>
             )}
 
-            {!isLoading("search") && search && searchResults.length === 0 && (
+            {!isLoading && search && items.length === 0 && (
               <div className="mt-12 text-center space-y-2">
                 <p className="text-xl font-medium text-zinc-500">
                   No watches found for “{search}”

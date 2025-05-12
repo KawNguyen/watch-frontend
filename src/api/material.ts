@@ -1,17 +1,17 @@
-import requestAPI from "@/lib/requestAPI";
+import makeApiRequest from "@/lib/call-api";
 
 export const material = {
-  getAll: () => requestAPI("get", "/materials"),
+  getAll: () => makeApiRequest("get", "/materials"),
 
-  getById: (id: string) => requestAPI("get", `/materials/${id}`),
+  getById: (id: string) => makeApiRequest("get", `/materials/${id}`),
 
-  create: (name: string) => requestAPI("post", "/materials/create", { name }),
+  create: (name: string) => makeApiRequest("post", "/materials/create", { name }),
 
   update: (id: string, name: string) =>
-    requestAPI("put", `/materials/update/${id}`, { name }),
+    makeApiRequest("put", `/materials/update/${id}`, { name }),
 
-  delete: (id: string) => requestAPI("delete", `/materials/delete/${id}`),
+  delete: (id: string) => makeApiRequest("delete", `/materials/delete/${id}`),
 
   search: (query: string) =>
-    requestAPI("get", `/materials/search?name=${encodeURIComponent(query)}`),
+    makeApiRequest("get", `/materials/search?name=${encodeURIComponent(query)}`),
 };

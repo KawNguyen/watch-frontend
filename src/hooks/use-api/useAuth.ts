@@ -1,10 +1,9 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { authAPI } from "@/api/auth";
-import { useToast } from "../use-toast";
+import { toast } from "sonner";
 
 export const useAuth = () => {
-  const { toast } = useToast();
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -20,11 +19,7 @@ export const useAuth = () => {
         credentials.recaptchaToken
       );
       localStorage.setItem("userId", response.user.id);
-      toast({
-        title: "Success",
-        description: "Registration successful! Welcome aboard.",
-        className: "bg-green-500 text-white border-none",
-      });
+      toast.success("Registration successful! Welcome aboard.");
       navigate("/auth/verify-otp");
     } catch (err: any) {
       let errorMessage = "An error occurred during registration";
@@ -34,12 +29,7 @@ export const useAuth = () => {
         errorMessage = "Unable to reach the server";
       }
       setError(errorMessage);
-      toast({
-        variant: "destructive",
-        title: "Error",
-        description: errorMessage,
-        className: "bg-red-500 text-white border-none",
-      });
+      toast.error(errorMessage);
     } finally {
       setIsLoading(false);
     }
@@ -54,11 +44,7 @@ export const useAuth = () => {
         credentials.password
       );
       localStorage.setItem("userId", response.user.id);
-      // toast({
-      //   title: "Success",
-      //   description: "Welcome back!",
-      //   className: "bg-green-500 text-white border-none",
-      // });
+
       navigate("/auth/verify-otp");
     } catch (err: any) {
       let errorMessage = "An error occurred during login";
@@ -68,12 +54,7 @@ export const useAuth = () => {
         errorMessage = "Unable to reach the server";
       }
       setError(errorMessage);
-      toast({
-        variant: "destructive",
-        title: "Error",
-        description: errorMessage,
-        className: "bg-red-500 text-white border-none",
-      });
+      toast.error(errorMessage);
     } finally {
       setIsLoading(false);
     }
@@ -119,11 +100,7 @@ export const useAuth = () => {
       localStorage.setItem("token", response.accessToken);
       localStorage.setItem("user", JSON.stringify(response.user));
       localStorage.removeItem("userId");
-      toast({
-        title: "Success",
-        description: "OTP verification successful!",
-        className: "bg-green-500 text-white border-none",
-      });
+      toast.success("OTP verification successful!");
       navigate("/");
       return response;
     } catch (err: any) {
@@ -134,12 +111,7 @@ export const useAuth = () => {
         errorMessage = "Unable to reach the server";
       }
       setError(errorMessage);
-      toast({
-        variant: "destructive",
-        title: "Error",
-        description: errorMessage,
-        className: "bg-red-500 text-white border-none",
-      });
+      toast.error(errorMessage);
       throw err;
     } finally {
       setIsLoading(false);

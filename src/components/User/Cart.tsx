@@ -1,4 +1,3 @@
-import { useEffect } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
@@ -7,35 +6,28 @@ import { formatPrice } from "@/lib/utils";
 import { ShoppingCart } from "lucide-react";
 import UserCard from "./UserCard";
 import ProductCard from "./ProductCard";
-import { useCart } from "@/hooks/use-api/useCart";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useNavigate } from "react-router-dom";
+import { useCartContext } from "@/context/CartContext";
 
 const Cart = () => {
   const navigate = useNavigate();
-  const { items, getUserCart, removeFromCart, isLoading, updateQuantity } =
-    useCart();
 
-  useEffect(() => {
-    getUserCart();
-  }, []);
-
-  const handleQuantityChange = async (id: string, quantity: number) => {
-    try {
-      await updateQuantity(id, quantity);
-    } catch (error) {
-      console.error("Failed to update quantity:", error);
-    }
-  };
-
-  const handleRemove = async (id: string) => {
-    await removeFromCart(id);
-    getUserCart();
-  };
+  const {
+    data: userCart,
+    isLoading,
+    removeFromCart,
+    updateQuantity,
+    isLoadingRemovingFromCart,
+    isLoadingUpdatingQuantity,
+  } = useCartContext();
+  const items = userCart?.data.items || [];
 
   const subtotal =
-    items?.reduce((sum, item) => sum + item.watch.price * item.quantity, 0) ||
-    0;
+    items?.reduce(
+      (sum: number, item: any) => sum + item.watch.price * item.quantity,
+      0
+    ) || 0;
   const shipping = 10.0;
   const total = subtotal + shipping;
 
@@ -49,7 +41,7 @@ const Cart = () => {
         <div className="flex-1">
           <ScrollArea className="h-[calc(100vh-22rem)] pr-4">
             <div className="flex flex-col gap-4">
-              {isLoading("getCart") ? (
+              {isLoading ? (
                 <>
                   {[1, 2, 3].map((index) => (
                     <div key={index} className="flex gap-4">
@@ -80,8 +72,10 @@ const Cart = () => {
                     cartItemId={item.id}
                     quantity={item.quantity}
                     type="cart"
-                    onQuantityChange={handleQuantityChange}
-                    onRemove={() => handleRemove(item.id)}
+                    onQuantityChange={updateQuantity}
+                    onRemove={() => removeFromCart(item.id)}
+                    isLoadingRemovingFromCart={isLoadingRemovingFromCart}
+                    isLoadingUpdateQuantity={isLoadingUpdatingQuantity}
                   />
                 ))
               )}

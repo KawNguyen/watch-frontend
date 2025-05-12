@@ -1,10 +1,12 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import ProductCard from "./ListProducts/ProductCard";
-import { useWatch } from "@/hooks/use-api/useWatch";
 import { Button } from "./ui/button";
 import { Skeleton } from "./ui/skeleton";
 import { useNavigate } from "react-router-dom";
 import { ChevronRight } from "lucide-react";
+import { useWatchByMovement } from "@/hooks/use-api-query/useWatch";
+import { useCartContext } from "@/context/CartContext";
+import { useFavoriteContext } from "@/context/FavoriteContext";
 
 const categories = [
   { name: "AUTOMATIC", path: "Automatic" },
@@ -14,23 +16,15 @@ const categories = [
 
 const BestSeller = () => {
   const navigate = useNavigate();
-  const { getWatchesByMovement, isLoading } = useWatch();
+
   const [activeCategory, setActiveCategory] = useState(categories[0]);
-  const [products, setProducts] = useState([]);
-  const limit = 4;
 
-  const fetchWatches = async () => {
-    try {
-      const data = await getWatchesByMovement(activeCategory.path, 1, limit);
-      setProducts(data);
-    } catch (error) {
-      console.error("Error fetching watches:", error);
-    }
-  };
+  const { addToCart } = useCartContext();
+  const { addToFavorite } = useFavoriteContext();
 
-  useEffect(() => {
-    fetchWatches();
-  }, [activeCategory.path]);
+  const { data, isLoading } = useWatchByMovement(activeCategory.path, 1, 4);
+
+  const items = data?.data?.items || [];
 
   const handleShowMore = () => {
     navigate(`/products?movement=${activeCategory.path}`);
@@ -85,28 +79,34 @@ const BestSeller = () => {
         </div>
 
         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-6 md:gap-8">
-          {isLoading("getByMovement") ? (
+          {isLoading ? (
             <ProductSkeleton />
           ) : (
-            products.map((product: any) => (
+            items.map((item: any) => (
               <div
-                key={product.name}
+                key={item.name}
                 className="transform transition-transform duration-300 hover:scale-105"
               >
-                <ProductCard product={product} />
+                <ProductCard
+                  product={item}
+                  onAddToCart={(productId: string) => addToCart(productId, 1)}
+                  onAddToFavorite={(productId: string) =>
+                    addToFavorite(productId)
+                  }
+                />
               </div>
             ))
           )}
         </div>
 
-        {products.length > 0 && (
+        {items.length > 0 && (
           <div className="flex justify-center mt-12">
             <Button
               onClick={handleShowMore}
-              disabled={isLoading("getByMovement")}
+              disabled={isLoading}
               className="group relative px-8 py-3 bg-gray-900 hover:bg-gray-800 text-white rounded-full transition-all duration-300 flex items-center gap-2"
             >
-              {isLoading("getByMovement") ? (
+              {isLoading ? (
                 "Loading..."
               ) : (
                 <>

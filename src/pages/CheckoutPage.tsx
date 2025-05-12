@@ -5,11 +5,12 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Separator } from "@/components/ui/separator";
 import { formatPrice } from "@/lib/utils";
-import { useCart } from "@/hooks/use-api/useCart";
-import { useNavigate } from "react-router-dom";
 import Image from "@/components/ui/image";
-import { useUser } from "@/hooks/use-api/useUser";
-import { useOrder } from "@/hooks/use-api/useOrder";
+import { useUserData } from "@/hooks/use-api-query/useUser";
+import { useAuth } from "@/hooks/use-api/useAuth";
+import { useCartContext } from "@/context/CartContext";
+import { Skeleton } from "@/components/ui/skeleton";
+import { useOrderContext } from "@/context/OrderContext";
 
 type AddressType = {
   id: string;
@@ -28,10 +29,15 @@ type FormDataType = {
 };
 
 const CheckoutPage = () => {
-  const { items, getUserCart } = useCart();
-  const navigate = useNavigate();
-  const { userData, getUserById } = useUser();
-  const { createOrder, isLoading } = useOrder();
+  const { getUser } = useAuth();
+  const currentUser = getUser();
+  const userId = currentUser?.id;
+  const { data: cartData, isLoading: loadingCart } = useCartContext();
+  const { createOrder, isLoadingCreatingOrder } = useOrderContext();
+  const items = cartData?.data?.items;
+
+  const { data: resData } = useUserData(userId);
+  const userData = resData?.data?.item;
   const [formData, setFormData] = useState<FormDataType>({
     name: "",
     email: "",
@@ -47,11 +53,6 @@ const CheckoutPage = () => {
       },
     ],
   });
-
-  useEffect(() => {
-    getUserCart();
-    getUserById();
-  }, []);
 
   useEffect(() => {
     if (userData) {
@@ -74,8 +75,10 @@ const CheckoutPage = () => {
   }, [userData]);
 
   const subtotal =
-    items?.reduce((sum, item) => sum + item.watch.price * item.quantity, 0) ||
-    0;
+    items?.reduce(
+      (sum: any, item: any) => sum + item.watch.price * item.quantity,
+      0
+    ) || 0;
   const shipping = 10.0;
   const total = subtotal + shipping;
 
@@ -84,10 +87,7 @@ const CheckoutPage = () => {
       if (!userData.addresses[0]?.id) {
         throw new Error("Please select a shipping address");
       }
-      const orderResponse = await createOrder(userData.addresses[0]?.id);
-      if (orderResponse) {
-        navigate("/payment-success");
-      }
+      createOrder(userData.addresses[0]?.id);
     } catch (error: any) {
       console.error("Payment failed:", error);
     }
@@ -101,34 +101,57 @@ const CheckoutPage = () => {
             <CardContent className="p-6">
               <h2 className="text-2xl font-semibold mb-6">Order Items</h2>
               <div className="space-y-4">
-                {items?.map((item: any) => (
-                  <div
-                    key={item.id}
-                    className="flex gap-4 py-4 border-b last:border-0"
-                  >
-                    <div className="w-24 h-24">
-                      <Image
-                        src={item.watch.images[0].url}
-                        alt={item.watch.name}
-                        className="w-full h-full object-cover rounded-lg"
-                      />
-                    </div>
-                    <div className="flex-1 space-y-1">
-                      <h3 className="font-medium">{item.watch.name}</h3>
-                      <p className="text-sm text-gray-500">
-                        {item.watch.brand.name}
-                      </p>
-                      <div className="flex justify-between items-center">
-                        <span className="text-sm">
-                          Quantity: {item.quantity}
-                        </span>
-                        <span className="font-medium">
-                          {formatPrice(item.watch.price * item.quantity)}
-                        </span>
+                {loadingCart ? (
+                  <>
+                    {[1, 2, 3].map((index) => (
+                      <div
+                        key={index}
+                        className="flex gap-4 py-4 border-b last:border-0"
+                      >
+                        <Skeleton className="w-24 h-24 rounded-lg" />
+                        <div className="flex-1 space-y-2">
+                          <Skeleton className="h-4 w-3/4" />
+                          <Skeleton className="h-3 w-1/2" />
+                          <div className="flex justify-between items-center pt-2">
+                            <Skeleton className="h-3 w-20" />
+                            <Skeleton className="h-3 w-24" />
+                          </div>
+                        </div>
                       </div>
-                    </div>
-                  </div>
-                ))}
+                    ))}
+                  </>
+                ) : (
+                  <>
+                    {items?.map((item: any) => (
+                      <div
+                        key={item.id}
+                        className="flex gap-4 py-4 border-b last:border-0"
+                      >
+                        <div className="w-24 h-24">
+                          <Image
+                            src={item.watch.images[0].url}
+                            alt={item.watch.name}
+                            className="w-full h-full object-cover rounded-lg"
+                          />
+                        </div>
+                        <div className="flex-1 space-y-1">
+                          <h3 className="font-medium">{item.watch.name}</h3>
+                          <p className="text-sm text-gray-500">
+                            {item.watch.brand.name}
+                          </p>
+                          <div className="flex justify-between items-center">
+                            <span className="text-sm">
+                              Quantity: {item.quantity}
+                            </span>
+                            <span className="font-medium">
+                              {formatPrice(item.watch.price * item.quantity)}
+                            </span>
+                          </div>
+                        </div>
+                      </div>
+                    ))}
+                  </>
+                )}
               </div>
             </CardContent>
           </Card>
@@ -203,9 +226,9 @@ const CheckoutPage = () => {
                   className="w-full mt-4"
                   size="lg"
                   onClick={onSubmit}
-                  disabled={isLoading("createOrder")}
+                  disabled={isLoadingCreatingOrder}
                 >
-                  {isLoading("createOrder") ? "Processing..." : "Place Order"}
+                  {isLoadingCreatingOrder ? "Processing..." : "Place Order"}
                 </Button>
               </div>
             </CardContent>

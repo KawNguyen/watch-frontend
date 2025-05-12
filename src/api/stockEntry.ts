@@ -1,28 +1,16 @@
-import axiosInstance from "@/config/axiosInstance";
+import makeApiRequest from "@/lib/call-api"; // Import makeApiRequest
 
 export const stockEntry = {
-  getAll: async () => {
-    const response = await axiosInstance.get(`/stock-entries`);
-    return response.data;
-  },
+  getAll: () => makeApiRequest("get", `/stock-entries`),
 
-  getById: async (id: string) => {
-    const response = await axiosInstance.get(`/stock-entries/${id}`);
-    return response.data;
-  },
+  getById: (id: string) => makeApiRequest("get", `/stock-entries/${id}`),
 
-  create: async (stockEntryData: {
+  create: (stockEntryData: {
     items: {
       watchId: string;
       quantity: number;
       price: number;
     }[];
     addedById: string;
-  }) => {
-    const response = await axiosInstance.post(
-      `/stock-entries/create`,
-      stockEntryData,
-    );
-    return response.data;
-  },
+  }) => makeApiRequest("post", `/stock-entries/create`, stockEntryData),
 };

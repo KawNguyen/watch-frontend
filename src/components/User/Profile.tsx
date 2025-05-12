@@ -1,4 +1,3 @@
-import { Label } from "../ui/label";
 import { Input } from "../ui/input";
 import { Button } from "@/components/ui/button";
 import { ImageUp, Save } from "lucide-react";
@@ -18,14 +17,14 @@ import { toast } from "@/hooks/use-toast";
 import UserInfo from "./UserInfo";
 
 interface ProfileProps {
-  getUserById: () => Promise<any>;
+  user: any;
   updateUser: (data: any) => Promise<any>;
   isLoadingGetUser?: boolean;
   isLoadingUpdateUser?: boolean;
 }
 
 const Profile = ({
-  getUserById,
+  user,
   updateUser,
   isLoadingGetUser,
   isLoadingUpdateUser,
@@ -51,14 +50,13 @@ const Profile = ({
     avatar: "",
   });
 
-  const fetchUserData = async () => {
-    const userData = await getUserById();
-    if (userData) {
+  useEffect(() => {
+    if (user) {
       setFormData({
-        name: userData.name || "",
-        email: userData.email || "",
-        phone: userData.phone || "",
-        addresses: userData.addresses || [
+        name: user.name || "",
+        email: user.email || "",
+        phone: user.phone || "",
+        addresses: user.addresses || [
           {
             street: "",
             district: "",
@@ -67,16 +65,12 @@ const Profile = ({
             country: "",
           },
         ],
-        avatar: userData.avatar || "",
+        avatar: user.avatar || "",
       });
-      setGender(userData.gender || "");
-      setPayment(userData.paymentMethod || "");
+      setGender(user.gender || "");
+      setPayment(user.paymentMethod || "");
     }
-  };
-
-  useEffect(() => {
-    fetchUserData();
-  }, []);
+  }, [user]);
 
   const handleSubmit = async () => {
     const addressData = formData.addresses[0];
@@ -238,7 +232,7 @@ const Profile = ({
             onOpenChange={setIsAvatarDialogOpen}
           >
             <DialogTrigger asChild>
-              <div className="relative mx-auto w-48 h-48 overflow-hidden rounded-full group cursor-pointer">
+              <div className="relative mx-auto w-48 h-48 overflow-hidden rounded-full group cursor-pointer ring-2 ring-muted-foreground/30 hover:ring-primary transition">
                 <Avatar className="w-full h-full">
                   <AvatarImage
                     src={formData.avatar}
@@ -249,25 +243,46 @@ const Profile = ({
                     {formData.name?.charAt(0) || "U"}
                   </AvatarFallback>
                 </Avatar>
-                <div className="absolute inset-0 bg-black/40 flex items-center justify-center opacity-0 transition-opacity group-hover:opacity-100">
-                  <ImageUp className="text-white w-6 h-6" />
+                <div className="absolute inset-0 bg-black/50 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+                  <div className="flex flex-col items-center gap-1 text-white">
+                    <ImageUp className="w-6 h-6" />
+                    <span className="text-xs font-medium">Change</span>
+                  </div>
                 </div>
               </div>
             </DialogTrigger>
-            <DialogContent>
+
+            <DialogContent className="max-w-md">
               <DialogHeader>
                 <DialogTitle>Update Profile Picture</DialogTitle>
               </DialogHeader>
-              <div className="space-y-4 py-4">
-                <div className="space-y-2">
-                  <Label>Image URL</Label>
+
+              <div className="space-y-4">
+                <div className="flex flex-col items-center gap-4">
+                  <div className="w-24 h-24 rounded-full overflow-hidden border border-muted">
+                    <img
+                      src={avatarUrl || formData.avatar}
+                      alt="Preview"
+                      className="w-full h-full object-cover"
+                    />
+                  </div>
                   <Input
-                    placeholder="Enter image URL"
+                    placeholder="Enter image URL..."
                     value={avatarUrl}
                     onChange={(e) => setAvatarUrl(e.target.value)}
                   />
                 </div>
-                <div className="flex justify-end">
+
+                <div className="flex justify-end gap-2">
+                  <Button
+                    variant="outline"
+                    onClick={() => {
+                      setAvatarUrl("");
+                      setIsAvatarDialogOpen(false);
+                    }}
+                  >
+                    Cancel
+                  </Button>
                   <Button onClick={handleAvatarUrlSubmit} disabled={!avatarUrl}>
                     Update Picture
                   </Button>

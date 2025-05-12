@@ -1,6 +1,8 @@
 import ProductCard from "./ProductCard";
 import { Skeleton } from "@/components/ui/skeleton";
 import CustomPagination from "@/components/Pagination";
+import { useCartContext } from "@/context/CartContext";
+import { useFavoriteContext } from "@/context/FavoriteContext";
 
 const ProductSkeleton = () => (
   <div className="space-y-3">
@@ -27,6 +29,9 @@ const ProductGrid = ({
   currentPage,
   totalPages,
 }: ProductGridProps) => {
+  const { addToCart } = useCartContext();
+  const { addToFavorite } = useFavoriteContext();
+
   return (
     <div className="space-y-8">
       <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6">
@@ -38,8 +43,15 @@ const ProductGrid = ({
           </>
         ) : (
           <>
-            {products.map((product) => (
-              <ProductCard key={product.id} product={product} />
+            {products.map((product: any) => (
+              <ProductCard
+                key={product.id}
+                product={product}
+                onAddToCart={(productId: string) => addToCart(productId, 1)}
+                onAddToFavorite={(productId: string) =>
+                  addToFavorite(productId)
+                }
+              />
             ))}
           </>
         )}

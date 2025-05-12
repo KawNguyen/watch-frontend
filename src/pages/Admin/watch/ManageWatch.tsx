@@ -21,12 +21,16 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
-import { useWatch } from "@/hooks/use-api/useWatch";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Edit, Plus, Trash2 } from "lucide-react";
 import useDebounce from "@/hooks/useDebounce";
 import CustomPagination from "@/components/Pagination";
+import {
+  useDeleteWatch,
+  useSearchWatch,
+  useWatchesList,
+} from "@/hooks/use-api-query/useWatch";
 
 const WatchTableSkeleton = () => (
   <Table>
@@ -78,42 +82,24 @@ const ManageWatch = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const navigate = useNavigate();
   const {
-    watches,
-    error,
-    totalPages,
+    data: watchesData,
     isLoading,
-    getAllWatches,
-    deleteWatch,
-    searchWatches,
-  } = useWatch();
+    isError,
+  } = useWatchesList(currentPage, 10);
+  const { mutate: mutateDeleteWatch } = useDeleteWatch();
+  const watches = watchesData?.data?.items;
   const [searchTerm, setSearchTerm] = useState("");
-  const [results, setResults] = useState([]);
 
   const handleDelete = async (id: string) => {
-    await deleteWatch(id);
-    getAllWatches(currentPage, 10);
+    mutateDeleteWatch(id);
   };
 
   const debouncedSearchTerm = useDebounce(searchTerm, 500);
 
-  const handleSearch = async () => {
-    if (debouncedSearchTerm) {
-      const response = await searchWatches(
-        debouncedSearchTerm,
-        currentPage,
-        10
-      );
-      setResults(response);
-    } else {
-      getAllWatches(currentPage, 10);
-    }
-  };
+  const { data: searchData } = useSearchWatch(debouncedSearchTerm);
+  const results = searchData?.data?.items || [];
 
-  useEffect(() => {
-    handleSearch();
-  }, [debouncedSearchTerm, currentPage]);
-
-  if (error) return <div className="text-red-500">{error}</div>;
+  if (isError) return <div className="text-red-500">{isError}</div>;
 
   return (
     <Card>
@@ -142,7 +128,7 @@ const ManageWatch = () => {
         </div>
       </CardHeader>
       <CardContent>
-        {isLoading("getAll") ? (
+        {isLoading ? (
           <WatchTableSkeleton />
         ) : (
           <Table>
@@ -186,7 +172,7 @@ const ManageWatch = () => {
                       <AlertDialog>
                         <AlertDialogTrigger asChild>
                           <Button size="sm" variant="ghost">
-                            <Trash2 className="text-red-600"/>
+                            <Trash2 className="text-red-600" />
                           </Button>
                         </AlertDialogTrigger>
                         <AlertDialogContent>
@@ -214,14 +200,17 @@ const ManageWatch = () => {
             </TableBody>
           </Table>
         )}
-
-        <div className="mt-4">
-          <CustomPagination
-            currentPage={currentPage}
-            totalPages={totalPages}
-            onPageChange={(page) => setCurrentPage(page)}
-          />
-        </div>
+        {searchTerm ? (
+          <></>
+        ) : (
+          <div className="mt-4">
+            <CustomPagination
+              currentPage={currentPage}
+              totalPages={watchesData?.meta?.totalPages}
+              onPageChange={(page) => setCurrentPage(page)}
+            />
+          </div>
+        )}
       </CardContent>
     </Card>
   );

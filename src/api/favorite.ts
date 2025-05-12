@@ -1,14 +1,14 @@
-import requestAPI from "@/lib/requestAPI";
+import makeApiRequest from "@/lib/call-api";
 
 export const favorite = {
   getUserFavorite: (userId: string) =>
-    requestAPI("get", `/favorites/${userId}`),
+    makeApiRequest("get", `/favorites/${userId}`),
 
   addToFavorite: (userId: string, watchId: string) =>
-    requestAPI("post", "/favorites/add", { userId, watchId }),
+    makeApiRequest("post", "/favorites/add", { userId, watchId }),
 
   removeFromFavorite: (userId: string, watchId: string) =>
-    requestAPI("delete", `/favorites/${userId}/remove/${watchId}`, {
+    makeApiRequest("delete", `/favorites/${userId}/remove/${watchId}`, {
       userId,
       watchId,
     }),

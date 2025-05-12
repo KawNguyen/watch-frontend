@@ -1,13 +1,13 @@
-import requestAPI from "@/lib/requestAPI";
+import makeApiRequest from "@/lib/call-api";
 
 export const user = {
-  getAll: () => requestAPI("get", "/users"),
+  getAll: () => makeApiRequest("get", "/users"),
 
-  getById: (id: string) => requestAPI("get", `/users/${id}`),
+  getById: (id: string) => makeApiRequest("get", `/users/${id}`),
 
   searchUsers: (searchTerm: string) =>
-    requestAPI("get", `/users/search?query=${encodeURIComponent(searchTerm)}`),
+    makeApiRequest("get", `/users/search?query=${encodeURIComponent(searchTerm)}`),
 
   updateUser: (id: string, data: any) =>
-    requestAPI("put", `/users/update/${id}`, data),
+    makeApiRequest("put", `/users/update/${id}`, data),
 };

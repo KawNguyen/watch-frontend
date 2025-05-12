@@ -8,12 +8,21 @@ import {
   Users,
   Warehouse,
   Boxes,
+  ChartArea,
 } from "lucide-react";
 
 export const Routes = [
   { name: "Home", path: "/" },
   { name: "Products", path: "/products" },
   { name: "Contact", path: "/contact" },
+];
+
+export const Chart = [
+  {
+    name: "Dashboard",
+    url: "/admin/dashboard",
+    icon: ChartArea,
+  },
 ];
 
 export const AdminRoutes = [
@@ -71,9 +80,12 @@ export const AdminRoutes = [
     ],
   },
   {
-    title: "Create Orders",
+    title: "Order",
     icon: PackagePlus,
-    children: [{ title: "Add Orders", url: "/admin/create-orders/add" }],
+    children: [
+      { title: "Manage Orders", url: "/admin/order/list" },
+      { title: "Create Orders", url: "/admin/order/add" },
+    ],
   },
   {
     title: "User",

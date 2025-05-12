@@ -25,7 +25,7 @@ import ManageMovement from "./pages/Admin/movement/ManageMovement";
 import AddMovement from "./pages/Admin/movement/AddMovement";
 import ListProductPage from "./pages/ListProductPage";
 import DetailProduct from "./pages/DetailProduct";
-import CreateOrders from "./pages/Admin/create-orders/CreateOrders";
+import CreateOrders from "./pages/Admin/order/CreateOrders";
 import EditWatch from "./pages/Admin/watch/EditWatch";
 import { useAuth } from "./hooks/use-api/useAuth";
 import ManageStock from "./pages/Admin/stock-entry/ManageStock";
@@ -35,6 +35,8 @@ import CheckoutPage from "./pages/CheckoutPage";
 import PaymentSuccess from "./pages/PaymentSuccess";
 import VerifyOTP from "./pages/Auth/VerifyOTP";
 import ManageUser from "./pages/Admin/user/ManageUser";
+import { Dashboard } from "./pages/Admin/dashboard/Dashboard";
+import ManageOrders from "./pages/Admin/order/ManageOrders";
 
 const App = () => {
   const { getUser } = useAuth();
@@ -68,7 +70,8 @@ const App = () => {
           </ProtectedRoute>
         }
       >
-        <Route index path="brand/list" element={<ManageBrand />} />
+        <Route index path="dashboard"  element={<Dashboard />} />
+        <Route path="brand/list" element={<ManageBrand />} />
         <Route path="brand/add" element={<AddBrand />} />
         <Route path="watch/list" element={<ManageWatch />} />
         <Route path="watch/add" element={<AddWatch />} />
@@ -79,7 +82,8 @@ const App = () => {
         <Route path="band-material/add" element={<AddBandMaterial />} />
         <Route path="movement/list" element={<ManageMovement />} />
         <Route path="movement/add" element={<AddMovement />} />
-        <Route path="create-orders/add" element={<CreateOrders />} />
+        <Route path="order/list" element={<ManageOrders />} />
+        <Route path="order/add" element={<CreateOrders />} />
         <Route path="user/list" element={<ManageUser />} />
         <Route path="stock-entry/list" element={<ManageStock />} />
         <Route path="stock-entry/add" element={<AddStock />} />

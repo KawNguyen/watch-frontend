@@ -83,5 +83,36 @@ interface RegisterCredentials {
   name: string;
   email: string;
   password: string;
-  recaptchaToken: string; 
+  recaptchaToken: string;
+}
+
+interface FilterParams {
+  brand?: string;
+  bandMaterial?: string;
+  movement?: string;
+  material?: string;
+  gender?: string;
+  diameter?: number;
+  waterResistance?: number;
+  warranty?: number;
+  minPrice?: number;
+  maxPrice?: number;
+  page?: number;
+  limit?: number;
+}
+
+interface WatchData {
+  name: string;
+  description: string;
+  price: number;
+  gender: "MEN" | "WOMEN" | "UNISEX";
+  brandId: string;
+  materialId: string;
+  bandMaterialId: string;
+  movementId: string;
+  diameter: number;
+  waterResistance: number;
+  warranty: number;
+  videoUrl: string;
+  images: { url: string }[];
 }

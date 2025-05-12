@@ -5,12 +5,13 @@ import {
   SidebarGroupContent,
   SidebarHeader,
 } from "@/components/ui/sidebar";
-import { AdminRoutes } from "@/constants";
+import { AdminRoutes, Chart } from "@/constants";
 import { NavMain } from "./nav-main";
 import { TeamSwitcher } from "./team-switcher";
 import { AudioWaveform, Command, GalleryVerticalEnd } from "lucide-react";
 import { NavUser } from "./nav-user";
 import { useAuth } from "@/hooks/use-api/useAuth";
+import { NavProjects } from "./nav-projects";
 
 const teams = [
   {
@@ -31,8 +32,7 @@ const teams = [
 ];
 
 export function AppSidebar() {
-  const { logout } = useAuth();
-  const { getUser } = useAuth();
+  const { getUser, logout } = useAuth();
 
   return (
     <Sidebar collapsible="icon">
@@ -41,6 +41,7 @@ export function AppSidebar() {
       </SidebarHeader>
       <SidebarContent>
         <SidebarGroupContent>
+          <NavProjects projects={Chart} />
           <NavMain items={AdminRoutes} />
         </SidebarGroupContent>
       </SidebarContent>

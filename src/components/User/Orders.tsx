@@ -1,27 +1,27 @@
 import { Package } from "lucide-react";
 import UserCard from "./UserCard";
 import { ScrollArea } from "../ui/scroll-area";
-import { useOrder } from "@/hooks/use-api/useOrder";
-import { useEffect } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { formatPrice, formatDateTime } from "@/lib/utils";
 import Image from "@/components/ui/image";
+import { useOrderContext } from "@/context/OrderContext";
 
 const Orders = () => {
-  const { orders, getOrderList, isLoading } = useOrder();
-
-  useEffect(() => {
-    getOrderList();
-  }, []);
+  const { data: ordersUser, isLoading } = useOrderContext();
+  const ordersList = ordersUser?.data?.items || [];
 
   const getStatusColor = (status: string) => {
     switch (status) {
       case "PENDING":
         return "bg-yellow-500";
-      case "COMPLETED":
+      case "PROCESSING":
+        return "bg-blue-500";
+      case "SHIPPED":
+        return "bg-purple-500";
+      case "DELIVERED":
         return "bg-green-500";
-      case "CANCELLED":
+      case "CANCELED":
         return "bg-red-500";
       default:
         return "bg-gray-500";
@@ -32,16 +32,16 @@ const Orders = () => {
     <UserCard
       title="Order History"
       icon={<Package className="h-4 w-4" />}
-      count={orders.length}
+      count={ordersList.length}
     >
       <ScrollArea className="h-[calc(100vh-22rem)]">
         <div className="space-y-4">
-          {isLoading("getOrderList") ? (
+          {isLoading ? (
             <div className="text-center py-10">
               <p className="text-muted-foreground">Loading orders...</p>
             </div>
-          ) : orders.length > 0 ? (
-            orders.map((order: any) => (
+          ) : ordersList.length > 0 ? (
+            ordersList.map((order: any) => (
               <Card key={order.id} className="overflow-hidden">
                 <CardContent className="p-4">
                   <div className="flex justify-between items-center mb-4">

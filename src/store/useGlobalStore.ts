@@ -24,8 +24,8 @@ export const useGlobalStore = create<GlobalStore>((set) => ({
   updateCartCount: async (userId) => {
     try {
       const cartResponse = await cart.getUserCart(userId);
-      const items = cartResponse.data?.item?.items || [];
-      set({ cartCount: items.length });
+      const count = cartResponse?.data.items || [];
+      set({ cartCount: count.length });
     } catch (error) {
       console.error("Failed to update cart count:", error);
       set({ cartCount: 0 });
@@ -50,7 +50,7 @@ export const useGlobalStore = create<GlobalStore>((set) => ({
         favorite.getUserFavorite(userId),
       ]);
 
-      const cartItems = cartResponse.data?.item?.items || [];
+      const cartItems = cartResponse.data?.items || [];
       const favoriteItems = favoriteResponse.data?.items || [];
 
       set({

@@ -10,7 +10,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { useWatch } from "@/hooks/use-api/useWatch";
 import { useBrand } from "@/hooks/use-api/useBrand";
 import { useMaterial } from "@/hooks/use-api/useMaterial";
 import { useBandMaterial } from "@/hooks/use-api/useBandMaterial";
@@ -18,17 +17,20 @@ import { useMovement } from "@/hooks/use-api/useMovement";
 import { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { ArrowLeft } from "lucide-react";
+import { useUpdateWatch, useWatchById } from "@/hooks/use-api-query/useWatch";
+import { Skeleton } from "@/components/ui/skeleton";
 
 const EditWatch = () => {
   const { id } = useParams();
   const navigate = useNavigate();
-  const { getWatchById, updateWatch, isLoading } = useWatch();
   const { brands, getAllBrands } = useBrand();
   const { materials, getAllMaterials } = useMaterial();
   const { bandMaterials, getAllBandMaterials } = useBandMaterial();
   const { movements, getAllMovements } = useMovement();
   const [imageUrl, setImageUrl] = useState("");
-
+  const { data: watchData, isSuccess, isLoading: loadingWatchData } = useWatchById(id as string);
+  const { mutate: updateWatch, isLoading } = useUpdateWatch();
+  
   const [formData, setFormData] = useState({
     name: "",
     description: "",
@@ -45,9 +47,16 @@ const EditWatch = () => {
     images: [] as { url: string }[],
   });
 
-  const fetchData = async () => {
-    const watch = id ? await getWatchById(id) : null;
-    if (watch) {
+  useEffect(() => {
+    getAllBrands();
+    getAllMaterials();
+    getAllBandMaterials();
+    getAllMovements();
+  }, []);
+
+  useEffect(() => {
+    if (isSuccess && watchData?.data?.item) {
+      const watch = watchData.data.item;
       setFormData({
         name: watch.name,
         description: watch.description,
@@ -64,15 +73,7 @@ const EditWatch = () => {
         images: watch.images || [],
       });
     }
-  };
-
-  useEffect(() => {
-    getAllBrands();
-    getAllMaterials();
-    getAllBandMaterials();
-    getAllMovements();
-    fetchData();
-  }, [id]);
+  }, [isSuccess, watchData]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -88,7 +89,7 @@ const EditWatch = () => {
         },
       };
 
-      await updateWatch(id, formattedData as any);
+      updateWatch({ id: id, data: formattedData as unknown as WatchData });
       navigate("/admin/watch/list");
     }
   };
@@ -109,6 +110,80 @@ const EditWatch = () => {
       images: formData.images.filter((_, i) => i !== index),
     });
   };
+
+  if (loadingWatchData) {
+    return (
+      <Card>
+        <CardHeader>
+          <div className="flex items-center space-x-4">
+            <Button
+              variant="ghost"
+              size="icon"
+              onClick={() => navigate("/admin/watch/list")}
+            >
+              <ArrowLeft className="h-4 w-4" />
+            </Button>
+            <CardTitle>Edit Watch</CardTitle>
+          </div>
+        </CardHeader>
+        <CardContent>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="space-y-2">
+              <Skeleton className="h-4 w-20" />
+              <Skeleton className="h-10 w-full" />
+            </div>
+            <div className="space-y-2">
+              <Skeleton className="h-4 w-20" />
+              <Skeleton className="h-10 w-full" />
+            </div>
+            <div className="space-y-2">
+              <Skeleton className="h-4 w-20" />
+              <Skeleton className="h-10 w-full" />
+            </div>
+            <div className="space-y-2">
+              <Skeleton className="h-4 w-20" />
+              <Skeleton className="h-10 w-full" />
+            </div>
+
+            <div className="col-span-full mt-6">
+              <Skeleton className="h-6 w-48 mb-4" />
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                {[1, 2, 3, 4, 5, 6, 7].map((i) => (
+                  <div key={i} className="space-y-2">
+                    <Skeleton className="h-4 w-20" />
+                    <Skeleton className="h-10 w-full" />
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            <div className="col-span-full space-y-2">
+              <Skeleton className="h-4 w-20" />
+              <Skeleton className="h-32 w-full" />
+            </div>
+
+            <div className="col-span-full space-y-4">
+              <Skeleton className="h-4 w-20" />
+              <div className="flex gap-2">
+                <Skeleton className="h-10 flex-1" />
+                <Skeleton className="h-10 w-24" />
+              </div>
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                {[1, 2, 3, 4].map((i) => (
+                  <Skeleton key={i} className="h-40 w-full rounded-lg" />
+                ))}
+              </div>
+            </div>
+          </div>
+
+          <div className="flex justify-end space-x-2 mt-6">
+            <Skeleton className="h-10 w-24" />
+            <Skeleton className="h-10 w-32" />
+          </div>
+        </CardContent>
+      </Card>
+    );
+  }
 
   return (
     <Card>
@@ -381,8 +456,8 @@ const EditWatch = () => {
             >
               Cancel
             </Button>
-            <Button type="submit" disabled={isLoading("update")}>
-              {isLoading("update") ? "Saving..." : "Save Changes"}
+            <Button type="submit" disabled={isLoading}>
+              {isLoading ? "Saving..." : "Save Changes"}
             </Button>
           </div>
         </form>

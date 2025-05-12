@@ -4,10 +4,29 @@ import Profile from "@/components/User/Profile";
 import Cart from "@/components/User/Cart";
 import Favorites from "@/components/User/Favorites";
 import Orders from "@/components/User/Orders";
-import { useUser } from "@/hooks/use-api/useUser";
+import { useAuth } from "@/hooks/use-api/useAuth";
+import { useMutation } from "@/hooks/use-mutation";
+import { user } from "@/api/user";
+import { toast } from "sonner";
+import { useUserData } from "@/hooks/use-api-query/useUser";
 
 const UserPage = () => {
-  const { getUserById, updateUser, isLoading } = useUser();
+  const { getUser } = useAuth();
+  const currentUser = getUser();
+  const userId = currentUser?.id;
+
+  const { data: userData, isLoading, refetch } = useUserData(userId);
+  const profile = userData?.data?.item;
+
+  const mutationUpdate = useMutation({
+    mutationFn: (updatedUserData: any) =>
+      user.updateUser(userId, updatedUserData),
+    onSuccess: (res: any) => {
+      localStorage.setItem("user", JSON.stringify(res.user));
+      toast.success("Update profile successfully");
+      refetch();
+    },
+  });
 
   const [searchParams] = useSearchParams();
   const tab = searchParams.get("tab");
@@ -27,10 +46,10 @@ const UserPage = () => {
               <div className="bg-white rounded-lg shadow-sm min-h-[600px] mb-16 lg:mb-0">
                 {tab === "info" && (
                   <Profile
-                    getUserById={getUserById}
-                    updateUser={updateUser}
-                    isLoadingGetUser={isLoading("getUserById")}
-                    isLoadingUpdateUser={isLoading("updateUser")}
+                    user={profile}
+                    updateUser={mutationUpdate.mutate}
+                    isLoadingGetUser={isLoading}
+                    isLoadingUpdateUser={mutationUpdate.isLoading}
                   />
                 )}
                 {tab === "cart" && <Cart />}

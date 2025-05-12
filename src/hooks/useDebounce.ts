@@ -10,12 +10,14 @@ function useDebounce<T>(value: T, delay: number): T {
     }
 
     const handler = setTimeout(() => {
-      setDebouncedValue(value);
+      // So sánh trước khi cập nhật
+      setDebouncedValue(prev => {
+        if (Object.is(prev, value)) return prev;
+        return value;
+      });
     }, delay);
 
-    return () => {
-      clearTimeout(handler);
-    };
+    return () => clearTimeout(handler);
   }, [value, delay]);
 
   return debouncedValue;

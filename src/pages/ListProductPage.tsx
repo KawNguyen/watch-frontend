@@ -17,10 +17,10 @@ import { useBandMaterial } from "@/hooks/use-api/useBandMaterial";
 import { useBrand } from "@/hooks/use-api/useBrand";
 import { useMaterial } from "@/hooks/use-api/useMaterial";
 import { useMovement } from "@/hooks/use-api/useMovement";
-import { useWatch } from "@/hooks/use-api/useWatch";
 import { useSearchParams } from "react-router-dom";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { useMediaQuery } from "@/hooks/use-media-query";
+import { useWatchesFilter } from "@/hooks/use-api-query/useWatch";
 
 const genders = [
   { id: "men", name: "Men" },
@@ -49,9 +49,7 @@ const ListProductPage = () => {
     isLoading: isMovementLoading,
     getAllMovements,
   } = useMovement();
-  const { getWatchesByFilter, isLoading, totalPages } = useWatch();
 
-  const [watches, setWatches] = useState([]);
   const [filters, setFilters] = useState({
     brand: searchParams.get("brand") || "",
     material: searchParams.get("material") || "",
@@ -80,20 +78,16 @@ const ListProductPage = () => {
   }, []);
 
   useEffect(() => {
-    const fetchWatches = async () => {
-      const data = await getWatchesByFilter(filters);
-      setWatches(data);
-    };
-    fetchWatches();
-  }, [filters]);
-
-  useEffect(() => {
     const params = new URLSearchParams();
     Object.entries(filters).forEach(([key, value]) => {
-      if (value) params.set(key, String(value));
+      if (value !== undefined && value !== "") params.set(key, String(value));
     });
     setSearchParams(params);
   }, [filters]);
+
+  const { data: watchesData, isLoading } = useWatchesFilter(filters);
+  const watches = watchesData?.data.items || [];
+  const totalPages = watchesData?.meta.totalPages || 1;
 
   const handleFilterChange = (type: string, value: string) => {
     const filterKey =
@@ -273,7 +267,7 @@ const ListProductPage = () => {
             </div>
 
             <ProductGrid
-              isLoading={isLoading("getByFilter")}
+              isLoading={isLoading}
               products={watches}
               onPageChange={(page) => setFilters((prev) => ({ ...prev, page }))}
               currentPage={filters.page}

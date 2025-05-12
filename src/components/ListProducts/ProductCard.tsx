@@ -11,27 +11,27 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { useNavigate } from "react-router-dom";
-import { useFavorite } from "@/hooks/use-api/useFavorite";
-import { useCart } from "@/hooks/use-api/useCart";
 
 interface ProductCardProps {
-  id: string;
-  name: string;
-  price: number;
-  images: { url: string }[];
-  quantities: { quantity: number }[];
+  product: {
+    id: string;
+    name: string;
+    price: number;
+    images: { url: string }[];
+    quantities: { quantity: number }[];
+  };
+  onAddToCart?: (productId: string) => void;
+  onAddToFavorite?: (productId: string) => void;
 }
 
-const ProductCard = ({ product }: { product: ProductCardProps }) => {
-  const { addToFavorite } = useFavorite();
-  const { addToCart } = useCart();
+const ProductCard = ({
+  product,
+  onAddToCart,
+  onAddToFavorite,
+}: ProductCardProps) => {
   const navigate = useNavigate();
-
-  const isOutOfStock = product.quantities?.[0]?.quantity === 0 || product.quantities.length === 0;
-
-  const handleAddToFavorite = async () => {
-    await addToFavorite(product.id);
-  };
+  const isOutOfStock =
+    product.quantities?.[0]?.quantity === 0 || product.quantities.length === 0;
 
   return (
     <Card
@@ -47,13 +47,11 @@ const ProductCard = ({ product }: { product: ProductCardProps }) => {
           />
         </AspectRatio>
 
-        {isOutOfStock && (
+        {isOutOfStock ? (
           <div className="absolute inset-0 bg-black/50 flex items-center justify-center text-white text-sm font-bold z-20">
             Out of Stock
           </div>
-        )}
-
-        {!isOutOfStock && (
+        ) : (
           <div className="absolute bottom-4 z-10 left-1/2 -translate-x-1/2 flex space-x-2 opacity-0 translate-y-4 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-300">
             <TooltipProvider>
               <Tooltip>
@@ -64,7 +62,7 @@ const ProductCard = ({ product }: { product: ProductCardProps }) => {
                     className="hover:bg-black hover:text-white"
                     onClick={(e) => {
                       e.stopPropagation();
-                      addToCart(product.id, 1);
+                      onAddToCart?.(product.id);
                     }}
                   >
                     <ShoppingBag className="h-4 w-4" />
@@ -98,7 +96,7 @@ const ProductCard = ({ product }: { product: ProductCardProps }) => {
                     className="hover:bg-black hover:text-white"
                     onClick={(e) => {
                       e.stopPropagation();
-                      handleAddToFavorite();
+                      onAddToFavorite?.(product.id);
                     }}
                   >
                     <Heart className="h-4 w-4" />

@@ -1,21 +1,32 @@
 import { Button } from "@/components/ui/button";
 import { Minus, Plus, Heart } from "lucide-react";
 import { formatPrice } from "@/lib/utils";
+import { useState } from "react";
 
 interface ProductInfoProps {
+  watchId: string;
+  stock: any[];
   price: number;
-  quantity: number;
-  setQuantity: (quantity: number) => void;
-  onAddToCart: () => void;
-  onFavorite: () => void;
+  onAddToCart: (id: string, quantity: number) => void;
+  onFavorite: (id: string) => void;
+  isLoadingAddingToCart?: boolean;
+  isLoadingAddingToFavorite?: boolean;
 }
+
 export function ProductInfo({
+  watchId,
+  stock,
   price,
-  quantity,
-  setQuantity,
   onAddToCart,
   onFavorite,
+  isLoadingAddingToCart,
+  isLoadingAddingToFavorite,
 }: ProductInfoProps) {
+  const [quantity, setQuantity] = useState(1);
+
+  const totalPrice = price * quantity;
+
+  const isOutOfStock = stock[0]?.quantity === 0 || stock.length === 0;
   return (
     <div className="space-y-6 mt-6">
       <div className="flex items-center justify-around">
@@ -40,20 +51,36 @@ export function ProductInfo({
         </div>
         <div>
           <p className="text-3xl font-semibold text-primary">
-            {formatPrice(price)}
+            {formatPrice(totalPrice)}
           </p>
         </div>
       </div>
       <div className="space-y-6">
         <div className="flex items-center gap-4">
-          <Button onClick={onAddToCart} className="flex-1 h-12 text-base">
-            Add to Cart
-          </Button>
+          {isOutOfStock ? (
+            <Button
+              variant={"secondary"}
+              disabled={isOutOfStock}
+              onClick={() => onAddToCart(watchId, quantity)}
+              className="flex-1 h-12 text-base"
+            >
+              Out of Stock
+            </Button>
+          ) : (
+            <Button
+              disabled={isLoadingAddingToCart}
+              onClick={() => onAddToCart(watchId, quantity)}
+              className="flex-1 h-12 text-base"
+            >
+              Add to Cart
+            </Button>
+          )}
           <Button
+            disabled={isLoadingAddingToFavorite}
             variant="outline"
             size="icon"
             className="h-12 w-12"
-            onClick={onFavorite}
+            onClick={() => onFavorite(watchId)}
           >
             <Heart className="h-5 w-5" />
           </Button>

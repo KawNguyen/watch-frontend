@@ -12,8 +12,8 @@ import { Input } from "@/components/ui/input";
 import { Skeleton } from "@/components/ui/skeleton";
 
 import useDebounce from "@/hooks/useDebounce";
-import { useState, useEffect } from "react";
-import { useUser } from "@/hooks/use-api/useUser";
+import { useState } from "react";
+import { useSearcUser, useUserList } from "@/hooks/use-api-query/useUser";
 
 const CustomerTableSkeleton = () => (
   <Table>
@@ -54,36 +54,17 @@ const CustomerTableSkeleton = () => (
 );
 
 const ManageUser = () => {
-  const { users, isLoading, error, getAllUsers, searchUsers } = useUser();
+  const { data: usersData, isLoading: loadingUserList, error } = useUserList();
+
   const [searchTerm, setSearchTerm] = useState("");
-  const [results, setResults] = useState<any[]>([]);
 
   const debouncedSearchTerm = useDebounce(searchTerm, 300);
+  const { data: searchUsers } = useSearcUser(debouncedSearchTerm);
 
-  useEffect(() => {
-    getAllUsers();
-  }, []);
+  const users = usersData?.data?.items || [];
+  const results = searchUsers?.data?.items || [];
 
-  const handleSearch = async () => {
-    try {
-      if (debouncedSearchTerm) {
-        const response = await searchUsers(debouncedSearchTerm);
-        setResults(response || []);
-      } else {
-        setResults([]);
-        await getAllUsers();
-      }
-    } catch (error) {
-      console.error("Search error:", error);
-      setResults([]);
-    }
-  };
-
-  useEffect(() => {
-    handleSearch();
-  }, [debouncedSearchTerm]);
-
-  if (isLoading("getAllUsers")) {
+  if (loadingUserList) {
     return (
       <Card>
         <CardHeader>
@@ -101,7 +82,12 @@ const ManageUser = () => {
     );
   }
 
-  if (error) return <div className="text-red-500">{error}</div>;
+  if (error)
+    return (
+      <div className="text-red-500">
+        {error?.message || "An error occurred"}
+      </div>
+    );
 
   return (
     <Card>
