@@ -5,7 +5,8 @@ export const material = {
 
   getById: (id: string) => makeApiRequest("get", `/materials/${id}`),
 
-  create: (name: string) => makeApiRequest("post", "/materials/create", { name }),
+  create: (name: string) =>
+    makeApiRequest("post", "/materials/create", { name }),
 
   update: (id: string, name: string) =>
     makeApiRequest("put", `/materials/update/${id}`, { name }),
@@ -13,5 +14,8 @@ export const material = {
   delete: (id: string) => makeApiRequest("delete", `/materials/delete/${id}`),
 
   search: (query: string) =>
-    makeApiRequest("get", `/materials/search?name=${encodeURIComponent(query)}`),
+    makeApiRequest(
+      "get",
+      `/materials/search?name=${encodeURIComponent(query)}`,
+    ),
 };

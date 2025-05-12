@@ -18,7 +18,7 @@ type BaseProduct = {
   images: [
     {
       url: string;
-    }
+    },
   ];
   price?: number;
 };

@@ -17,5 +17,5 @@ createRoot(document.getElementById("root")!).render(
         </AppContext>
       </BrowserRouter>
     </HelmetProvider>
-  </StrictMode>
+  </StrictMode>,
 );

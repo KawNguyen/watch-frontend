@@ -60,7 +60,7 @@ const UserInfo = ({
     label: string,
     name: keyof typeof formData,
     type: string = "text",
-    disabled = false
+    disabled = false,
   ) => (
     <div className="space-y-2">
       <Label className={isEditing ? "" : "text-sm text-muted-foreground"}>
@@ -95,14 +95,15 @@ const UserInfo = ({
     options: Option[],
     open: boolean,
     setOpen: (v: boolean) => void,
-    setValue: (v: string) => void
+    setValue: (v: string) => void,
   ) => (
     <div className="space-y-2">
       <Label>{label}</Label>
       <Popover open={open} onOpenChange={setOpen}>
         <PopoverTrigger asChild>
           <Button variant="outline" className="w-full justify-between">
-            {options.find((o) => o.value === value)?.label || `Select ${label.toLowerCase()}`}
+            {options.find((o) => o.value === value)?.label ||
+              `Select ${label.toLowerCase()}`}
             <ChevronsUpDown className="w-4 h-4 opacity-50" />
           </Button>
         </PopoverTrigger>
@@ -135,7 +136,10 @@ const UserInfo = ({
         {renderInput("Full Name", "name", "text", true)}
         {renderInput("Email", "email", "email", true)}
         {renderInput("Phone Number", "phone", "tel", true)}
-        {renderReadonlyInput("Gender", genders.find((g) => g.value === gender)?.label || "")}
+        {renderReadonlyInput(
+          "Gender",
+          genders.find((g) => g.value === gender)?.label || "",
+        )}
         {renderReadonlyInput("Preferred Payment", payment)}
       </>
     );
@@ -146,8 +150,22 @@ const UserInfo = ({
       {renderInput("Full Name", "name")}
       {renderInput("Email", "email", "email", true)}
       {renderInput("Phone Number", "phone", "tel")}
-      {renderSelectPopover("Gender", gender, genders, openGender, setOpenGender, setGender)}
-      {renderSelectPopover("Preferred Payment", payment, payments, openPayment, setOpenPayment, setPayment)}
+      {renderSelectPopover(
+        "Gender",
+        gender,
+        genders,
+        openGender,
+        setOpenGender,
+        setGender,
+      )}
+      {renderSelectPopover(
+        "Preferred Payment",
+        payment,
+        payments,
+        openPayment,
+        setOpenPayment,
+        setPayment,
+      )}
     </>
   );
 };

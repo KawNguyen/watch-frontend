@@ -18,20 +18,20 @@ export const watch = {
     makeApiRequest(
       "get",
       `/watches/search?name=${encodeURIComponent(
-        query
-      )}&page=${page}&limit=${pageSize}`
+        query,
+      )}&page=${page}&limit=${pageSize}`,
     ),
 
   getByBrand: (brandId: string, page: number, pageSize: number) =>
     makeApiRequest(
       "get",
-      `/watches/brand/${brandId}?page=${page}&limit=${pageSize}`
+      `/watches/brand/${brandId}?page=${page}&limit=${pageSize}`,
     ),
 
   getByMovement: (movement: string, page: number, pageSize: number) =>
     makeApiRequest(
       "get",
-      `/watches/movement/${movement}?page=${page}&limit=${pageSize}`
+      `/watches/movement/${movement}?page=${page}&limit=${pageSize}`,
     ),
 
   getByFilter: (filters: FilterParams) => {

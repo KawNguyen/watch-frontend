@@ -28,9 +28,13 @@ const EditWatch = () => {
   const { bandMaterials, getAllBandMaterials } = useBandMaterial();
   const { movements, getAllMovements } = useMovement();
   const [imageUrl, setImageUrl] = useState("");
-  const { data: watchData, isSuccess, isLoading: loadingWatchData } = useWatchById(id as string);
+  const {
+    data: watchData,
+    isSuccess,
+    isLoading: loadingWatchData,
+  } = useWatchById(id as string);
   const { mutate: updateWatch, isLoading } = useUpdateWatch();
-  
+
   const [formData, setFormData] = useState({
     name: "",
     description: "",

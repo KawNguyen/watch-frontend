@@ -46,7 +46,11 @@ const AddMovement = () => {
           </div>
 
           <div className="flex gap-4">
-            <Button type="submit" disabled={isLoading("createMovement")} className="w-full">
+            <Button
+              type="submit"
+              disabled={isLoading("createMovement")}
+              className="w-full"
+            >
               {isLoading("createMovement") ? "Creating..." : "Create Movement"}
             </Button>
             <Button

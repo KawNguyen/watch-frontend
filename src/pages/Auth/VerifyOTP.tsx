@@ -23,7 +23,10 @@ const VerifyOTP = () => {
     }
   };
 
-  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>, index: number) => {
+  const handleKeyDown = (
+    e: React.KeyboardEvent<HTMLInputElement>,
+    index: number,
+  ) => {
     if (e.key === "Backspace" && !otp[index] && index > 0) {
       inputRefs.current[index - 1]?.focus();
     }
@@ -37,7 +40,9 @@ const VerifyOTP = () => {
     <div className="flex min-h-screen items-center justify-center bg-background px-4">
       <div className="w-full max-w-md space-y-6 rounded-xl border p-6 shadow-xl bg-white dark:bg-zinc-900">
         <div className="space-y-2 text-center">
-          <h1 className="text-2xl font-bold tracking-tight">Verify Your Account</h1>
+          <h1 className="text-2xl font-bold tracking-tight">
+            Verify Your Account
+          </h1>
           <p className="text-sm text-muted-foreground">
             Enter the 6-digit code sent to your email
           </p>

@@ -6,7 +6,10 @@ export const user = {
   getById: (id: string) => makeApiRequest("get", `/users/${id}`),
 
   searchUsers: (searchTerm: string) =>
-    makeApiRequest("get", `/users/search?query=${encodeURIComponent(searchTerm)}`),
+    makeApiRequest(
+      "get",
+      `/users/search?query=${encodeURIComponent(searchTerm)}`,
+    ),
 
   updateUser: (id: string, data: any) =>
     makeApiRequest("put", `/users/update/${id}`, data),

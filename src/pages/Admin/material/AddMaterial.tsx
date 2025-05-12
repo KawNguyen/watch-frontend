@@ -49,7 +49,11 @@ const AddMaterial = () => {
           </div>
 
           <div className="flex gap-4">
-            <Button type="submit" disabled={isLoading("createMaterial")} className="w-full">
+            <Button
+              type="submit"
+              disabled={isLoading("createMaterial")}
+              className="w-full"
+            >
               {isLoading("createMaterial") ? "Creating..." : "Create Material"}
             </Button>
             <Button

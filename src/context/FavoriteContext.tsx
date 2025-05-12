@@ -17,7 +17,7 @@ interface FavoriteContextProps {
 }
 
 const FavoriteContext = createContext<FavoriteContextProps | undefined>(
-  undefined
+  undefined,
 );
 
 export const FavoriteProvider = ({
@@ -88,7 +88,7 @@ export const useFavoriteContext = () => {
   const context = useContext(FavoriteContext);
   if (!context) {
     throw new Error(
-      "useFavoriteContext must be used within a FavoriteProvider"
+      "useFavoriteContext must be used within a FavoriteProvider",
     );
   }
   return context;

@@ -23,7 +23,7 @@ export const useWatchesFilter = (filters: FilterParams) => {
   });
 };
 
-export const useWatchById = (watchId: string ) => {
+export const useWatchById = (watchId: string) => {
   return useQuery({
     queryKey: [`watch:${watchId}`],
     queryFn: () => watch.getById(watchId),
@@ -44,7 +44,7 @@ export const useWatchByBrand = (brandId: string) => {
 export const useWatchByMovement = (
   movement: string,
   page: number,
-  limit: number
+  limit: number,
 ) => {
   return useQuery({
     queryKey: ["watchByMovement", movement],
@@ -60,7 +60,6 @@ export const useSearchWatch = (searchTerm: string, enabled?: boolean) => {
     enabled: enabled && !!searchTerm.trim() && searchTerm.length >= 1,
   });
 };
-
 
 export const useAddWatch = () => {
   return useMutation({

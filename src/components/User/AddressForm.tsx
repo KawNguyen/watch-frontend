@@ -26,14 +26,15 @@ interface AddressFormProps {
 }
 
 const AddressForm = ({ address, isEditing, onChange }: AddressFormProps) => {
-  const { provinces, districts, wards, fetchDistricts, fetchWards } = useVietnamLocations();
+  const { provinces, districts, wards, fetchDistricts, fetchWards } =
+    useVietnamLocations();
 
   const updateAddress = useCallback(
     (partial: Partial<Address>) => {
       const updated = { ...address, ...partial };
       onChange(address.id ? { update: updated } : { create: updated });
     },
-    [address, onChange]
+    [address, onChange],
   );
 
   useEffect(() => {
@@ -50,10 +51,18 @@ const AddressForm = ({ address, isEditing, onChange }: AddressFormProps) => {
   }, [provinces, address.city, address.district]);
 
   if (!isEditing) {
-    const DisplayField = ({ label, value }: { label: string; value: string }) => (
+    const DisplayField = ({
+      label,
+      value,
+    }: {
+      label: string;
+      value: string;
+    }) => (
       <div>
         <Label className="text-sm">{label}</Label>
-        <div className="p-2 border rounded-md bg-muted">{value || "Not specified"}</div>
+        <div className="p-2 border rounded-md bg-muted">
+          {value || "Not specified"}
+        </div>
       </div>
     );
 
@@ -131,7 +140,9 @@ const AddressForm = ({ address, isEditing, onChange }: AddressFormProps) => {
         placeholder="Select district"
         items={districts}
         disabled={!districts.length}
-        value={districts.find((d) => d.name === address.district)?.code.toString()}
+        value={districts
+          .find((d) => d.name === address.district)
+          ?.code.toString()}
         onChange={(val) => {
           const district = districts.find((d) => d.code.toString() === val);
           if (district) {

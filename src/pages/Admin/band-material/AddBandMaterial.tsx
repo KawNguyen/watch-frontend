@@ -49,8 +49,14 @@ const AddBandMaterial = () => {
           </div>
 
           <div className="flex gap-4">
-            <Button type="submit" disabled={isLoading("createBandMaterial")} className="w-full">
-              {isLoading("createBandMaterial") ? "Creating..." : "Create Band Material"}
+            <Button
+              type="submit"
+              disabled={isLoading("createBandMaterial")}
+              className="w-full"
+            >
+              {isLoading("createBandMaterial")
+                ? "Creating..."
+                : "Create Band Material"}
             </Button>
             <Button
               type="button"

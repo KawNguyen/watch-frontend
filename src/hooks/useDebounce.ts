@@ -11,7 +11,7 @@ function useDebounce<T>(value: T, delay: number): T {
 
     const handler = setTimeout(() => {
       // So sánh trước khi cập nhật
-      setDebouncedValue(prev => {
+      setDebouncedValue((prev) => {
         if (Object.is(prev, value)) return prev;
         return value;
       });

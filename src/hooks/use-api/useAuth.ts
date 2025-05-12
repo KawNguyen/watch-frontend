@@ -16,7 +16,7 @@ export const useAuth = () => {
         credentials.name,
         credentials.email,
         credentials.password,
-        credentials.recaptchaToken
+        credentials.recaptchaToken,
       );
       localStorage.setItem("userId", response.user.id);
       toast.success("Registration successful! Welcome aboard.");
@@ -41,7 +41,7 @@ export const useAuth = () => {
       setError(null);
       const response = await authAPI.login(
         credentials.email,
-        credentials.password
+        credentials.password,
       );
       localStorage.setItem("userId", response.user.id);
 

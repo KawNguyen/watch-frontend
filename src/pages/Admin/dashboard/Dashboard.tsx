@@ -258,4 +258,4 @@ export const Dashboard = () => {
       </CardContent>
     </Card>
   );
-}
+};

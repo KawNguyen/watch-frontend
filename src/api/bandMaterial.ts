@@ -11,11 +11,12 @@ export const bandMaterial = {
   update: (id: string, name: string) =>
     makeApiRequest("put", `/band-materials/update/${id}`, { name }),
 
-  delete: (id: string) => makeApiRequest("delete", `/band-materials/delete/${id}`),
+  delete: (id: string) =>
+    makeApiRequest("delete", `/band-materials/delete/${id}`),
 
   search: (query: string) =>
     makeApiRequest(
       "get",
-      `/band-materials/search?name=${encodeURIComponent(query)}`
+      `/band-materials/search?name=${encodeURIComponent(query)}`,
     ),
 };

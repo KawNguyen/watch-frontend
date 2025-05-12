@@ -49,7 +49,7 @@ const RegisterPage = () => {
       name: data.username,
       email: data.email,
       password: data.password,
-      recaptchaToken, 
+      recaptchaToken,
     });
   };
 

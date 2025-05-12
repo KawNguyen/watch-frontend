@@ -8,7 +8,7 @@ type UseMutationOptions<TData, TVariables> = {
   onSettled?: (
     data: TData | null,
     error: Error | null,
-    variables: TVariables
+    variables: TVariables,
   ) => void;
   // Thêm queryKey để liên kết với cache của useQuery
   queryKey?: string | (string | number | boolean | null | undefined)[];
@@ -24,9 +24,10 @@ type UseMutationResult<TData, TVariables> = {
 };
 
 export function useMutation<TData, TVariables>(
-  options: UseMutationOptions<TData, TVariables>
+  options: UseMutationOptions<TData, TVariables>,
 ): UseMutationResult<TData, TVariables> {
-  const { mutationFn, onMutate, onSuccess, onError, onSettled, queryKey } = options;
+  const { mutationFn, onMutate, onSuccess, onError, onSettled, queryKey } =
+    options;
 
   const callbackRefs = useRef({
     mutationFn,
@@ -65,64 +66,70 @@ export function useMutation<TData, TVariables>(
     };
   }, []);
 
-  const mutate = useCallback(async (variables: TVariables): Promise<void> => {
-    if (!mountedRef.current) return;
-
-    setState((prev) => ({
-      ...prev,
-      isLoading: true,
-      error: null,
-    }));
-
-    try {
-      callbackRefs.current.onMutate?.(variables);
-
-      const result = await callbackRefs.current.mutationFn(variables);
-
+  const mutate = useCallback(
+    async (variables: TVariables): Promise<void> => {
       if (!mountedRef.current) return;
 
       setState((prev) => ({
         ...prev,
-        data: result,
-        isLoading: false,
+        isLoading: true,
+        error: null,
       }));
 
-      // Cập nhật cache của useQuery nếu có queryKey
-      if (queryKey) {
-        const cacheKey = createCacheKey(queryKey);
-        const oldEntry = queryCache.get(cacheKey);
-        if (oldEntry?.expiryTimeout) {
-          clearTimeout(oldEntry.expiryTimeout);
-        }
-        
-        // Cập nhật cache với dữ liệu mới
-        queryCache.set(cacheKey, {
+      try {
+        callbackRefs.current.onMutate?.(variables);
+
+        const result = await callbackRefs.current.mutationFn(variables);
+
+        if (!mountedRef.current) return;
+
+        setState((prev) => ({
+          ...prev,
           data: result,
-          timestamp: Date.now(),
-          expiryTimeout: setTimeout(() => {
-            queryCache.delete(cacheKey);
-          }, 5 * 60 * 1000), // Sử dụng thời gian mặc định 5 phút
-        });
+          isLoading: false,
+        }));
+
+        // Cập nhật cache của useQuery nếu có queryKey
+        if (queryKey) {
+          const cacheKey = createCacheKey(queryKey);
+          const oldEntry = queryCache.get(cacheKey);
+          if (oldEntry?.expiryTimeout) {
+            clearTimeout(oldEntry.expiryTimeout);
+          }
+
+          // Cập nhật cache với dữ liệu mới
+          queryCache.set(cacheKey, {
+            data: result,
+            timestamp: Date.now(),
+            expiryTimeout: setTimeout(
+              () => {
+                queryCache.delete(cacheKey);
+              },
+              5 * 60 * 1000,
+            ), // Sử dụng thời gian mặc định 5 phút
+          });
+        }
+
+        callbackRefs.current.onSuccess?.(result, variables);
+        callbackRefs.current.onSettled?.(result, null, variables);
+
+        return;
+      } catch (err: any) {
+        if (!mountedRef.current) return;
+
+        setState((prev) => ({
+          ...prev,
+          error: err,
+          isLoading: false,
+        }));
+
+        callbackRefs.current.onError?.(err, variables);
+
+        callbackRefs.current.onSettled?.(null, err, variables);
       }
-
-      callbackRefs.current.onSuccess?.(result, variables);
-      callbackRefs.current.onSettled?.(result, null, variables);
-
-      return;
-    } catch (err: any) {
-      if (!mountedRef.current) return;
-
-      setState((prev) => ({
-        ...prev,
-        error: err,
-        isLoading: false,
-      }));
-
-      callbackRefs.current.onError?.(err, variables);
-
-      callbackRefs.current.onSettled?.(null, err, variables);
-    }
-  }, [queryKey]);
+    },
+    [queryKey],
+  );
 
   const reset = useCallback(() => {
     setState({
@@ -141,6 +148,6 @@ export function useMutation<TData, TVariables>(
       error: state.error,
       reset,
     }),
-    [mutate, state.data, state.isLoading, state.error, reset]
+    [mutate, state.data, state.isLoading, state.error, reset],
   );
 }

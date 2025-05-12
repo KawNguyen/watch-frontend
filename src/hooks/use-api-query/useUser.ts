@@ -5,7 +5,7 @@ export const useUserList = () => {
   return useQuery({
     queryKey: ["userList"],
     queryFn: () => user.getAll(),
-    enabled:true,
+    enabled: true,
   });
 };
 
@@ -15,7 +15,7 @@ export const useSearcUser = (searchTerm: string) => {
     queryFn: () => user.searchUsers(searchTerm),
     enabled: !!searchTerm.trim(),
   });
-}; 
+};
 
 export const useUserData = (id: string | undefined, enabled = true) => {
   return useQuery({

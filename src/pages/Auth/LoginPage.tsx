@@ -40,7 +40,6 @@ const LoginPage = () => {
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-tr from-gray-100 to-gray-200 px-4">
       <div className="bg-white/90 backdrop-blur-sm p-10 rounded-2xl shadow-2xl w-full max-w-md border border-gray-200">
-        
         <h2 className="text-4xl font-bold text-center text-gray-900 mb-8 tracking-tight">
           Welcome to Luxwatch
         </h2>

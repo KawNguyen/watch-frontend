@@ -72,7 +72,7 @@ const ManageOrders = () => {
     mutationFn: async (variables: { orderId: string; status: OrderStatus }) => {
       await order.updateStatus(
         variables.orderId,
-        variables.status as OrderStatus
+        variables.status as OrderStatus,
       );
     },
     onSuccess: () => {
@@ -111,20 +111,38 @@ const ManageOrders = () => {
         <Table>
           <TableHeader>
             <TableRow>
-              <TableHead className="text-center" style={{ width: "200px" }}>Email</TableHead>
-              <TableHead className="text-center" style={{ width: "150px" }}>Name</TableHead>
-              <TableHead className="text-center" style={{ width: "130px" }}>Phone</TableHead>
-              <TableHead className="text-center" style={{ width: "140px" }}>Status</TableHead>
-              <TableHead className="text-center" style={{ width: "120px" }}>Total Price</TableHead>
-              <TableHead className="text-center" style={{ width: "160px" }}>Created At</TableHead>
+              <TableHead className="text-center" style={{ width: "200px" }}>
+                Email
+              </TableHead>
+              <TableHead className="text-center" style={{ width: "150px" }}>
+                Name
+              </TableHead>
+              <TableHead className="text-center" style={{ width: "130px" }}>
+                Phone
+              </TableHead>
+              <TableHead className="text-center" style={{ width: "140px" }}>
+                Status
+              </TableHead>
+              <TableHead className="text-center" style={{ width: "120px" }}>
+                Total Price
+              </TableHead>
+              <TableHead className="text-center" style={{ width: "160px" }}>
+                Created At
+              </TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
             {data.map((order: any) => (
               <TableRow key={order.id}>
-                <TableCell className="text-center" style={{ width: "200px" }}>{order.user.email}</TableCell>
-                <TableCell className="text-center" style={{ width: "150px" }}>{order.user.name}</TableCell>
-                <TableCell className="text-center" style={{ width: "130px" }}>{order.user.phone}</TableCell>
+                <TableCell className="text-center" style={{ width: "200px" }}>
+                  {order.user.email}
+                </TableCell>
+                <TableCell className="text-center" style={{ width: "150px" }}>
+                  {order.user.name}
+                </TableCell>
+                <TableCell className="text-center" style={{ width: "130px" }}>
+                  {order.user.phone}
+                </TableCell>
                 <TableCell className="text-center" style={{ width: "140px" }}>
                   <Select
                     value={order.status}
@@ -146,7 +164,9 @@ const ManageOrders = () => {
                     </SelectContent>
                   </Select>
                 </TableCell>
-                <TableCell className="text-center" style={{ width: "120px" }}>${order.totalPrice}</TableCell>
+                <TableCell className="text-center" style={{ width: "120px" }}>
+                  ${order.totalPrice}
+                </TableCell>
                 <TableCell className="text-center" style={{ width: "160px" }}>
                   {new Date(order.createdAt).toLocaleDateString()}
                 </TableCell>

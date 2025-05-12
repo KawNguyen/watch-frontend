@@ -26,7 +26,7 @@ const Cart = () => {
   const subtotal =
     items?.reduce(
       (sum: number, item: any) => sum + item.watch.price * item.quantity,
-      0
+      0,
     ) || 0;
   const shipping = 10.0;
   const total = subtotal + shipping;

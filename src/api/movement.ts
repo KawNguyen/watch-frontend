@@ -5,7 +5,8 @@ export const movement = {
 
   getById: (id: string) => makeApiRequest("get", `/movements/${id}`),
 
-  create: (name: string) => makeApiRequest("post", "/movements/create", { name }),
+  create: (name: string) =>
+    makeApiRequest("post", "/movements/create", { name }),
 
   update: (id: string, name: string) =>
     makeApiRequest("put", `/movements/update/${id}`, { name }),
@@ -13,5 +14,8 @@ export const movement = {
   delete: (id: string) => makeApiRequest("delete", `/movements/delete/${id}`),
 
   search: (query: string) =>
-    makeApiRequest("get", `/movements/search?name=${encodeURIComponent(query)}`),
+    makeApiRequest(
+      "get",
+      `/movements/search?name=${encodeURIComponent(query)}`,
+    ),
 };

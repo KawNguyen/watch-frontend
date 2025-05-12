@@ -70,7 +70,7 @@ const App = () => {
           </ProtectedRoute>
         }
       >
-        <Route index path="dashboard"  element={<Dashboard />} />
+        <Route index path="dashboard" element={<Dashboard />} />
         <Route path="brand/list" element={<ManageBrand />} />
         <Route path="brand/add" element={<AddBrand />} />
         <Route path="watch/list" element={<ManageWatch />} />

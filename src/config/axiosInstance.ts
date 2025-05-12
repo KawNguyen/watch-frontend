@@ -3,7 +3,6 @@ import axios from "axios";
 const BE_URL = import.meta.env.VITE_BACKEND_URL;
 // const BE_URL = "http://localhost:3000/v1/api";
 
-
 const axiosInstance = axios.create({
   baseURL: BE_URL,
   withCredentials: true,

@@ -70,7 +70,7 @@ export const clearQueryCache = (queryKey?: QueryKey) => {
 };
 
 export function useQuery<TData, TError = Error>(
-  options: UseQueryOptions<TData, TError>
+  options: UseQueryOptions<TData, TError>,
 ): UseQueryResult<TData, TError> {
   const {
     queryKey,
@@ -135,7 +135,7 @@ export function useQuery<TData, TError = Error>(
         expiryTimeout,
       });
     },
-    [cacheTime]
+    [cacheTime],
   );
 
   const fetchData = useCallback(
@@ -233,7 +233,15 @@ export function useQuery<TData, TError = Error>(
         throw error;
       }
     },
-    [cacheKey, enabled, staleTime, retry, retryDelay, setCacheEntry, state.data]
+    [
+      cacheKey,
+      enabled,
+      staleTime,
+      retry,
+      retryDelay,
+      setCacheEntry,
+      state.data,
+    ],
   );
 
   // Refetch function
@@ -295,6 +303,6 @@ export function useQuery<TData, TError = Error>(
       error: state.error,
       refetch,
     }),
-    [state, status, isIdle, isLoading, isError, isSuccess, refetch]
+    [state, status, isIdle, isLoading, isError, isSuccess, refetch],
   );
 }

@@ -19,7 +19,7 @@ export const RelevantProducts = ({
       const filtered = watchesData.data.items
         .filter(
           (product: any) =>
-            product.id !== currentProductId && product.brandId === brandId
+            product.id !== currentProductId && product.brandId === brandId,
         )
         .slice(0, 4);
       setRelevantProducts(filtered);
