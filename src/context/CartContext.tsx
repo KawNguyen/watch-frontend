@@ -47,6 +47,10 @@ export const CartProvider = ({ children }: { children: React.ReactNode }) => {
   });
 
   const addToCart = (watchId: string, quantity: number = 1) => {
+    if (!userId) {
+      toast.error("Please login to add product to cart");
+      return;
+    }
     mutateAddToCart.mutate({ watchId, quantity });
   };
 

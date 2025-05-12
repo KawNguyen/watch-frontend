@@ -15,6 +15,7 @@ import {
 } from "@/components/ui/form";
 import ReCAPTCHA from "react-google-recaptcha";
 import { RECAPTCHA_KEY } from "@/config/captcha";
+import BgAuth from "@/components/BgAuth";
 
 interface RegisterFormInputs {
   username: string;
@@ -54,8 +55,9 @@ const RegisterPage = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-100">
-      <div className="bg-white p-8 rounded-lg shadow-md w-full max-w-md">
+    <div className="h-screen flex items-center justify-center bg-gray-100">
+      <BgAuth />
+      <div className="bg-white p-8 rounded-lg shadow-md w-full max-w-md z-10">
         <h2 className="text-3xl font-bold text-center mb-6">
           Join Our Exclusive Collection
         </h2>

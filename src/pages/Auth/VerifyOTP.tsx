@@ -2,6 +2,7 @@ import { useState, useRef } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useAuth } from "@/hooks/use-api/useAuth";
+import BgAuth from "@/components/BgAuth";
 
 const OTP_LENGTH = 6;
 
@@ -38,7 +39,8 @@ const VerifyOTP = () => {
 
   return (
     <div className="flex min-h-screen items-center justify-center bg-background px-4">
-      <div className="w-full max-w-md space-y-6 rounded-xl border p-6 shadow-xl bg-white dark:bg-zinc-900">
+      <BgAuth />
+      <div className="w-full max-w-md z-10 space-y-6 rounded-xl border p-6 shadow-xl bg-white dark:bg-zinc-900">
         <div className="space-y-2 text-center">
           <h1 className="text-2xl font-bold tracking-tight">
             Verify Your Account
