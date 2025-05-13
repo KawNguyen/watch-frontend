@@ -26,7 +26,6 @@ const DetailProduct = () => {
   const { data: watchData, isLoading } = useWatchById(id ?? "");
 
   const watch = watchData?.data?.item;
-  console.log(watch);
 
   if (isLoading) {
     return (

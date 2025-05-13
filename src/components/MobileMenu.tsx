@@ -5,7 +5,15 @@ import {
   SheetTitle,
   SheetDescription,
 } from "@/components/ui/sheet";
-import { Menu, LogIn, LogOut, UserCog, LayoutDashboard } from "lucide-react";
+import {
+  Menu,
+  LogIn,
+  LogOut,
+  UserCog,
+  LayoutDashboard,
+  ShoppingBag,
+  Heart,
+} from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
 import { Routes } from "@/constants";
 import { useAuth } from "@/hooks/use-api/useAuth";
@@ -19,15 +27,17 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { SheetClose } from "@/components/ui/sheet";
+import { useState } from "react";
 
 const MobileMenu = () => {
   const { isAuthenticated, logout, getUser } = useAuth();
+  const [open, setOpen] = useState(false);
   const user = getUser();
   const navigate = useNavigate();
 
   return (
     <div className="md:hidden">
-      <Sheet>
+      <Sheet open={open} onOpenChange={setOpen}>
         <SheetTrigger>
           <Menu className="h-6 w-6" />
         </SheetTrigger>
@@ -51,32 +61,75 @@ const MobileMenu = () => {
           <div className="border-t pt-4 mt-auto">
             {isAuthenticated() ? (
               <DropdownMenu>
-                <DropdownMenuTrigger className="flex items-center space-x-2 outline-none w-full">
-                  <Avatar className="h-8 w-8">
-                    <AvatarImage src={user?.avatar} />
-                    <AvatarFallback>
+                <DropdownMenuTrigger className="flex items-center space-x-3 outline-none w-full hover:bg-gray-50 p-2 rounded-lg transition-colors duration-200">
+                  <Avatar>
+                    <AvatarImage src={user?.avatar} className="object-cover" />
+                    <AvatarFallback className="bg-gradient-to-br from-gray-800 to-gray-900 text-white">
                       {user?.name?.charAt(0).toUpperCase()}
                     </AvatarFallback>
                   </Avatar>
-                  <span className="font-medium">{user?.name}</span>
+                  <div className="flex flex-col text-left">
+                    <span className="font-medium text-gray-900">
+                      {user?.name}
+                    </span>
+                    <span className="text-sm text-gray-500">{user?.email}</span>
+                  </div>
                 </DropdownMenuTrigger>
-                <DropdownMenuContent>
-                  <DropdownMenuLabel>{user?.name}</DropdownMenuLabel>
+                <DropdownMenuContent className="w-56" align="end">
+                  <DropdownMenuLabel className="font-normal">
+                    <div className="flex flex-col space-y-1">
+                      <p className="text-sm font-medium leading-none">
+                        {user?.name}
+                      </p>
+                      <p className="text-xs leading-none text-gray-500">
+                        {user?.email}
+                      </p>
+                    </div>
+                  </DropdownMenuLabel>
                   <DropdownMenuSeparator />
                   <DropdownMenuItem
-                    onClick={() => navigate("/profile?tab=info")}
+                    onClick={() => {
+                      navigate("/profile?tab=info"), setOpen(false);
+                    }}
+                    className="cursor-pointer hover:bg-gray-50 focus:bg-gray-50"
                   >
                     <UserCog className="mr-2 h-4 w-4" />
-                    Profile
+                    My Profile
+                  </DropdownMenuItem>
+                  <DropdownMenuItem
+                    onClick={() => {
+                      navigate("/profile?tab=orders"), setOpen(false);
+                    }}
+                    className="cursor-pointer hover:bg-gray-50 focus:bg-gray-50"
+                  >
+                    <ShoppingBag className="mr-2 h-4 w-4" />
+                    My Orders
+                  </DropdownMenuItem>
+                  <DropdownMenuItem
+                    onClick={() => {
+                      navigate("/profile?tab=favorites"), setOpen(false);
+                    }}
+                    className="cursor-pointer hover:bg-gray-50 focus:bg-gray-50"
+                  >
+                    <Heart className="mr-2 h-4 w-4" />
+                    Favorite
                   </DropdownMenuItem>
                   {user?.role === "ADMIN" && (
-                    <DropdownMenuItem onClick={() => navigate("/admin")}>
+                    <DropdownMenuItem
+                      onClick={() => {
+                        navigate("/admin/dashboard"), setOpen(false);
+                      }}
+                      className="cursor-pointer hover:bg-gray-50 focus:bg-gray-50"
+                    >
                       <LayoutDashboard className="mr-2 h-4 w-4" />
-                      Dashboard
+                      Admin Dashboard
                     </DropdownMenuItem>
                   )}
                   <DropdownMenuSeparator />
-                  <DropdownMenuItem onClick={logout}>
+                  <DropdownMenuItem
+                    onClick={logout}
+                    className="cursor-pointer text-red-600 hover:bg-red-50 hover:text-red-700 focus:bg-red-50 focus:text-red-700"
+                  >
                     <LogOut className="mr-2 h-4 w-4" />
                     <span>Log out</span>
                   </DropdownMenuItem>
@@ -85,10 +138,10 @@ const MobileMenu = () => {
             ) : (
               <Link
                 to="/auth/login"
-                className="flex items-center space-x-2 text-xl hover:text-zinc-500"
+                className="flex items-center space-x-2 text-xl hover:bg-gray-50 p-2 rounded-lg transition-colors duration-200"
               >
-                <LogIn size={20} />
-                <span>Login</span>
+                <LogIn className="h-5 w-5" />
+                <span>Sign In</span>
               </Link>
             )}
           </div>

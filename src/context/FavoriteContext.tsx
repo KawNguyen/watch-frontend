@@ -50,8 +50,7 @@ export const FavoriteProvider = ({
   });
 
   const addToFavorite = (watchId: string) => {
-    if(!userId)
-    {
+    if (!userId) {
       toast.error("Please login to add product to favorite");
       return;
     }

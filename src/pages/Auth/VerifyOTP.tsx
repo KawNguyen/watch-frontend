@@ -38,11 +38,11 @@ const VerifyOTP = () => {
   };
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-background px-4">
+    <div className="flex min-h-screen items-center justify-center bg-background px-4 py-6 sm:py-8">
       <BgAuth />
-      <div className="w-full max-w-md z-10 space-y-6 rounded-xl border p-6 shadow-xl bg-white dark:bg-zinc-900">
+      <div className="w-full max-w-md z-10 space-y-4 sm:space-y-6 rounded-xl border p-6 sm:p-8 shadow-xl bg-white dark:bg-zinc-900">
         <div className="space-y-2 text-center">
-          <h1 className="text-2xl font-bold tracking-tight">
+          <h1 className="text-xl sm:text-2xl font-bold tracking-tight">
             Verify Your Account
           </h1>
           <p className="text-sm text-muted-foreground">
@@ -50,7 +50,7 @@ const VerifyOTP = () => {
           </p>
         </div>
 
-        <div className="flex justify-between gap-2">
+        <div className="flex justify-between gap-1 sm:gap-2">
           {otp.map((digit, index) => (
             <Input
               key={index}
@@ -63,7 +63,7 @@ const VerifyOTP = () => {
               ref={(el) => {
                 if (el) inputRefs.current[index] = el;
               }}
-              className="w-12 h-12 text-center text-lg font-semibold tracking-widest border-2 border-gray-300 rounded-md focus:border-primary focus:ring-2 focus:ring-primary"
+              className="w-10 h-10 sm:w-12 sm:h-12 text-center text-base sm:text-lg font-semibold tracking-widest border-2 border-gray-300 rounded-md focus:border-primary focus:ring-2 focus:ring-primary"
             />
           ))}
         </div>

@@ -13,15 +13,15 @@ export default defineConfig({
     include: ["react-helmet-async"],
   },
   build: {
+    chunkSizeWarningLimit: 400,
     rollupOptions: {
       output: {
-        manualChunks: {
-          react: ["react", "react-dom"],
-          vendor: ["react-router-dom", "react-helmet-async"],
-          // Add more if you notice other large packages
+        manualChunks(id) {
+          if (id.includes("node_modules")) {
+            return id.split("node_modules/")[1].split("/")[0];
+          }
         },
       },
     },
-    chunkSizeWarningLimit: 800, // Optional: increases warning threshold
   },
 });

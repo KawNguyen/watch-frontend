@@ -25,6 +25,62 @@ interface RegisterFormInputs {
   captchaToken: string;
 }
 
+const InputField = ({
+  name,
+  label,
+  type = "text",
+  icon: Icon,
+  placeholder,
+  form,
+  rules,
+  showPasswordToggle = false,
+}: any) => {
+  const [showPassword, setShowPassword] = useState(false);
+
+  return (
+    <FormField
+      control={form.control}
+      name={name}
+      rules={rules}
+      render={({ field }) => (
+        <FormItem>
+          <FormLabel>{label}</FormLabel>
+          <FormControl>
+            <div className="relative">
+              <Icon
+                className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"
+                size={20}
+              />
+              <Input
+                type={
+                  showPasswordToggle
+                    ? showPassword
+                      ? "text"
+                      : "password"
+                    : type
+                }
+                placeholder={placeholder}
+                className="pl-10 pr-10"
+                {...field}
+              />
+              {showPasswordToggle && (
+                <button
+                  type="button"
+                  onClick={() => setShowPassword(!showPassword)}
+                  className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600"
+                >
+                  {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+                </button>
+              )}
+            </div>
+          </FormControl>
+          <FormMessage />
+        </FormItem>
+      )}
+    />
+  );
+};
+
 const RegisterPage = () => {
   const { register, isLoading, error: authError } = useAuth();
   const form = useForm<RegisterFormInputs>({
@@ -36,8 +92,6 @@ const RegisterPage = () => {
       captchaToken: "",
     },
   });
-  const [showPassword, setShowPassword] = useState(false);
-  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [recaptchaToken, setRecaptchaToken] = useState<string | null>(null);
 
   const onSubmit = async (data: RegisterFormInputs) => {
@@ -45,7 +99,6 @@ const RegisterPage = () => {
       alert("Please complete the reCAPTCHA");
       return;
     }
-
     await register({
       name: data.username,
       email: data.email,
@@ -54,11 +107,68 @@ const RegisterPage = () => {
     });
   };
 
+  const inputFields = [
+    {
+      name: "username",
+      label: "Username",
+      icon: User,
+      placeholder: "Enter your username",
+      rules: {
+        required: "Username is required",
+        minLength: {
+          value: 3,
+          message: "Username must be at least 3 characters",
+        },
+      },
+    },
+    {
+      name: "email",
+      label: "Email",
+      icon: Mail,
+      placeholder: "Enter your email",
+      rules: {
+        required: "Email is required",
+        pattern: {
+          value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
+          message: "Invalid email address",
+        },
+      },
+    },
+    {
+      name: "password",
+      label: "Password",
+      icon: Lock,
+      placeholder: "Enter your password",
+      type: "password",
+      showPasswordToggle: true,
+      rules: {
+        required: "Password is required",
+        minLength: {
+          value: 6,
+          message: "Password must be at least 6 characters",
+        },
+      },
+    },
+    {
+      name: "confirmPassword",
+      label: "Confirm Password",
+      icon: Lock,
+      placeholder: "Confirm your password",
+      type: "password",
+      showPasswordToggle: true,
+      rules: {
+        required: "Please confirm your password",
+        validate: (value: string) =>
+          value === form.getValues("password") || "Passwords do not match",
+      },
+    },
+  ];
+
   return (
-    <div className="h-screen flex items-center justify-center bg-gray-100">
+    <div className="min-h-screen flex items-center justify-center bg-gray-100 px-4 py-6 sm:py-8">
       <BgAuth />
-      <div className="bg-white p-8 rounded-lg shadow-md w-full max-w-md z-10">
-        <h2 className="text-3xl font-bold text-center mb-6">
+      <div className="bg-white p-6 sm:p-8 rounded-lg shadow-md w-full max-w-md z-10">
+        <h2 className="text-2xl lg:text-4xl font-bold text-center mb-4 sm:mb-6">
           Join Our Exclusive Collection
         </h2>
         {authError && (
@@ -68,154 +178,9 @@ const RegisterPage = () => {
         )}
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-            <FormField
-              control={form.control}
-              name="username"
-              rules={{
-                required: "Username is required",
-                minLength: {
-                  value: 3,
-                  message: "Username must be at least 3 characters",
-                },
-              }}
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Username</FormLabel>
-                  <FormControl>
-                    <div className="relative">
-                      <User
-                        className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"
-                        size={20}
-                      />
-                      <Input
-                        placeholder="Enter your username"
-                        className="pl-10"
-                        {...field}
-                      />
-                    </div>
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-
-            <FormField
-              control={form.control}
-              name="email"
-              rules={{
-                required: "Email is required",
-                pattern: {
-                  value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
-                  message: "Invalid email address",
-                },
-              }}
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Email</FormLabel>
-                  <FormControl>
-                    <div className="relative">
-                      <Mail
-                        className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"
-                        size={20}
-                      />
-                      <Input
-                        placeholder="Enter your email"
-                        className="pl-10"
-                        {...field}
-                      />
-                    </div>
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-
-            <FormField
-              control={form.control}
-              name="password"
-              rules={{
-                required: "Password is required",
-                minLength: {
-                  value: 6,
-                  message: "Password must be at least 6 characters",
-                },
-              }}
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Password</FormLabel>
-                  <FormControl>
-                    <div className="relative">
-                      <Lock
-                        className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"
-                        size={20}
-                      />
-                      <Input
-                        type={showPassword ? "text" : "password"}
-                        placeholder="Enter your password"
-                        className="pl-10 pr-10"
-                        {...field}
-                      />
-                      <button
-                        type="button"
-                        onClick={() => setShowPassword(!showPassword)}
-                        className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600"
-                      >
-                        {showPassword ? (
-                          <EyeOff size={20} />
-                        ) : (
-                          <Eye size={20} />
-                        )}
-                      </button>
-                    </div>
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-
-            <FormField
-              control={form.control}
-              name="confirmPassword"
-              rules={{
-                required: "Please confirm your password",
-                validate: (value) =>
-                  value === form.getValues("password") ||
-                  "Passwords do not match",
-              }}
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Confirm Password</FormLabel>
-                  <FormControl>
-                    <div className="relative">
-                      <Lock
-                        className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"
-                        size={20}
-                      />
-                      <Input
-                        type={showConfirmPassword ? "text" : "password"}
-                        placeholder="Confirm your password"
-                        className="pl-10 pr-10"
-                        {...field}
-                      />
-                      <button
-                        type="button"
-                        onClick={() =>
-                          setShowConfirmPassword(!showConfirmPassword)
-                        }
-                        className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600"
-                      >
-                        {showConfirmPassword ? (
-                          <EyeOff size={20} />
-                        ) : (
-                          <Eye size={20} />
-                        )}
-                      </button>
-                    </div>
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+            {inputFields.map((field) => (
+              <InputField key={field.name} {...field} form={form} />
+            ))}
 
             <ReCAPTCHA
               sitekey={RECAPTCHA_KEY}

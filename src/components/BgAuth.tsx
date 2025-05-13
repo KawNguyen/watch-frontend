@@ -3,7 +3,7 @@ import Image from "./ui/image";
 
 const BgAuth = () => {
   return (
-    <div className="fixed h-full w-full">
+    <div className="fixed h-screen w-screeb">
       <Image src="/public/Images/bg-auth.webp" className="h-full w-full" />
       <div className="bg-black/70 absolute top-0 h-full w-full"></div>
       <div>
@@ -13,11 +13,11 @@ const BgAuth = () => {
           </Link>
         </div>
         <div className="absolute bottom-8 left-8 text-white">
-          <p className="text-4xl font-bold">
+          <p className="lg:text-4xl font-bold text-2xl">
             Discover the <br />
             World of Luxury
           </p>
-          <p className="text-sm">
+          <p className="text-sm ">
             Experience the finest selection of luxury watches
           </p>
         </div>

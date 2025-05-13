@@ -3,24 +3,14 @@ import HeroBanner from "@/components/ListProducts/HeroBanner";
 import ProductGrid from "@/components/ListProducts/ProductGrid";
 import ProductSidebar from "@/components/ListProducts/ProductSidebar";
 import PropsSidebar from "@/components/ListProducts/PropsSidebar";
-import { Button } from "@/components/ui/button";
-import { Filter } from "lucide-react";
-import {
-  Sheet,
-  SheetContent,
-  SheetDescription,
-  SheetHeader,
-  SheetTitle,
-  SheetTrigger,
-} from "@/components/ui/sheet";
 import { useBandMaterial } from "@/hooks/use-api/useBandMaterial";
 import { useBrand } from "@/hooks/use-api/useBrand";
 import { useMaterial } from "@/hooks/use-api/useMaterial";
 import { useMovement } from "@/hooks/use-api/useMovement";
 import { useSearchParams } from "react-router-dom";
-import { ScrollArea } from "@/components/ui/scroll-area";
 import { useMediaQuery } from "@/hooks/use-media-query";
 import { useWatchesFilter } from "@/hooks/use-api-query/useWatch";
+import FilterSheet from "@/components/ListProducts/FilterSheet";
 
 const genders = [
   { id: "men", name: "Men" },
@@ -123,6 +113,7 @@ const ListProductPage = () => {
       page: 1,
       limit: 8,
     });
+    setIsOpen(false);
   };
 
   return (
@@ -185,79 +176,28 @@ const ListProductPage = () => {
               </div>
             </div>
           ) : (
-            <Sheet open={isOpen} onOpenChange={setIsOpen}>
-              <SheetTrigger asChild>
-                <Button variant="outline" className="w-full mb-4">
-                  <Filter className="mr-2 h-4 w-4" />
-                  Filter Products
-                </Button>
-              </SheetTrigger>
-              <SheetContent
-                side="left"
-                className="w-[300px] p-4 bg-white shadow-xl rounded-r-lg"
-              >
-                <SheetHeader>
-                  <SheetTitle>Filters</SheetTitle>
-                  <SheetDescription>
-                    Refine your product search
-                  </SheetDescription>
-                </SheetHeader>
-                <ScrollArea className="h-[calc(100vh-120px)] pr-2">
-                  <div className="mt-4 space-y-4">
-                    <ProductSidebar
-                      onClearFilter={handleClearFilters}
-                      onApplyFilter={handleApplyFilters}
-                    >
-                      <PropsSidebar
-                        isLoading={false}
-                        items={genders}
-                        title="Gender"
-                        onSelect={(value) =>
-                          handleFilterChange("gender", value)
-                        }
-                        selected={[tempFilters.gender]}
-                      />
-                      <PropsSidebar
-                        isLoading={isBrandLoading("getAllBrands")}
-                        items={brands}
-                        title="Brand"
-                        onSelect={(value) => handleFilterChange("brand", value)}
-                        selected={[tempFilters.brand]}
-                      />
-                      <PropsSidebar
-                        isLoading={isMaterialLoading("getAllMaterials")}
-                        items={materials}
-                        title="Material"
-                        onSelect={(value) =>
-                          handleFilterChange("material", value)
-                        }
-                        selected={[tempFilters.material]}
-                      />
-                      <PropsSidebar
-                        isLoading={isBandMaterialLoading("getAllBandMaterials")}
-                        items={bandMaterials}
-                        title="Band Material"
-                        onSelect={(value) =>
-                          handleFilterChange("bandMaterial", value)
-                        }
-                        selected={[tempFilters.bandMaterial]}
-                      />
-                      <PropsSidebar
-                        isLoading={isMovementLoading("getAllMovements")}
-                        items={movements}
-                        title="Movement"
-                        onSelect={(value) =>
-                          handleFilterChange("movement", value)
-                        }
-                        selected={[tempFilters.movement]}
-                      />
-                    </ProductSidebar>
-                  </div>
-                </ScrollArea>
-              </SheetContent>
-            </Sheet>
+            <FilterSheet
+              isOpen={isOpen}
+              onOpenChange={setIsOpen}
+              onClearFilter={handleClearFilters}
+              onApplyFilter={handleApplyFilters}
+              onFilterChange={handleFilterChange}
+              filters={tempFilters}
+              data={{
+                genders,
+                brands,
+                materials,
+                bandMaterials,
+                movements,
+              }}
+              loading={{
+                brands: isBrandLoading("getAllBrands"),
+                materials: isMaterialLoading("getAllMaterials"),
+                bandMaterials: isBandMaterialLoading("getAllBandMaterials"),
+                movements: isMovementLoading("getAllMovements"),
+              }}
+            />
           )}
-
           <div className="flex flex-col gap-6">
             <div className="flex items-center justify-between border-b pb-2">
               <h2 className="text-2xl font-bold tracking-tight">Our Watches</h2>

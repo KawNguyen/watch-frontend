@@ -28,16 +28,6 @@ const Header = () => {
   const { isAuthenticated, logout, getUser } = useAuth();
   const user = getUser();
   const navigate = useNavigate();
-  // const { cartCount, favoriteCount, fetchCounts, resetCounts } =
-  //   useGlobalStore();
-
-  // useEffect(() => {
-  //   if (user?.id) {
-  //     fetchCounts(user?.id);
-  //   } else {
-  //     resetCounts();
-  //   }
-  // }, [user?.id]);
 
   const { cartCount } = useCartContext();
   const { favoriteCount } = useFavoriteContext();
