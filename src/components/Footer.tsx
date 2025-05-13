@@ -3,14 +3,15 @@ import { Link } from "react-router-dom";
 import { useState } from "react";
 import emailjs from "emailjs-com";
 import { useToast } from "@/hooks/use-toast";
+import Image from "./ui/image";
 
 const routes = [
   {
     title: "Our Products",
     children: [
-      { path: "/allproducts", title: "All products" },
-      { path: "/men", title: "Men" },
-      { path: "/women", title: "Women" },
+      { path: "/products", title: "All products" },
+      { path: "/products?gender=Men", title: "Men" },
+      { path: "/products?gender=Women", title: "Women" },
     ],
   },
   {
@@ -69,7 +70,7 @@ const Footer = () => {
         "service_kai5al5",
         "template_42p8gqt",
         templateParams,
-        "hCS0IHarjxuWOm4BO",
+        "hCS0IHarjxuWOm4BO"
       )
       .then(() => {
         toast({
@@ -93,7 +94,9 @@ const Footer = () => {
         <div className="md:space-y-4 space-y-2 px-4 flex flex-col justify-between">
           <div className="font-bold text-xl">FROM LUXWATCH INC</div>
           <div>THE LUXURIOUS WATCH</div>
-          <img src="/Images/logo.png" alt="icon" className="w-40 h-40" />
+          <Link to={"/"}>
+            <Image src="/Images/logo.png" alt="icon" className="w-40 h-40" />
+          </Link>
           <div className="flex space-x-4">
             {icons.map((icon, index: number) => (
               <div key={index}>
